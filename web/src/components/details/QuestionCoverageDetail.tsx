@@ -8,13 +8,7 @@ import { QuestionCoverageRow } from "@/lib/types";
 // phrases from the extraction field that answers it, not just a fill-rate.
 // A coverage view that only reports "captured in 3/578" tells the reader how
 // MUCH was found but never WHAT, which is the part that matters.
-export default function QuestionCoverageDetail({
-  rows,
-  onJumpToSurvey,
-}: {
-  rows: QuestionCoverageRow[];
-  onJumpToSurvey?: (field: string) => void;
-}) {
+export default function QuestionCoverageDetail({ rows }: { rows: QuestionCoverageRow[] }) {
   const strong = rows.filter((r) => r.confidence === "Strong").length;
   const medium = rows.filter((r) => r.confidence === "Medium").length;
   const weak = rows.filter((r) => r.confidence === "Weak").length;
@@ -32,7 +26,6 @@ export default function QuestionCoverageDetail({
 
       <ul className="divide-y divide-line">
         {rows.map((row) => {
-          const isSegmentQuestion = row.question.startsWith("9.");
           return (
             <li key={row.question} className="py-3.5">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
@@ -50,15 +43,6 @@ export default function QuestionCoverageDetail({
                   <span className="rounded-full border border-line px-2 py-0.5 text-[11px] font-semibold text-ink-soft nav-tab">
                     {row.answeredBy}
                   </span>
-                  {isSegmentQuestion && onJumpToSurvey && (
-                    <button
-                      type="button"
-                      onClick={() => onJumpToSurvey("wishlist_save_frequency")}
-                      className="rounded-full bg-brand px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-brand-dark"
-                    >
-                      See survey →
-                    </button>
-                  )}
                 </div>
               </div>
 

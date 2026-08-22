@@ -1,6 +1,8 @@
 # Interview Guide — Filling the Discovery Engine's Blind Spots
 
-Companion to [`problem_statement.md`](problem_statement.md), scoped to Part 3 (primary research, 5–6 interviews, execution-timeline Days 4–7). This document exists because the engine's own question-coverage output (`pipeline/data/extracted/findings.json`, live on the dashboard's Findings tab) tells us precisely where public text goes silent — every question below is aimed at one of those specific, named holes, not a generic wishlist-UX script. Numbers referenced throughout are the real corpus as of 2026-08-19 (575 extracted records: 557 App/Play Store + 18 Reddit; 2 survey responses).
+Companion to [`problem_statement.md`](problem_statement.md), scoped to Part 3 (primary research, 5–6 interviews, execution-timeline Days 4–7). This document exists because the engine's own question-coverage output (`pipeline/data/extracted/findings.json`, live on the dashboard's Findings tab) tells us precisely where public text goes silent — every question below is aimed at one of those specific, named holes, not a generic wishlist-UX script. Numbers referenced throughout are the real corpus as of 2026-08-19 (575 extracted records: 557 App/Play Store + 18 Reddit).
+
+**Since updated:** the Google Forms survey that once supplemented Q9 was removed from the engine on 2026-08-20 (`problem_statement.md` §18). These interviews are now the *only* primary-research input, which raises what they have to carry — see §2A and question 10.
 
 ## 1. What's already Strong — don't spend interview time re-establishing this
 
@@ -22,7 +24,7 @@ People don't narrate these things unprompted in a store review or a Reddit comme
 |---|---|---|
 | 1. Why do users add to wishlist | `save_motivation` captured | 1/575 |
 | 5. How users compare shortlisted items | `comparison_behavior` captured | 5/575 |
-| 9. Segment/demographic differences | `segment_signal` captured | 10/575 (survey adds 2 more responses, still thin) |
+| 9. Segment/demographic differences | `segment_signal` captured | 10/575 — and now the *only* other input, since the survey was removed (`problem_statement.md` §18) |
 
 → These need **live, behavioral** interview questions — ideally watching someone use their actual wishlist rather than asking them to summarize it from memory.
 
@@ -36,7 +38,7 @@ App/Play Store reviews are written *after* a purchase decision is already resolv
 | 6. Off-platform research | `offsite_research` captured | 3/575 |
 | 10. Recurring unmet needs (workaround) | `workaround` captured | 8/575 |
 
-Notably, the 2-response survey's open-text answers (not yet in the LLM pipeline, but readable directly in `pipeline/data/raw/survey_responses.jsonl`) already surface offsite research richly the moment someone is asked directly — "ask friends or family," "price on other shopping sites," "the brand's own site or a physical store." That's proof this is a **text-availability problem, not a behavior-rarity problem**: the behavior is common, public text just rarely mentions it in passing.
+Notably, a small 2-response survey run earlier in this project surfaced offsite research richly the moment people were asked directly — "ask friends or family," "price on other shopping sites," "the brand's own site or a physical store." *(That survey has since been removed from the engine — `problem_statement.md` §18 — but the responses are archived in the corpus backup, and the observation stands.)* At n=2 it proves nothing on its own, but the contrast is suggestive: **this looks like a text-availability problem rather than a behavior-rarity one** — the behaviour may well be common, and public text simply doesn't mention it in passing. Testing that is exactly what interview question 5 is for.
 
 ### C — A gap *inside* the ranked table itself, not just the question-coverage view
 This is the most consequential gap and it's easy to miss because the dashboard shows a clean ranked list: **6 of the 8 opportunity themes have `resolutionReason: "not enough data yet"`.**
@@ -54,10 +56,12 @@ This is the most consequential gap and it's easy to miss because the dashboard s
 
 Per `problem_statement.md` §7c, **Resolution Leverage is described as the single most decision-useful dimension the two-lens design produces** ("a high-frequency blocker nobody ever resolves is a worse MVP target than a rarer one with a proven, repeatable path out — because that resolution path *is* the feature spec"). Right now that dimension is functionally unfilled for 75% of the ranking. This is the single highest-value thing the interviews can fix — not "what's wrong," which the engine already ranks, but **"what actually got you unstuck, last time it happened for real."**
 
-### D — Blocker types visible in 2 survey responses that don't appear in any of the 8 engine-derived themes
+### D — Three blocker candidates that don't appear in any of the 8 engine-derived themes
+
+*Provenance: these surfaced in a 2-response survey run early in the project. That survey has since been removed from the engine (`problem_statement.md` §18); the responses are archived in the corpus backup. At n=2 these are **leads to test, not findings** — which is precisely why they belong in an interview guide rather than in the dashboard.*
 With n=2 these are leads, not findings — but they're exactly the kind of signal 5–6 interviews exist to stress-test, and neither maps onto any of the 8 named themes above:
 
-- **"Leakage"** — found the same/similar item cheaper or better elsewhere after wishlisting on Myntra (both survey respondents cited a version of this — "compared with other options," "price on other shopping sites," "a physical store"). Adjacent to Q5/Q6 but the engine's `offsite_research` field only fires on 3/575 records, so this is essentially unmeasured at corpus scale.
+- **"Leakage"** — found the same/similar item cheaper or better elsewhere after wishlisting on Myntra (both respondents cited a version of this — "compared with other options," "price on other shopping sites," "a physical store"). Adjacent to Q5/Q6 but the engine's `offsite_research` field only fires on 3/575 records, so this is essentially unmeasured at corpus scale.
 - **"Availability"** — item went out of stock or the respondent's size sold out while it sat in the wishlist. Not represented in any of Price / Quality / Fit / Service / Styling / Reviews / Occasion / Wishlist-capacity — a genuinely distinct blocker type the theme list may be missing entirely.
 - **"Salience"** — literally forgot the item was saved. Distinct from "Wishlist capacity limit" (which is about too many items forcing cleanup, an emergent theme with 6 phrases) — salience is about *no reminder ever brought it back*, not capacity pressure.
 
@@ -86,7 +90,7 @@ Designed for ~30–40 minutes across 5–6 interviews — every question is tagg
 
 **5. Offsite research probe**
 "Before you decided, did you look at anything outside Myntra — other apps, a friend, a store, anything?"
-→ **Q6**. Given the survey's 2 free-text answers already surfaced this readily when asked directly, expect a real hit rate here even though the corpus shows only 3/575.
+→ **Q6**. The corpus shows only 3/575, but the literature puts webrooming near-universal (81%) and the early 2-response survey surfaced it immediately when asked directly — so expect a real hit rate here, and treat a low one as genuinely surprising.
 
 **6. Leakage probe**
 "Has it ever happened that you found the same or a similar item cheaper, or nicer, somewhere else — after you'd already saved it on Myntra?"
@@ -106,7 +110,7 @@ Designed for ~30–40 minutes across 5–6 interviews — every question is tagg
 
 **10. Segment/context, woven in rather than checklisted**
 Rather than a demographic form, let city tier, spend level, and shopping frequency come up naturally across questions 1–9, then confirm directly at the end: "Just to make sure I've got it — roughly what do you spend on a single item, and how often are you adding to your wishlist?"
-→ **Q9**, cross-checked against the 2 existing survey responses rather than replacing them — the goal is triangulation, not a third redundant demographic form.
+→ **Q9**. With the survey gone, these interviews are the *only* remaining input to segment differences beyond the 10/578 records where `segment_signal` fired — so capture it properly, but let it emerge in conversation rather than front-loading a demographic form.
 
 **11. Closing, open-ended**
 "If Myntra could fix exactly one thing about how your wishlist works, what would it be?"

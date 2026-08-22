@@ -14,11 +14,10 @@
 // scripts/sync-findings.mjs copies pipeline/data/extracted/*.json into
 // src/data/ and runs automatically before every build.
 import findingsData from "@/data/findings.json";
-import surveyData from "@/data/survey_findings.json";
 import keywordsData from "@/data/keywords.json";
 import narrativeData from "@/data/narrative.json";
 import { crossTabMatrices as mockCrossTabMatrices, opportunityRows as mockOpportunityRows, questionCoverageRows as mockQuestionCoverageRows, pipelineFunnel as mockPipelineFunnel } from "./mockFindings";
-import { CrossTabMatrix, FunnelStage, KeywordCloudData, OpportunityRow, QuestionCoverageRow, SurveyFindings } from "./types";
+import { CrossTabMatrix, FunnelStage, KeywordCloudData, OpportunityRow, QuestionCoverageRow } from "./types";
 
 interface FindingsFile {
   totalRecords: number;
@@ -39,7 +38,6 @@ export interface LoadedFindings {
   questionCoverageRows: QuestionCoverageRow[];
   crossTabMatrices: CrossTabMatrix[];
   pipelineFunnel: FunnelStage[];
-  survey: SurveyFindings | null;
   keywords: KeywordCloudData | null;
   narrative: string | null;
 }
@@ -47,7 +45,6 @@ export interface LoadedFindings {
 export function loadFindings(): LoadedFindings {
   const findings = findingsData as unknown as FindingsFile;
 
-  const survey = (surveyData as unknown as SurveyFindings) ?? null;
   const keywords = keywordsData as unknown as KeywordCloudData;
   const narrative = (narrativeData as { narrative?: string })?.narrative ?? null;
 
@@ -62,7 +59,6 @@ export function loadFindings(): LoadedFindings {
     questionCoverageRows: hasRun ? findings.questionCoverageRows : mockQuestionCoverageRows,
     crossTabMatrices: hasRun ? (findings.crossTabMatrices ?? []) : mockCrossTabMatrices,
     pipelineFunnel: hasRun ? (findings.pipelineFunnel ?? []) : mockPipelineFunnel,
-    survey: survey && survey.totalResponses > 0 ? survey : null,
     keywords: keywords && (keywords.negative?.length || keywords.positive?.length) ? keywords : null,
     narrative,
   };

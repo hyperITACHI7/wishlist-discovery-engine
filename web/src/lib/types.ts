@@ -145,29 +145,11 @@ export interface FunnelStage {
   note: string;
 }
 
-/** Survey (Google Forms) segment data — structured, not LLM-extracted, and
- * never cross-tabbed against review/Reddit themes (different, unlinked
- * anonymous populations). See pipeline/extraction/survey_segments.py. */
-export interface SurveyDistribution {
-  question: string;
-  field: string;
-  cells: { label: string; valuePct: number; n: number; smallCell?: boolean }[];
-}
-
-export interface SurveyHeavyVsLight {
-  dimension: string;
-  groups: {
-    label: string;
-    cells: { label: string; valuePct: number; n: number; smallCell?: boolean }[];
-  }[];
-}
-
-export interface SurveyFindings {
-  totalResponses: number;
-  distributions: SurveyDistribution[];
-  heavyVsLightWishlisters: SurveyHeavyVsLight | null;
-  note: string;
-}
+// The Google Forms survey (SurveyFindings / SurveyDistribution /
+// SurveyHeavyVsLight) was removed 2026-08-20 — see problem_statement.md §18.
+// Its one job was giving Q9 (segment differences) a second input beyond
+// interviews; with it gone, Q9 routes to interviews alone, which is what the
+// original §4 routing table said anyway.
 
 /** Keyword Buzz cloud — see pipeline/extraction/keywords.py. A keyword-marker
  * lexicon applied to phrase text, not a trained sentiment model; phrases

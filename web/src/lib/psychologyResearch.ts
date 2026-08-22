@@ -219,7 +219,7 @@ export const RESEARCH_INTRO = {
   blurb:
     "Desk research grounding the project in named psychological mechanisms rather than intuition. Each answer states the finding, the mechanism behind it, and what it implies for this project.",
   caveat:
-    "This is desk research — directional, and mostly Western-market academic literature applied to an Indian fashion context. It is external literature, NOT this engine's own corpus findings, and the two are never pooled. It corroborates or challenges what the engine found; it never stands in as evidence from it. Nothing here substitutes for the survey or the interviews.",
+    "This is desk research — directional, and mostly Western-market academic literature applied to an Indian fashion context. It is external literature, NOT this engine's own corpus findings, and the two are never pooled. It corroborates or challenges what the engine found; it never stands in as evidence from it. Nothing here substitutes for the interviews.",
 };
 
 export const RESEARCH_QUESTIONS: ResearchQuestion[] = [
@@ -366,7 +366,7 @@ export const RESEARCH_QUESTIONS: ResearchQuestion[] = [
     implication:
       "City tier and gender are worth keeping as optional segmentation fields, but funnel-position segmentation plus the behavioural cluster above will likely explain more variance than raw demographics. Don't over-index on age/city findings from a personal-network sample.",
     enginesLink:
-      "segment_signal fired on only 10 of 578 records — public text almost never states demographics. This is why the survey exists, and why Q9 remains Weak even with it.",
+      "segment_signal fired on only 10 of 578 records — public text almost never states demographics. Q9 is Weak for exactly this reason, and with no survey in the project it now rests entirely on the interviews.",
     sources: [S.tier23, S.forrester, S.giftChoice],
   },
   {
@@ -424,7 +424,7 @@ export const RESEARCH_QUESTIONS: ResearchQuestion[] = [
     implication:
       "Off-platform checking is evidence of engagement, not leakage to fight. The better read is that in-app information (fit confidence, styling context, trust signals) is currently insufficient to close the loop without an external check — which is itself a finding about the predictability and trust gates.",
     enginesLink:
-      "offsite_research fired on just 3 of 578 records, yet both survey respondents named offsite checking when asked directly. That gap is strong evidence this is a text-availability problem, not a behaviour-rarity one.",
+      "offsite_research fired on just 3 of 578 records — far below the near-universal rate the literature reports. The likeliest read is a text-availability problem rather than a behaviour-rarity one: people simply don't mention cross-checking in a store review. The interviews ask about it directly to test that.",
     sources: [S.shopCircle, S.plussTrust, S.nng],
   },
   {
@@ -685,7 +685,7 @@ export const RESEARCH_QUESTIONS: ResearchQuestion[] = [
       },
     ],
     implication:
-      "The literature can bound expectations — probably higher than 6, plausibly in a \"dozens\" range if the 12-option optimum generalises at all — but it genuinely cannot supply the number. Do not cite a specific threshold without survey or interview data.",
+      "The literature can bound expectations — probably higher than 6, plausibly in a \"dozens\" range if the 12-option optimum generalises at all — but it genuinely cannot supply the number. Do not cite a specific threshold without primary research to back it.",
     enginesLink:
       "The engine found a real, concrete answer the literature couldn't: Reddit users hitting Myntra's own 1,000-item wishlist cap and deleting older items to make room. That's a hard platform limit, not a psychological threshold — a different question than the one the literature fails to answer, and worth not confusing with it.",
     sources: [S.jamStudy, S.betterTest, S.shopeeUx, S.nng],

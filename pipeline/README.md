@@ -40,23 +40,13 @@ python -m extraction.narrate             # step 8 (optional): one short Groq cal
 
 **Groq rate limits, read before running batch-extract on more than ~50-100 items:** the real binding constraint is **200,000 tokens PER DAY (TPD)** for the extraction model, not a per-minute limit — confirmed from an actual 429 error body (`"tokens per day (TPD): Limit 200000, Used 198731..."`), not the response headers (which only expose a separate, usually-healthy per-minute bucket and don't mention TPD at all). `config.GROQ_REQUEST_DELAY_SECONDS` (currently 8.0) is about being a good citizen, not about avoiding TPD — spacing calls out doesn't reduce total tokens spent per day. At real usage rates, one API key's daily budget covers roughly 200-350 successful extractions before hitting the wall; completing hundreds of items will span multiple daily resets (or multiple API keys from separate Groq accounts/orgs — same-org keys share the same TPD pool). If you hit it: `batch-extract` is resumable (already-extracted `source_url`s are skipped), so just wait for reset or swap `GROQ_API_KEY` in `.env` and re-run. `extraction.synthesize` also has a tested hard cap (`MAX_PHRASES_IN_PROMPT = 60`) — the call reliably fails above ~60-80 phrases in one prompt (`json_validate_failed`, empirically bisected 2026-08-19); above that, it automatically keeps only the highest-count phrases.
 
-## Survey (Google Forms) — separate from the review/Reddit pipeline
+## Removed source: the Google Forms survey (2026-08-20)
 
-Structured multiple-choice questions get their own segment cross-tabs, not the LLM extraction pipeline. The form has since grown to include a few real open-text questions too — those are captured in the raw data but not yet wired into anything (a deliberate, not-yet-made design decision — see `problem_statement.md` §15). Full history and rationale there.
+The project briefly had a fourth source — a Google Forms survey pulled via the linked response Sheet's CSV export, computed into segment cross-tabs and rendered as its own dashboard tab. It has been **removed entirely**: collectors, segment computation, config, dashboard panel and types. Q9 (segment differences) routes to the interviews alone again, which is what the original `problem_statement.md` §4 routing table specified before the survey was added. Full rationale in `problem_statement.md` §18; the history of what it was and why it was built that way is preserved in §15.
 
-**Setup: share the response Sheet, no credentials needed.**
-1. Open the form → **Responses** tab → click the green Sheets icon to create/open the linked spreadsheet
-2. In that Sheet: **Share** → change access to **"Anyone with the link" → Viewer**
-3. Put that Sheet's id (from `docs.google.com/spreadsheets/d/<ID>/edit`) in `pipeline/.env` as `SURVEY_SHEET_ID=<id>`, not in `config.py`. Because the Sheet is shared link-readable, **the id is effectively the access credential** — anyone who has it can read every response. It stays out of source so a public repo can't leak respondents' answers.
-
-(An OAuth-based approach was tried first and abandoned after real Google Cloud Console friction — wrong client type, then an unverified-app block. See `problem_statement.md` §15 if you want the OAuth path back for a survey with sensitive data, where the Sheet-sharing tradeoff wouldn't be acceptable.)
-
-```bash
-python run_pipeline.py collect-survey    # plain HTTP GET, no auth, no browser
-python run_pipeline.py survey-segments   # -> data/extracted/survey_findings.json, renders as dashboard Panel D
-```
-
-`collect-survey` is deliberately excluded from `collect-all` — it's a separate source with its own setup step (the Sheet must be shared), not something that should silently no-op inside an unattended batch run.
+Two consequences worth knowing:
+- `SURVEY_FORM_ID` / `SURVEY_SHEET_ID` are no longer read from `.env` — you can delete those lines.
+- The collected responses still exist in the corpus backup repo (`raw/survey_responses.jsonl`). Nothing deleted them; they're just no longer wired into anything.
 
 ## Data layout
 
@@ -66,7 +56,8 @@ data/
     reddit.jsonl
     playstore.jsonl
     appstore.jsonl
-    survey_responses.jsonl   # from collect-survey — structured, not text
+    survey_responses.jsonl   # orphaned — the survey source was removed 2026-08-20;
+                             #   kept because real people answered it, read by nothing
   pilot/
     pilot_output.jsonl
   extracted/
@@ -81,7 +72,6 @@ data/
                          #   drill-down views (problem_statement.md §16b)
     keywords.json         # step 7b output (optional): Keyword Buzz widget, plain code
     narrative.json        # step 8 output (optional): AI Synthesis card, one Groq call
-    survey_findings.json  # from survey-segments — Panel D, kept separate from findings.json on purpose
 ```
 
 `data/` is gitignored — it's corpus output, not source.

@@ -34,7 +34,6 @@ export default function FindingsPanel({
   pipelineFunnel,
   keywords,
   narrative,
-  onJumpToSurvey,
 }: {
   pipelineHasRun: boolean;
   opportunityRows: OpportunityRow[];
@@ -43,7 +42,6 @@ export default function FindingsPanel({
   pipelineFunnel: FunnelStage[];
   keywords: KeywordCloudData | null;
   narrative: string | null;
-  onJumpToSurvey: (field: string) => void;
 }) {
   const sorted = useMemo(
     () => [...opportunityRows].sort((a, b) => b.opportunityScore - a.opportunityScore),
@@ -182,15 +180,7 @@ export default function FindingsPanel({
         <Modal title={CARD_TITLES[openCard]} onClose={() => setOpenCard(null)}>
           {openCard === "areas" && <OpportunityAreasDetail rows={sorted} onOpenTheme={openThemeFrom} />}
           {openCard === "top" && sorted[0] && <TopOpportunityDetail row={sorted[0]} />}
-          {openCard === "coverage" && (
-            <QuestionCoverageDetail
-              rows={questionCoverageRows}
-              onJumpToSurvey={(field) => {
-                setOpenCard(null);
-                onJumpToSurvey(field);
-              }}
-            />
-          )}
+          {openCard === "coverage" && <QuestionCoverageDetail rows={questionCoverageRows} />}
           {openCard === "workarounds" && <WorkaroundsDetail rows={sorted} onOpenTheme={openThemeFrom} />}
         </Modal>
       )}

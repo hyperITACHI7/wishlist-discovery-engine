@@ -13,7 +13,7 @@ import { RESEARCH_IMPLICATIONS, RESEARCH_QUESTIONS } from "./psychologyResearch"
 
 const WIDGET_GLOSSARY = `
 WIDGET GLOSSARY (what each part of the dashboard shows):
-- Source ribbon (top bar): corpus composition — App/Play Store reviews, Reddit records, survey respondents. Always visible so every number below has its base rate in view.
+- Source ribbon (top bar): corpus composition — App/Play Store reviews and Reddit records. Always visible so every number below has its base rate in view.
 - The 4 stat cards: Opportunity areas / Top opportunity / Brief questions covered / Themes with a workaround. Each is clickable and opens a full detail view.
 - Pipeline funnel ("How much data survived each gate"): sequential stages from collection to ranked themes. It is a funnel, not a pie, because each stage's input is the previous stage's output — the stages are not parts of one whole.
 - Ranked by Opportunity Score: the headline ranking. Opportunity Score is the geometric mean of 5 dimensions (Frequency, Severity, Intent quality, Resolution leverage, Non-monetary addressability). Clicking a theme opens every source record behind it plus the engine's read of them.
@@ -22,7 +22,6 @@ WIDGET GLOSSARY (what each part of the dashboard shows):
 - Coverage of the brief's 10 questions: per-question fill rate, the actual top phrases found, confidence, and whether the engine or the interviews answer it.
 - Cross-tab matrix: the JOINT product_category x intent_signal table per theme. It replaced two separate bar charts that were the two marginals of this same table — showing marginals side by side hid the interaction, which is the only thing a cross-tab exists to reveal.
 - AI Synthesis: a narrative summary generated once at pipeline time from the ranked findings. Not a new analysis.
-- Survey segments tab: structured multiple-choice survey data, counted directly, never run through the LLM pipeline and NEVER cross-tabbed against review/Reddit themes.
 - Interviews tab: reserved for 5-6 primary-research interviews, not yet run.
 - Research findings tab: 14 desk-research questions on the psychology of wishlisting, each with the finding, the named mechanism behind it, what it implies for this project, how the engine's own corpus compares, and its sources. This is EXTERNAL published literature, not this engine's findings — see the research section below.
 - Limitations (the ⓘ button): stated biases, null rates, and what this engine can't answer.
@@ -32,7 +31,8 @@ WIDGET GLOSSARY (what each part of the dashboard shows):
 const HARD_RULES = `
 THINGS THAT ARE TRUE AND MUST NOT BE CONTRADICTED:
 - Hard project constraint: NO monetary incentives may be used in any eventual solution — no discounts, cashback, coupons, or price levers. "Price and value perception" has its Addressability dimension deliberately capped for this reason. Never recommend a discount/price lever as a fix. If a theme's resolution reason is a discount, describe it as evidence of the blocker, not an available fix.
-- Survey respondents and public reviewers are different, unlinked, anonymous populations. NEVER cross-tabulate or compare them as if they were the same people.
+- There is no survey. A Google Forms survey was part of this project earlier and has been removed entirely; if asked, say so plainly rather than describing findings from it. Q9 (segment differences) is answered by interviews alone.
+- Interview participants and public reviewers are different, unlinked populations. NEVER cross-tabulate or compare them as if they were the same people.
 - This engine's scope ends at identify / quantify / compare. Proposing specific product features is out of scope — you may describe resolution paths and workarounds OBSERVED in the corpus, clearly labelled as observations.
 - "Not enough data yet" on a resolution reason means that lever is unproven, NOT that the theme is unimportant.
 - The corpus is self-selected public text. It is directional, not statistically representative.
@@ -129,13 +129,8 @@ export function buildGroundingContext(): string {
         .join(", ")}`
     : "Keyword buzz not computed.";
 
-  const survey = f.survey
-    ? `Survey: ${f.survey.totalResponses} responses (self-selected convenience sample, NOT representative, never cross-tabbed against review/Reddit themes).`
-    : "Survey: no responses loaded.";
-
   return `
-CORPUS: ${f.totalRecords} extracted records — ${f.totalAppPlay} App/Play Store reviews (retrospective lens: people who already bought) and ${f.totalReddit} Reddit records (prospective lens: people still deciding, hand-extracted because both automated Reddit paths are blocked).
-${survey}
+CORPUS: ${f.totalRecords} extracted records — ${f.totalAppPlay} App/Play Store reviews (retrospective lens: people who already bought) and ${f.totalReddit} Reddit records (prospective lens: people still deciding, hand-extracted because both automated Reddit paths are blocked). These two sources are the entire corpus.
 
 RANKED OPPORTUNITY AREAS:
 ${themes}

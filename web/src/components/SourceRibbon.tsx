@@ -1,26 +1,26 @@
 // Persistent, always-visible summary of what the dashboard is built on —
 // visible on every panel so the corpus composition never requires a click
-// to see. This is the "seamless integration" fix: it doesn't join the
-// datasets (still never cross-tabbed), it just keeps them visually
-// co-present everywhere instead of siloed one-tab-at-a-time.
+// to see.
+//
+// The survey respondents segment was dropped 2026-08-20 with the survey
+// source itself (problem_statement.md §18). It had needed a separate total
+// anyway, since respondents were never part of the extracted corpus — with
+// it gone the bar is simply the two lenses that make up the corpus.
 export default function SourceRibbon({
   totalRecords,
   totalAppPlay,
   totalReddit,
-  surveyResponses,
 }: {
   totalRecords: number;
   totalAppPlay: number;
   totalReddit: number;
-  surveyResponses: number;
 }) {
   const parts = [
     { label: "App/Play Store", n: totalAppPlay, color: "var(--color-gold)" },
     { label: "Reddit", n: totalReddit, color: "var(--color-mint)" },
-    { label: "Survey respondents", n: surveyResponses, color: "var(--color-brand)" },
   ].filter((p) => p.n > 0);
 
-  const corpusTotal = totalAppPlay + totalReddit; // survey is a separate population, not part of the extracted corpus total
+  const corpusTotal = totalAppPlay + totalReddit;
 
   return (
     <div className="border-b border-line bg-white">
@@ -33,7 +33,7 @@ export default function SourceRibbon({
             <div
               key={p.label}
               className="h-full first:rounded-l-full last:rounded-r-full"
-              style={{ width: `${(p.n / (corpusTotal + surveyResponses || 1)) * 100}%`, backgroundColor: p.color }}
+              style={{ width: `${(p.n / (corpusTotal || 1)) * 100}%`, backgroundColor: p.color }}
               title={`${p.label}: ${p.n}`}
             />
           ))}

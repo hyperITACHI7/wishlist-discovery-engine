@@ -4,18 +4,17 @@ import { useState } from "react";
 import FindingsPanel from "./FindingsPanel";
 import ExtractorPanel from "./ExtractorPanel";
 import LimitationsPanel from "./LimitationsPanel";
-import SurveyPanel from "./SurveyPanel";
 import InterviewsPanel from "./InterviewsPanel";
 import ResearchPanel from "./ResearchPanel";
 import HowItWorksPanel from "./HowItWorksPanel";
 import Modal from "./Modal";
-import { CrossTabMatrix, FunnelStage, KeywordCloudData, OpportunityRow, QuestionCoverageRow, SurveyFindings } from "@/lib/types";
+import { CrossTabMatrix, FunnelStage, KeywordCloudData, OpportunityRow, QuestionCoverageRow } from "@/lib/types";
 
 // Restructured 2026-08-19: Limitations and the live extractor were full
-// tabs competing for space with the two things worth navigating to
-// (Findings, Survey). Limitations is static prose (no interactivity) and
-// the extractor is a tool, not a "view of the data" — both moved to
-// on-demand triggers instead. See problem_statement.md's dashboard section.
+// tabs competing for space with the views worth navigating to. Limitations
+// is static prose (no interactivity) and the extractor is a tool, not a
+// "view of the data" — both moved to on-demand triggers instead. See
+// problem_statement.md's dashboard section.
 //
 // 2026-08-20: "How it works" joined the tab bar. It had been a section pinned
 // below the dashboard, so a reader scrolling the findings ran into a full
@@ -27,9 +26,11 @@ import { CrossTabMatrix, FunnelStage, KeywordCloudData, OpportunityRow, Question
 // both are evidence about this problem that did NOT come from the engine's own
 // corpus, so grouping them keeps that boundary legible in the navigation
 // itself, not just in each panel's copy.
+//
+// 2026-08-20 (later still): the "Survey segments" tab was removed along with
+// the whole Google Forms source — see problem_statement.md §18.
 const PANELS = [
   { id: "findings", label: "Findings" },
-  { id: "survey", label: "Survey segments" },
   { id: "interviews", label: "Interviews" },
   { id: "research", label: "Research findings" },
   { id: "how", label: "How it works" },
@@ -43,7 +44,6 @@ export default function DashboardTabs({
   questionCoverageRows,
   crossTabMatrices,
   pipelineFunnel,
-  survey,
   keywords,
   narrative,
 }: {
@@ -52,19 +52,12 @@ export default function DashboardTabs({
   questionCoverageRows: QuestionCoverageRow[];
   crossTabMatrices: CrossTabMatrix[];
   pipelineFunnel: FunnelStage[];
-  survey: SurveyFindings | null;
   keywords: KeywordCloudData | null;
   narrative: string | null;
 }) {
   const [panel, setPanel] = useState<PanelId>("findings");
   const [showExtractor, setShowExtractor] = useState(false);
   const [showLimitations, setShowLimitations] = useState(false);
-  const [jumpToSurveyField, setJumpToSurveyField] = useState<string | null>(null);
-
-  function goToSurveyField(field: string) {
-    setJumpToSurveyField(field);
-    setPanel("survey");
-  }
 
   return (
     <div>
@@ -112,10 +105,8 @@ export default function DashboardTabs({
           pipelineFunnel={pipelineFunnel}
           keywords={keywords}
           narrative={narrative}
-          onJumpToSurvey={goToSurveyField}
         />
       )}
-      {panel === "survey" && <SurveyPanel survey={survey} jumpToField={jumpToSurveyField} />}
       {panel === "interviews" && <InterviewsPanel />}
       {panel === "research" && <ResearchPanel />}
       {panel === "how" && <HowItWorksPanel />}

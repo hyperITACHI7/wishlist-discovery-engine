@@ -26,7 +26,7 @@ const outDir = join(webRoot, "src", "data");
 // Only the files the dashboard actually reads. phrases.json and themes.json
 // are intermediate pipeline artifacts the web app never touches — shipping
 // them would add ~100KB to the bundle for nothing.
-const FILES = ["findings.json", "survey_findings.json", "keywords.json", "narrative.json"];
+const FILES = ["findings.json", "keywords.json", "narrative.json"];
 
 if (!existsSync(pipelineDir)) {
   console.log(`[sync-findings] No pipeline directory at ${pipelineDir} — using the committed copies in src/data/.`);

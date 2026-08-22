@@ -13,26 +13,25 @@ problem_statement.md §9. Reddit's automated collect-reddit also runs into
 Reddit's own blocks; see collectors/reddit_collect.py and
 collectors/_manual_reddit_batch_20260818.py for the manual fallback.
 
-The survey (collect-survey / survey-segments) is deliberately NOT part of
-collect-all: it's a separate structured-data source with its own setup
-requirement (the response Sheet must be shared "Anyone with the link ->
-Viewer", see config.py's "Survey (Google Forms)" block). Run it explicitly.
+The Google Forms survey source (collect-survey / survey-segments) was
+removed 2026-08-20 along with its dashboard panel — see
+problem_statement.md §18. Q9 (segment differences) now routes to the
+interviews alone, which is what the §4 routing table said before the
+survey was added.
 
 Usage:
     python run_pipeline.py collect-all
     python run_pipeline.py collect-reddit
     python run_pipeline.py collect-playstore
     python run_pipeline.py collect-appstore
-    python run_pipeline.py collect-survey
     python run_pipeline.py pilot --n 50
     python run_pipeline.py batch-extract
-    python run_pipeline.py survey-segments
 """
 
 import argparse
 
-from collectors import appstore_collect, playstore_collect, reddit_collect, survey_collect_csv
-from extraction import batch_extract, pilot, survey_segments
+from collectors import appstore_collect, playstore_collect, reddit_collect
+from extraction import batch_extract, pilot
 
 
 def collect_all() -> None:
@@ -46,9 +45,7 @@ COMMANDS = {
     "collect-reddit": reddit_collect.collect,
     "collect-playstore": playstore_collect.collect,
     "collect-appstore": appstore_collect.collect,
-    "collect-survey": survey_collect_csv.collect,
     "batch-extract": batch_extract.run_batch,
-    "survey-segments": survey_segments.run_survey_segments,
 }
 
 

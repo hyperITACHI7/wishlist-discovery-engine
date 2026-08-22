@@ -15,8 +15,7 @@ It ships as **one hosted, publicly testable web page** with four browsable tabs 
 | Panel | Purpose |
 |---|---|
 | **A — Findings** | The cached, pre-computed ranked opportunities + cross-tabs from the full corpus run. Every headline stat is clickable into a full view, every ranked theme drills down to the actual reviews and Reddit posts behind it, and a grounded assistant at the bottom answers questions about any of it (§16b). Static per page load — does not re-run the corpus live. |
-| **D — Survey segments** | Structured, non-AI-extracted multiple-choice survey data (§15), rendered as its own tab with a respondent-snapshot and a heavy-vs-light-wishlister comparison — targets Q9. |
-| **Interviews** | Reserved tab for the 5–6 primary-research interviews (Days 4–7) — placeholder until real interviews exist, same small-n / never-cross-tabbed treatment stated up front. |
+| **Interviews** | Reserved tab for the 5–6 primary-research interviews (Days 4–7) — placeholder until real interviews exist, same small-n / never-cross-tabbed treatment stated up front. Now the *only* input to Q9, since the survey was removed (§18). |
 | **Research findings** | The 14-question psychology desk research (`vault/09-Assignment/10-Psychology-Research.md`), each with its findings, named mechanisms, implications, sources, and an explicit note on how the engine's own corpus compares. Sits next to Interviews because both are evidence that did *not* come from the engine's corpus. See §16c. |
 | **How it works** | The pipeline diagram and the design rationale behind it (freeform-first extraction, the two lenses, the quantification layer, what's a labelled judgment call). Its own tab since 2026-08-20 — it's reference material you seek out, not something the findings should be interrupted by. |
 | **B — Live extractor** | On-demand modal (▸ "Try it yourself" in the tab bar). Visitor pastes any piece of text (a review, a Reddit comment, their own experience), picks a lens ("a review of something I bought" vs. "something I'm still deciding on"), and sees the structured extraction (§6 schema) run live via Groq, including confidence and honest empty results. |
@@ -110,7 +109,7 @@ Stating this honestly is itself a requirement — an engine that claims to answe
 | 6 Off-platform research | Reddit | **Strong** — volunteered readily | Engine |
 | 7 Factor roles | All (via synthesis) | **Strong** — the quantifiable one | Engine |
 | 8 Intent vs. bookmark | Reddit, forums | Medium | Engine screens, interviews confirm |
-| 9 Segment differences | All | Weak — attributes rarely stated publicly | Interviews + survey lead |
+| 9 Segment differences | All | Weak — attributes rarely stated publicly | Interviews lead (a survey briefly supplemented this; removed 2026-08-20, see §18) |
 | 10 Recurring unmet needs | All | **Strong** | Engine |
 
 ## 5. Core architecture decision: freeform extract → synthesize
@@ -285,7 +284,7 @@ Ran the full pipeline (collect → pilot → batch-extract → dedupe → synthe
 ## 13. Explicit non-goals / out of scope for v1
 
 - Not a general Myntra review-analytics tool — scoped specifically to wishlist → purchase conversion blockers.
-- Not attempting to answer Q5 (comparison behaviour) or Q9 (segment differences) with confidence from public text alone — both are explicitly handed to the interview stage; the engine screens/suggests, it doesn't conclude. **Revised 2026-08-19:** Q9 now gets a second input beyond interviews — a Google Forms survey pulled in as structured segment data, see §15. It doesn't fully resolve Q9 (self-selected convenience sample, not statistically representative), but it's a real improvement over public text alone, which almost never states demographics.
+- Not attempting to answer Q5 (comparison behaviour) or Q9 (segment differences) with confidence from public text alone — both are explicitly handed to the interview stage; the engine screens/suggests, it doesn't conclude. *(A 2026-08-19 revision gave Q9 a second input via a Google Forms survey; that source was removed on 2026-08-20, so this original position stands unchanged — see §18.)*
 - Not proposing or evaluating the eventual MVP solution — this engine's job ends at *identify, quantify, compare*. Solution design is a separate, later stage gated on this output plus interviews (per the project's execution timeline).
 - Not doing full manual verification of every extracted record — 5–10% spot-check by design, stated as a limitation, not silently assumed away.
 - Not re-running the full corpus per page load — Panel A serves a cached batch result; only Panel B (single-item extraction) is live per visitor.
@@ -304,7 +303,10 @@ This document is complete when it unambiguously answers, for anyone picking up t
 
 Next: Day 1 scaffolding — hosting skeleton (deployed "hello world") + collection pipeline stub, per `../vault/09-Assignment/04-Execution-Timeline.md`.
 
-## 15. Survey (Google Forms) — structured segment data, added 2026-08-19
+## 15. Survey (Google Forms) — structured segment data, added 2026-08-19 · **REMOVED 2026-08-20 (see §18)**
+
+> **This section is history, not current design.** The survey source was removed entirely on 2026-08-20 — collector, segment computation, dashboard tab, types, config. It is kept here because the reasoning (why structured data skipped the LLM pipeline, why OAuth was abandoned for CSV export, why survey and review populations were never cross-tabbed) is still the record of decisions actually made, and §18 depends on it to explain what was undone.
+
 
 A fourth data source, but a fundamentally different kind. Initially added after opening the form ("About you and how you shop") and confirming it had **zero open-text questions** — six multiple-choice questions only. **The form was then expanded by its owner to 19 questions**, including three genuine open-text ones (why a saved item wasn't bought, what specifically stopped the purchase, a one-line complaint to the product team) plus more structured questions (wishlist size, return-visit frequency, decision ease, etc.).
 
@@ -403,3 +405,19 @@ Both are solved by `web/scripts/sync-findings.mjs`, which copies the four JSON f
 Result: the whole dashboard is CDN-served HTML. The only functions are `/api/chat` and `/api/extract`, invoked only when someone uses the assistant or the extractor.
 
 **A privacy issue caught by making the repo public.** `config.py` hard-coded `SURVEY_SHEET_ID`. Because that Sheet is shared "Anyone with the link → Viewer" (§15's deliberate tradeoff against OAuth setup cost), **the id is functionally the access credential** — publishing it would have handed every reader of the repo the raw survey responses, including the free-text answers. Respondents agreed to share those with the researcher, not with the internet. The ids moved to `.env`, and because git history is permanent, the initial commit containing them was discarded and history rebuilt from a clean orphan commit *before* the first push. This is the same category of judgment as the no-cross-tab rule: the tradeoff that made collection cheap (link-readable Sheet) carries an obligation that only becomes visible at publication time.
+
+## 18. Survey source removed, 2026-08-20
+
+The Google Forms survey (�15) is gone � collector, segment computation, dashboard tab, TypeScript types, config, and its `.env` variables. �15 is kept as the record of what was built and why; this section records what was undone.
+
+**What changed.** Deleted: `pipeline/collectors/survey_collect_csv.py`, `pipeline/extraction/survey_segments.py`, `web/src/components/SurveyPanel.tsx`, `web/src/data/survey_findings.json`, the `SurveyFindings` / `SurveyDistribution` / `SurveyHeavyVsLight` types, `SURVEY_FORM_ID` / `SURVEY_SHEET_ID`, and the `collect-survey` / `survey-segments` commands. The tab bar drops from five entries to four (Findings � Interviews � Research findings � How it works).
+
+**Three knock-on effects worth stating rather than leaving to be discovered:**
+
+1. **Q9 loses its second input.** �13 originally routed segment differences to interviews alone; �15's revision gave it the survey as a partial second source. That revision is now reverted � Q9 rests entirely on the 5�6 interviews again. The engine's own `segment_signal` fires on 10 of 578 records, so this is a real narrowing, not a cosmetic one, and it raises what `interview_guide.md` question 10 has to carry.
+
+2. **A cross-panel affordance disappeared with it.** The question-coverage view had a "See survey ?" button on row 9 that jumped to the survey tab and highlighted the matching card. With no survey to jump to, the button and the `jumpToField` plumbing behind it are removed rather than left pointing nowhere.
+
+3. **The population-separation rule now has one fewer population to police.** �15's hard rule was that survey respondents and public reviewers are unlinked and must never be cross-tabbed. That rule still applies � it now governs interviewees vs. reviewers instead. The assistant's system prompt was updated to say plainly that no survey exists, so it reports that rather than describing findings from a source that is gone.
+
+**What was deliberately not deleted:** the two collected responses in `pipeline/data/raw/survey_responses.jsonl`. Real people answered that form; the file is now read by nothing, but deleting their answers because the feature was cut is a different act from cutting the feature, and it stays in the corpus backup. The source ribbon no longer counts them, which is correct � they were never part of the extracted corpus anyway, which is why the ribbon had needed a separate total for them.
