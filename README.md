@@ -17,7 +17,7 @@ pipeline/               Python collection + extraction scripts (Reddit/App/Play 
 - [x] Source collection + classification pipeline stood up (`pipeline/`)
 - [x] Play Store collector validated live against the real app (`com.myntra.android`) — 200 real reviews already sitting in `pipeline/data/raw/playstore.jsonl`
 - [x] App Store collector validated live against the real app (`myntra-fashion-shopping-app`, id `907394059`) — rewritten to hit Apple's RSS review feed directly after the `app-store-scraper` package failed on every request; real reviews sitting in `pipeline/data/raw/appstore.jsonl`. Apple caps this feed at 500 reviews (10 pages × 50), confirmed live.
-- [ ] Deployed to a public URL — **deliberately deferred**, see "Deploying" below
+- [x] **Deployed (2026-08-20)** — public repo at <https://github.com/hyperITACHI7/wishlist-discovery-engine>, deploying to Vercel with the findings page **statically prerendered** so there's no cold start (only the assistant and extractor are functions). Required restructuring how findings load: they're now bundled at build time via `web/scripts/sync-findings.mjs` instead of read off disk per request — which was both forcing dynamic rendering *and* would have silently served mock data in production, since hosts deploy only `web/` and `pipeline/data/` is gitignored. See "Deploying" below and `problem_statement.md` §17.
 - [x] Reddit collector no longer needs credentials — switched to Reddit's unauthenticated `.json` endpoints after Reddit stopped issuing free OAuth script-app access (see `problem_statement.md` §9)
 - [x] That fallback is also blocked from this network (confirmed live, `403`) — worked around via a human-driven Chrome browsing session instead. **10 real structured extraction records** from 3 relevant Reddit threads are already in `pipeline/data/extracted/extracted.jsonl` (see `pipeline/collectors/_manual_reddit_batch_20260818.py` for provenance and reasoning)
 - [x] `GROQ_API_KEY` set and verified working end to end (pipeline script, `/api/extract` route, and live Panel B UI all confirmed) — models are `openai/gpt-oss-20b` (fast) / `openai/gpt-oss-120b` (large); Groq's catalog has turned over before, re-check `GET /openai/v1/models` if extraction starts failing
@@ -60,12 +60,28 @@ python run_pipeline.py collect-survey    # separate: needs Google OAuth setup, s
 python run_pipeline.py survey-segments   # writes survey_findings.json -> dashboard Panel D
 ```
 
-## Deploying
+## Deploying (Vercel)
 
-Deliberately skipped for now (by choice, not blocker) — local dev is sufficient until you're ready. When you want to deploy, that needs your Vercel (or other host) account. From `web/`:
+Repo: <https://github.com/hyperITACHI7/wishlist-discovery-engine>
+
+**The findings page is statically prerendered**, so it serves as HTML from the CDN with no serverless invocation and therefore no cold start. Only `/api/chat` and `/api/extract` are functions, and they're only hit when someone actually uses the assistant or the extractor.
+
+That works because the pipeline's JSON output is bundled into the build rather than read off disk at runtime. `web/scripts/sync-findings.mjs` copies `pipeline/data/extracted/*.json` into `web/src/data/`, and runs automatically before every `npm run build` and `npm run dev`. On a host, where `pipeline/data/` doesn't exist (it's gitignored), the script falls back to the committed copies in `web/src/data/` — that's the intended path, not a failure.
+
+### First-time import
+
+1. <https://vercel.com/new> → **Import** `hyperITACHI7/wishlist-discovery-engine`
+2. **Root Directory: `web`** ← the one setting that matters; the Next.js app is not at the repo root
+3. Framework preset should auto-detect as **Next.js**; leave build/output settings alone
+4. **Environment Variables** → add `GROQ_API_KEY` (get one at <https://console.groq.com/keys>). Without it the dashboard still works fully — every finding is precomputed — but the assistant and the live extractor report themselves as offline rather than failing silently.
+5. Deploy
+
+### Updating the deployed data after a new corpus run
 
 ```bash
-npx vercel
+cd pipeline && python -m extraction.score && python -m extraction.keywords && python -m extraction.narrate
+cd ../web && npm run sync-data
+git add web/src/data && git commit -m "Refresh findings" && git push
 ```
 
-Follow the prompts to link/create a project, then set `GROQ_API_KEY` in the Vercel project's environment variables (Project Settings → Environment Variables) so Panel B works in production, not just stub mode.
+Vercel redeploys on push. `npm run sync-data` is the step that moves fresh pipeline output into the bundle — skipping it means the site keeps serving the previous run's numbers.

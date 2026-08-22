@@ -387,3 +387,19 @@ The desk research in `vault/09-Assignment/10-Psychology-Research.md` — 14 ques
 - Q14 (wishlist capacity): the literature explicitly cannot supply a number. The engine found something different and concrete — Reddit users hitting Myntra's own 1,000-item cap — which is a platform limit, not a psychological threshold, and worth not confusing with one.
 
 **Token cost, measured not assumed:** adding the research took the assistant's per-request grounding context to ~12.3k tokens. Source URLs were dropped from the chat context (titles only — the model cites by name, the tab carries the links), bringing it to ~11.3k. Against the 200k/day Groq cap that's roughly 17 questions per day before the assistant goes quiet, which it reports honestly rather than failing silently.
+
+## 17. Deployment, 2026-08-20
+
+Deployed from a public GitHub repo (`hyperITACHI7/wishlist-discovery-engine`) to Vercel, closing the §3.3 requirement that this be "live and testable, not a static PDF" — deliberately deferred since Day 1, now done.
+
+**The requirement that shaped the architecture: no cold start.** Render-style hosts spin a container down when idle and make the first visitor wait for it. Vercel avoids that for *static* routes only — a dynamically-rendered page is still a serverless function with its own (smaller) cold start. So the goal wasn't just "use Vercel," it was to make the findings page genuinely static.
+
+Two things blocked that, both real:
+1. **`loadFindings()` read JSON off disk per request** with `fs.readFileSync` on a path resolving up into `../pipeline/`. That forced dynamic rendering. Worse, it would have silently failed in production: hosts deploy only `web/`, and `pipeline/data/` is gitignored, so the live site would have served the *mock fallback* while looking perfectly healthy — the most dangerous kind of deploy bug, since nothing errors.
+2. **The data had no path into the build.** Corpus output is gitignored (it's large and regenerable), so nothing carried it to the host.
+
+Both are solved by `web/scripts/sync-findings.mjs`, which copies the four JSON files the dashboard reads (`findings`, `survey_findings`, `keywords`, `narrative` — not the ~100KB of intermediate `phrases`/`themes` artifacts) into `web/src/data/`, where they're committed and imported as modules. It runs automatically before `build` and `dev`. On a host, where `pipeline/data/` is absent, it falls back to the committed copies and exits cleanly — verified by simulating that exact environment locally before pushing. `page.tsx` dropped `force-dynamic`, and the build now reports `/` as `○ (Static)` rather than `ƒ (Dynamic)`.
+
+Result: the whole dashboard is CDN-served HTML. The only functions are `/api/chat` and `/api/extract`, invoked only when someone uses the assistant or the extractor.
+
+**A privacy issue caught by making the repo public.** `config.py` hard-coded `SURVEY_SHEET_ID`. Because that Sheet is shared "Anyone with the link → Viewer" (§15's deliberate tradeoff against OAuth setup cost), **the id is functionally the access credential** — publishing it would have handed every reader of the repo the raw survey responses, including the free-text answers. Respondents agreed to share those with the researcher, not with the internet. The ids moved to `.env`, and because git history is permanent, the initial commit containing them was discarded and history rebuilt from a clean orphan commit *before* the first push. This is the same category of judgment as the no-cross-tab rule: the tradeoff that made collection cheap (link-readable Sheet) carries an obligation that only becomes visible at publication time.
