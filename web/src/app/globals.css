@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f5f5f6;
+  --foreground: #282c3f;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+
+  /* Myntra-inspired brand palette */
+  --color-brand: #ff3f6c;
+  --color-brand-dark: #d9375e;
+  --color-brand-soft: #ffe9ee;
+  --color-ink: #282c3f;
+  --color-ink-soft: #7e818c;
+  --color-ink-faint: #94969f;
+  --color-surface: #f5f5f6;
+  --color-line: #eaeaec;
+  --color-gold: #ff9f00;
+  --color-mint: #14958f;
+  --color-mint-soft: #e7f6f5;
+
+  /* Chart tokens — per the dataviz method (see problem_statement.md's dashboard
+     section for the rationale). Kept separate from the brand palette above:
+     these are assigned by DATA JOB (status/ordinal/diverging/categorical),
+     not by brand feel. Do not reuse brand-soft/brand/gold for chart series —
+     that would silently violate the color-follows-the-job rule. */
+
+  /* Status (fixed scale, never themed — palette.md). Strong/Medium/Weak in
+     question coverage map to good/warning/serious; always paired with an
+     icon+label, never color alone (warning/serious sit under 3:1 on light
+     surfaces by design). */
+  --color-status-good: #0ca30c;
+  --color-status-good-soft: #e6f5e6;
+  --color-status-warning: #fab219;
+  --color-status-warning-soft: #fef3dd;
+  --color-status-serious: #ec835a;
+  --color-status-serious-soft: #fdeae2;
+
+  /* Ordinal ramp (one hue, monotone lightness) for intent_signal
+     (buy-intent -> save-for-later -> not-determinable is a real gradient,
+     not arbitrary categories) and other ordered-but-not-counted scales. */
+  --color-ordinal-100: #cde2fb;
+  --color-ordinal-300: #6da7ec;
+  --color-ordinal-500: #256abf;
+  --color-ordinal-700: #0d366b;
+
+  /* Diverging pair for two-sided comparisons (App/Play vs Reddit rate,
+     heavy vs light wishlister). Reuses the existing gold/mint lens
+     convention from the pipeline diagram (retrospective=gold=warm,
+     prospective=mint=cool) rather than introducing a new blue/red pair —
+     same warm/cool-poles structure the method calls for, already
+     established as this product's visual language for this exact split. */
+  --color-diverging-a: var(--color-gold);
+  --color-diverging-b: var(--color-mint);
+  --color-diverging-mid: #e1e0d9;
+
+  /* Categorical (product_category etc.) — first 3 slots of the validated
+     default palette (palette.md). Capped at 3 + "Other" deliberately: past
+     3 slots, adjacent categorical hues stop clearing the all-pairs CVD
+     floor for side-by-side marks (documented in the method, not a
+     shortcut) — fold smaller categories into Other instead of adding a 4th
+     named hue. */
+  --color-cat-1: #2a78d6;
+  --color-cat-2: #eb6834;
+  --color-cat-3: #1baf7a;
+  --color-cat-other: #94969f;
+
+  /* Chart chrome */
+  --color-chart-grid: #e1e0d9;
+  --color-chart-baseline: #c3c2b7;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+.nav-tab {
+  letter-spacing: 0.04em;
+}

@@ -1,0 +1,167 @@
+{
+  "negative": [
+    {
+      "text": "Wishlist capacity limit",
+      "value": 2
+    },
+    {
+      "text": "Hit an undisclosed wishlist item cap...",
+      "value": 1
+    },
+    {
+      "text": "The 1000-product wishlist limit",
+      "value": 1
+    },
+    {
+      "text": "Notes the same wishlist-cap pattern e...",
+      "value": 1
+    },
+    {
+      "text": "Cross-platform comparison of wishlist...",
+      "value": 1
+    },
+    {
+      "text": "A delay before purchase",
+      "value": 1
+    },
+    {
+      "text": "Leaves items in cart to think it over...",
+      "value": 1
+    },
+    {
+      "text": "On reviewing the wishlist later, real...",
+      "value": 1
+    },
+    {
+      "text": "Applies a concrete rule before buying...",
+      "value": 1
+    },
+    {
+      "text": "Used to save items for a specific ima...",
+      "value": 1
+    },
+    {
+      "text": "Always delay all orders for more then...",
+      "value": 1
+    },
+    {
+      "text": "Seller cancellation due to technical...",
+      "value": 1
+    },
+    {
+      "text": "Orginal products only no fake products",
+      "value": 1
+    },
+    {
+      "text": "Too costly",
+      "value": 1
+    },
+    {
+      "text": "Customer care contact difficulty",
+      "value": 1
+    },
+    {
+      "text": "Delivery delay",
+      "value": 1
+    },
+    {
+      "text": "Fitting issue",
+      "value": 1
+    },
+    {
+      "text": "Exchange cancelled due to not being a...",
+      "value": 1
+    },
+    {
+      "text": "Orders cancelled",
+      "value": 1
+    },
+    {
+      "text": "Incomplete and wrong orders are being...",
+      "value": 1
+    }
+  ],
+  "positive": [
+    {
+      "text": "Quality",
+      "value": 6
+    },
+    {
+      "text": "Fast delivery",
+      "value": 4
+    },
+    {
+      "text": "Value for money",
+      "value": 3
+    },
+    {
+      "text": "On time delivery",
+      "value": 3
+    },
+    {
+      "text": "Good quality",
+      "value": 3
+    },
+    {
+      "text": "Comfort",
+      "value": 3
+    },
+    {
+      "text": "Comfortable",
+      "value": 3
+    },
+    {
+      "text": "Fabric quality",
+      "value": 2
+    },
+    {
+      "text": "Best quality",
+      "value": 2
+    },
+    {
+      "text": "Product quality",
+      "value": 2
+    },
+    {
+      "text": "Authenticity",
+      "value": 2
+    },
+    {
+      "text": "Excellent service",
+      "value": 2
+    },
+    {
+      "text": "Best price",
+      "value": 2
+    },
+    {
+      "text": "Worth the money",
+      "value": 2
+    },
+    {
+      "text": "Very comfortable",
+      "value": 2
+    },
+    {
+      "text": "Good fitting",
+      "value": 2
+    },
+    {
+      "text": "Good fabric",
+      "value": 2
+    },
+    {
+      "text": "Great fitting",
+      "value": 2
+    },
+    {
+      "text": "Sorts reviews by newest and only trus...",
+      "value": 1
+    },
+    {
+      "text": "An item that's still remembered/wante...",
+      "value": 1
+    }
+  ],
+  "method": "keyword-marker lexicon applied to phrase text, not a trained sentiment model — ambiguous or unmatched phrases are left out rather than guessed at"
+}

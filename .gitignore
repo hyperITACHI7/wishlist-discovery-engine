@@ -1,0 +1,40 @@
+# Secrets — never commit. pipeline/.gitignore and web/.gitignore already cover
+# their own, these are belt-and-braces in case a file lands somewhere new.
+.env
+.env.*
+!.env.example
+!.env.local.example
+*_credentials.json
+*_token.json
+google_oauth_*.json
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Pipeline corpus output — regenerable, and large. The four JSON files the
+# dashboard needs are synced into web/src/data/ and committed from there
+# (see web/scripts/sync-findings.mjs), so the deployed site has its data
+# without this directory being in the repo.
+pipeline/data/
+
+# Node / Next
+node_modules/
+.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel
+.vercel
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+
+# create-next-app's original nested git dir, kept as a local backup only
+web/.git_backup_createnextapp/
