@@ -31,12 +31,11 @@ python run_pipeline.py pilot --n 50      # measure per-field null rates BEFORE p
 python run_pipeline.py batch-extract     # full corpus, resumable (skips already-extracted source_urls)
 python -m extraction.dedupe              # step 5: flatten + count extracted phrases (plain code, no LLM)
 python -m extraction.synthesize          # step 6: one Groq call, names themes + maps to the 7 factors
-python -m extraction.score               # step 7: cross-tabs + Opportunity Score -> data/extracted/findings.json
-python -m extraction.keywords            # step 7b (optional): keyword-marker lexicon -> data/extracted/keywords.json, Keyword Buzz widget
+python -m extraction.score               # step 7: Opportunity Score -> data/extracted/findings.json
 python -m extraction.narrate             # step 8 (optional): one short Groq call -> data/extracted/narrative.json, AI Synthesis card
 ```
 
-`findings.json` is what `../web/` reads (via `web/src/lib/loadFindings.ts`) to render Panel A with real data instead of mock data — regenerate it any time by re-running the commands above (dedupe/synthesize/score/keywords are cheap and plain code except synthesize; only batch-extract and narrate call Groq at real cost, and narrate is a single small call, not a batch). `keywords.json` and `narrative.json` are both optional — if either is missing, the dashboard just doesn't render that widget rather than erroring (same honest-fallback pattern as everything else here). `narrate.py` must run AFTER `score.py`, not before — it summarizes the already-ranked findings, not raw themes, and its prompt explicitly tells the model about the no-monetary-incentives constraint so it never recommends the one thing this project can't ship (a first draft did, before that line was added — see the module docstring).
+`findings.json` is what `../web/` reads (via `web/src/lib/loadFindings.ts`) to render Panel A with real data instead of mock data — regenerate it any time by re-running the commands above (dedupe/synthesize/score are cheap and plain code except synthesize; only batch-extract and narrate call Groq at real cost, and narrate is a single small call, not a batch). `narrative.json` is optional — if it's missing, the dashboard just doesn't render that card rather than erroring (same honest-fallback pattern as everything else here). `narrate.py` must run AFTER `score.py`, not before — it summarizes the already-ranked findings, not raw themes, and its prompt explicitly tells the model about the no-monetary-incentives constraint so it never recommends the one thing this project can't ship (a first draft did, before that line was added — see the module docstring).
 
 **Groq rate limits, read before running batch-extract on more than ~50-100 items:** the real binding constraint is **200,000 tokens PER DAY (TPD)** for the extraction model, not a per-minute limit — confirmed from an actual 429 error body (`"tokens per day (TPD): Limit 200000, Used 198731..."`), not the response headers (which only expose a separate, usually-healthy per-minute bucket and don't mention TPD at all). `config.GROQ_REQUEST_DELAY_SECONDS` (currently 8.0) is about being a good citizen, not about avoiding TPD — spacing calls out doesn't reduce total tokens spent per day. At real usage rates, one API key's daily budget covers roughly 200-350 successful extractions before hitting the wall; completing hundreds of items will span multiple daily resets (or multiple API keys from separate Groq accounts/orgs — same-org keys share the same TPD pool). If you hit it: `batch-extract` is resumable (already-extracted `source_url`s are skipped), so just wait for reset or swap `GROQ_API_KEY` in `.env` and re-run. `extraction.synthesize` also has a tested hard cap (`MAX_PHRASES_IN_PROMPT = 60`) — the call reliably fails above ~60-80 phrases in one prompt (`json_validate_failed`, empirically bisected 2026-08-19); above that, it automatically keeps only the highest-count phrases.
 
@@ -47,6 +46,10 @@ The project briefly had a fourth source — a Google Forms survey pulled via the
 Two consequences worth knowing:
 - `SURVEY_FORM_ID` / `SURVEY_SHEET_ID` are no longer read from `.env` — you can delete those lines.
 - The collected responses still exist in the corpus backup repo (`raw/survey_responses.jsonl`). Nothing deleted them; they're just no longer wired into anything.
+
+## Removed widgets: Keyword Buzz and the cross-tab matrix (2026-08-23)
+
+Both were judged to not be adding insight and were cut: `extraction/keywords.py` (the keyword-marker lexicon behind the Frustrations/Praise cloud) is deleted entirely, and `score.py`'s `build_cross_tabs` (the joint `product_category x intent_signal` table per theme, `crossTabMatrices` in `findings.json`) is removed — `findings.json` no longer carries that key. Full rationale in `problem_statement.md` §19.
 
 ## Data layout
 
@@ -67,10 +70,12 @@ data/
     findings.json        # step 7 output: the dashboard views, real numbers. Also carries
                          #   per-theme evidence records (every source review/post behind a
                          #   theme), confidence profiles, distinct workarounds, outcome/intent
-                         #   mixes, per-question insight phrases, the joint cross-tab matrices,
-                         #   and the pipeline funnel — all added 2026-08-20 for the dashboard's
-                         #   drill-down views (problem_statement.md §16b)
-    keywords.json         # step 7b output (optional): Keyword Buzz widget, plain code
+                         #   mixes, per-question insight phrases, and the pipeline funnel —
+                         #   added 2026-08-20 for the dashboard's drill-down views
+                         #   (problem_statement.md §16b). No longer carries cross-tab
+                         #   matrices — removed 2026-08-23, see §19. Carries
+                         #   decisionFactorBreakdown and postPurchaseOutcomeSummary, added
+                         #   2026-08-23, see §20.
     narrative.json        # step 8 output (optional): AI Synthesis card, one Groq call
 ```
 

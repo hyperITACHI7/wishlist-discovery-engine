@@ -4,8 +4,7 @@ import { useMemo, useState } from "react";
 import StatTile from "./charts/StatTile";
 import RankedBarChart from "./charts/RankedBarChart";
 import PipelineFunnel from "./charts/PipelineFunnel";
-import CrossTabMatrixChart from "./charts/CrossTabMatrix";
-import KeywordCloud from "./charts/KeywordCloud";
+import OutcomeMixBar from "./charts/OutcomeMixBar";
 import AiSynthesisCard from "./AiSynthesisCard";
 import ChatbotPanel from "./ChatbotPanel";
 import Modal from "./Modal";
@@ -14,7 +13,7 @@ import TopOpportunityDetail from "./details/TopOpportunityDetail";
 import QuestionCoverageDetail from "./details/QuestionCoverageDetail";
 import WorkaroundsDetail from "./details/WorkaroundsDetail";
 import ThemeEvidenceDetail from "./details/ThemeEvidenceDetail";
-import { CrossTabMatrix, FunnelStage, KeywordCloudData, OpportunityRow, QuestionCoverageRow } from "@/lib/types";
+import { DecisionFactorBucket, FunnelStage, OpportunityRow, OutcomeSummary, QuestionCoverageRow } from "@/lib/types";
 
 // Which stat card's detail view is open, if any.
 type CardId = "areas" | "top" | "coverage" | "workarounds";
@@ -30,17 +29,17 @@ export default function FindingsPanel({
   pipelineHasRun,
   opportunityRows,
   questionCoverageRows,
-  crossTabMatrices,
   pipelineFunnel,
-  keywords,
+  decisionFactorBreakdown,
+  postPurchaseOutcomeSummary,
   narrative,
 }: {
   pipelineHasRun: boolean;
   opportunityRows: OpportunityRow[];
   questionCoverageRows: QuestionCoverageRow[];
-  crossTabMatrices: CrossTabMatrix[];
   pipelineFunnel: FunnelStage[];
-  keywords: KeywordCloudData | null;
+  decisionFactorBreakdown: DecisionFactorBucket[];
+  postPurchaseOutcomeSummary: OutcomeSummary;
   narrative: string | null;
 }) {
   const sorted = useMemo(
@@ -139,29 +138,37 @@ export default function FindingsPanel({
         />
       </div>
 
-      {/* Keyword Buzz */}
-      {keywords && (
-        <div className="mb-6">
-          <KeywordCloud keywords={keywords} />
+      {/* Decision factors — what shoppers say they weigh, not exclusively wishlist-specific */}
+      {decisionFactorBreakdown.length > 0 && (
+        <div className="mb-6 rounded-2xl border border-line bg-white p-4">
+          <p className="text-sm font-semibold text-ink">Decision Factors — what shoppers say they weigh</p>
+          <p className="mb-3 text-[11px] leading-relaxed text-ink-faint">
+            Every factor a reviewer raised themselves ({decisionFactorBreakdown.reduce((sum, b) => sum + b.count, 0)} mentions across{" "}
+            {decisionFactorBreakdown.length} categories), bucketed by a keyword-marker classifier. This is general
+            purchase-decision language — quality, price, delivery — not exclusively about wishlist hesitation; that
+            narrower signal is too sparse in public text to chart on its own.
+          </p>
+          <RankedBarChart
+            data={decisionFactorBreakdown.map((b) => ({
+              id: b.category,
+              label: b.category,
+              value: b.count,
+              sublabel: `e.g. ${b.examplePhrases.join(", ")}`,
+            }))}
+            maxValue={Math.max(...decisionFactorBreakdown.map((b) => b.count), 1)}
+          />
         </div>
       )}
 
-      {/* Cross-tabs — one joint matrix per theme, not two marginals */}
-      {crossTabMatrices.length > 0 && (
-        <div className="mb-6">
-          <div className="mb-3">
-            <p className="text-sm font-semibold text-ink">Cross-tabs — who is stalling, and on what</p>
-            <p className="text-[11px] leading-relaxed text-ink-faint">
-              One table per theme crossing <strong>product category</strong> against <strong>purchase intent</strong>.
-              This replaced two separate bar charts that were the two edges of this same table — showing them apart hid
-              the only thing worth knowing: whether the apparel records <em>are</em> the buy-intent ones.
-            </p>
-          </div>
-          <div className="grid gap-4 lg:grid-cols-2">
-            {crossTabMatrices.map((m) => (
-              <CrossTabMatrixChart key={m.theme} matrix={m} />
-            ))}
-          </div>
+      {/* Post-purchase outcome — corpus-wide rollup of a per-theme field */}
+      {postPurchaseOutcomeSummary.coveredN > 0 && (
+        <div className="mb-6 rounded-2xl border border-line bg-white p-4">
+          <p className="text-sm font-semibold text-ink">What Happens After Purchase</p>
+          <p className="mb-3 text-[11px] leading-relaxed text-ink-faint">
+            Corpus-wide post_purchase_outcome, App/Play reviews only (retrospective lens) — the same field already
+            broken down per opportunity area, rolled up here across the whole corpus.
+          </p>
+          <OutcomeMixBar summary={postPurchaseOutcomeSummary} />
         </div>
       )}
 

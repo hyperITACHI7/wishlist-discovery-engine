@@ -121,19 +121,31 @@ export interface QuestionCoverageRow {
   insights?: { phrase: string; count: number; field: string }[];
 }
 
-/** View 3 (rewritten 2026-08-20) — the JOINT product_category x intent_signal
- * table per theme. Replaced two separate marginal bar charts, which showed the
- * same records twice without ever showing the interaction between them. */
-export interface CrossTabMatrix {
-  theme: string;
-  totalN: number;
-  rowDimension: string;
-  colDimension: string;
-  rowLabels: string[];
-  colLabels: string[];
-  rowTotals: { label: string; n: number }[];
-  colTotals: { label: string; n: number }[];
-  cells: { row: string; col: string; n: number; pctOfTotal: number; smallCell: boolean }[];
+// View 3 (the cross-tab matrix, product_category x intent_signal per theme)
+// was removed 2026-08-23 — see problem_statement.md §19. It was judged to add
+// no insight beyond what the ranked list and evidence drill-down already show.
+
+/** Corpus-wide decision_factors rollup, added 2026-08-23 (§20). Framed as
+ * "what shoppers say they weigh," not a wishlist-specific blocker count —
+ * decision_factors is dominated by general purchase-decision language
+ * (quality, delivery, price), not narrowly wishlist-hesitation content. See
+ * pipeline/extraction/score.py's DECISION_FACTOR_TAXONOMY for the
+ * keyword-marker classifier that produces this, audited via examplePhrases. */
+export interface DecisionFactorBucket {
+  category: string;
+  count: number;
+  pctOfMentions: number;
+  examplePhrases: string[];
+}
+
+/** Corpus-wide post_purchase_outcome rollup, added 2026-08-23 (§20). Same
+ * {counts, coveredN, ofN} shape as OpportunityRow.outcomeMix below, just
+ * summed across the whole retrospective (App/Play) lens instead of one
+ * theme's tagged subset — reused rather than a second bespoke shape. */
+export interface OutcomeSummary {
+  counts: Record<string, number>;
+  coveredN: number;
+  ofN: number;
 }
 
 /** Volume at each gate the corpus passed through, collection -> ranking. Each
@@ -151,11 +163,6 @@ export interface FunnelStage {
 // interviews; with it gone, Q9 routes to interviews alone, which is what the
 // original §4 routing table said anyway.
 
-/** Keyword Buzz cloud — see pipeline/extraction/keywords.py. A keyword-marker
- * lexicon applied to phrase text, not a trained sentiment model; phrases
- * matching neither list are left out rather than guessed at. */
-export interface KeywordCloudData {
-  negative: { text: string; value: number }[];
-  positive: { text: string; value: number }[];
-  method: string;
-}
+// The Keyword Buzz cloud (pipeline/extraction/keywords.py, KeywordCloudData)
+// was removed 2026-08-23 alongside the cross-tab matrix above — see
+// problem_statement.md §19.

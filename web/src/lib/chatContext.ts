@@ -18,9 +18,9 @@ WIDGET GLOSSARY (what each part of the dashboard shows):
 - Pipeline funnel ("How much data survived each gate"): sequential stages from collection to ranked themes. It is a funnel, not a pie, because each stage's input is the previous stage's output — the stages are not parts of one whole.
 - Ranked by Opportunity Score: the headline ranking. Opportunity Score is the geometric mean of 5 dimensions (Frequency, Severity, Intent quality, Resolution leverage, Non-monetary addressability). Clicking a theme opens every source record behind it plus the engine's read of them.
 - Quadrant badge (CRITICAL / HIGH INTENT / HIGH VOLUME / MONITOR): Frequency x Intent Quality. Deliberately NOT Frequency x Severity — at this corpus size post_purchase_outcome almost never resolves to regret/returned, so severity scales flat across every theme and would label them all the same.
-- Keyword Buzz: Frustrations vs Praise pill cloud. A visible keyword-marker lexicon applied to phrase text — NOT a trained sentiment model. Ambiguous phrases are left out rather than guessed at.
 - Coverage of the brief's 10 questions: per-question fill rate, the actual top phrases found, confidence, and whether the engine or the interviews answer it.
-- Cross-tab matrix: the JOINT product_category x intent_signal table per theme. It replaced two separate bar charts that were the two marginals of this same table — showing marginals side by side hid the interaction, which is the only thing a cross-tab exists to reveal.
+- Decision Factors: corpus-wide breakdown of decision_factors (141 of 578 records, 310 phrase mentions), bucketed into 8 categories by a keyword-marker classifier. General purchase-decision language (quality, price, delivery) — NOT exclusively about wishlist hesitation, that narrower signal is too sparse in public text to chart.
+- What Happens After Purchase: corpus-wide post_purchase_outcome rollup (satisfied/regret/returned/unclear), App/Play reviews only, 174 of 560 stated an outcome.
 - AI Synthesis: a narrative summary generated once at pipeline time from the ranked findings. Not a new analysis.
 - Interviews tab: reserved for 5-6 primary-research interviews, not yet run.
 - Research findings tab: 14 desk-research questions on the psychology of wishlisting, each with the finding, the named mechanism behind it, what it implies for this project, how the engine's own corpus compares, and its sources. This is EXTERNAL published literature, not this engine's findings — see the research section below.
@@ -112,22 +112,13 @@ export function buildGroundingContext(): string {
 
   const funnel = f.pipelineFunnel.map((s) => `- ${s.stage}: ${s.n} (${s.note})`).join("\n");
 
-  const matrices = f.crossTabMatrices
-    .map((m) => {
-      const cells = m.cells
-        .filter((c) => c.n > 0)
-        .map((c) => `${c.row}x${c.col}=${c.n}`)
-        .join(", ");
-      return `- "${m.theme}" (n=${m.totalN}): ${cells}`;
-    })
+  const decisionFactors = f.decisionFactorBreakdown
+    .map((b) => `- ${b.category}: ${b.count} mentions (${b.pctOfMentions}%) — e.g. ${b.examplePhrases.join(", ")}`)
     .join("\n");
 
-  const keywords = f.keywords
-    ? `Frustration keywords: ${f.keywords.negative.slice(0, 10).map((k) => `${k.text}(${k.value})`).join(", ")}\nPraise keywords: ${f.keywords.positive
-        .slice(0, 10)
-        .map((k) => `${k.text}(${k.value})`)
-        .join(", ")}`
-    : "Keyword buzz not computed.";
+  const outcome = f.postPurchaseOutcomeSummary.coveredN > 0
+    ? `Stated in ${f.postPurchaseOutcomeSummary.coveredN} of ${f.postPurchaseOutcomeSummary.ofN} App/Play reviews: ${Object.entries(f.postPurchaseOutcomeSummary.counts).map(([k, v]) => `${k}=${v}`).join(", ")}`
+    : "Not computed.";
 
   return `
 CORPUS: ${f.totalRecords} extracted records — ${f.totalAppPlay} App/Play Store reviews (retrospective lens: people who already bought) and ${f.totalReddit} Reddit records (prospective lens: people still deciding, hand-extracted because both automated Reddit paths are blocked). These two sources are the entire corpus.
@@ -141,11 +132,11 @@ ${coverage}
 PIPELINE FUNNEL (volume at each gate):
 ${funnel}
 
-CROSS-TAB MATRICES (product_category x intent_signal, joint counts):
-${matrices}
+DECISION FACTORS (what shoppers say they weigh — general purchase-decision language, NOT exclusively wishlist-specific):
+${decisionFactors}
 
-KEYWORD BUZZ:
-${keywords}
+POST-PURCHASE OUTCOME (corpus-wide, App/Play only):
+${outcome}
 
 ${f.narrative ? `EXISTING AI SYNTHESIS NARRATIVE:\n${f.narrative}\n` : ""}
 ${buildResearchContext()}

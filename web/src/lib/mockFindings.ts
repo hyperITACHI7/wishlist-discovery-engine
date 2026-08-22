@@ -2,11 +2,11 @@
 // The real corpus (Reddit / App & Play Store) has not been collected
 // or run through the extraction + synthesis pipeline yet — see pipeline/ and
 // problem_statement.md §9-10. These rows exist only to demonstrate the shape
-// of the output views (opportunity table, question coverage, cross-tabs) that
+// of the output views (opportunity table, question coverage) that
 // Panel A will render once the batch pipeline has actually run. Do not treat
 // any number below as a real finding about Myntra users.
 
-import { CrossTabMatrix, FunnelStage, OpportunityRow, QuestionCoverageRow } from "./types";
+import { DecisionFactorBucket, FunnelStage, OpportunityRow, OutcomeSummary, QuestionCoverageRow } from "./types";
 
 export const PIPELINE_HAS_RUN = false;
 
@@ -82,37 +82,16 @@ export const questionCoverageRows: QuestionCoverageRow[] = [
   { question: "10. What unmet needs emerge consistently?", finding: "pending pipeline run", n: "—", confidence: "Strong", answeredBy: "Engine" },
 ];
 
-export const crossTabMatrices: CrossTabMatrix[] = [
-  {
-    theme: "Fit/size uncertainty",
-    totalN: 96,
-    rowDimension: "product_category",
-    colDimension: "intent_signal",
-    rowLabels: ["footwear", "apparel", "accessories"],
-    colLabels: ["buy-intent", "save-for-later", "not-determinable"],
-    rowTotals: [
-      { label: "footwear", n: 45 },
-      { label: "apparel", n: 39 },
-      { label: "accessories", n: 12 },
-    ],
-    colTotals: [
-      { label: "buy-intent", n: 61 },
-      { label: "save-for-later", n: 27 },
-      { label: "not-determinable", n: 8 },
-    ],
-    cells: [
-      { row: "footwear", col: "buy-intent", n: 31, pctOfTotal: 32, smallCell: false },
-      { row: "footwear", col: "save-for-later", n: 11, pctOfTotal: 11, smallCell: false },
-      { row: "footwear", col: "not-determinable", n: 3, pctOfTotal: 3, smallCell: true },
-      { row: "apparel", col: "buy-intent", n: 25, pctOfTotal: 26, smallCell: false },
-      { row: "apparel", col: "save-for-later", n: 11, pctOfTotal: 11, smallCell: false },
-      { row: "apparel", col: "not-determinable", n: 3, pctOfTotal: 3, smallCell: true },
-      { row: "accessories", col: "buy-intent", n: 5, pctOfTotal: 5, smallCell: false },
-      { row: "accessories", col: "save-for-later", n: 5, pctOfTotal: 5, smallCell: false },
-      { row: "accessories", col: "not-determinable", n: 2, pctOfTotal: 2, smallCell: true },
-    ],
-  },
+export const decisionFactorBreakdown: DecisionFactorBucket[] = [
+  { category: "Quality & Authenticity", count: 0, pctOfMentions: 0, examplePhrases: ["pending pipeline run"] },
+  { category: "Price & Value", count: 0, pctOfMentions: 0, examplePhrases: ["pending pipeline run"] },
 ];
+
+export const postPurchaseOutcomeSummary: OutcomeSummary = {
+  counts: {},
+  coveredN: 0,
+  ofN: 0,
+};
 
 export const pipelineFunnel: FunnelStage[] = [
   { stage: "Collected", n: 0, note: "pending pipeline run" },

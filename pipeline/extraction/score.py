@@ -25,7 +25,7 @@ Usage:
 
 import json
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -43,6 +43,54 @@ PROSPECTIVE_SOURCES = {"reddit_post", "reddit_comment"}
 # confidence interval, and calling it one would be the same false-precision
 # dressing-up that problem_statement.md §7c warns about for Addressability.
 CONFIDENCE_WEIGHTS = {"high": 100, "medium": 60, "low": 30}
+
+# decision_factors bucketing, added 2026-08-23 (problem_statement.md §20).
+# Grounded in the real phrase content (sampled directly from extracted.jsonl
+# before writing these lists, not guessed) — decision_factors captures
+# whatever a reviewer raised themselves, which is dominated by general
+# purchase-decision language (quality, delivery, price), not narrowly
+# wishlist-hesitation-specific. Checked in this fixed priority order, first
+# match wins, so a phrase touching two buckets (e.g. "refused exchange
+# delivery") resolves deterministically rather than double-counting.
+#
+# First pass (6 categories: Price/Quality/Fit/Service/Delivery/Comparison)
+# left 40.6% of real mentions in "Other" — inspecting that bucket's actual
+# content surfaced two real, recurring categories missing entirely (app
+# usability, product selection/variety) and several markers too narrow
+# (e.g. "cancellation" missed "orders cancelled", "variety" missed
+# "varieties"). Revised twice against the real leftover phrases, landing at
+# 18.7% Other — the remainder is genuinely idiosyncratic one-off aesthetic
+# adjectives ("classy", "spacious", "shade", "luxury"), left unbucketed
+# deliberately rather than chased into an ever-growing lexicon that would
+# stop being auditable — same "ambiguous phrases left out rather than
+# guessed at" principle the deleted keywords.py used.
+PRICE_VALUE_MARKERS = ["price", "value for money", "worth", "prize", "discount", "costly", "cheap", "expensive", "afford", "cost-per-wear", "cost per wear", "deal", "offer", "budget", "myncash"]
+QUALITY_AUTHENTICITY_MARKERS = ["quality", "fabric", "material", "authentic", "genuine", "fake", "durable", "original", "orginal", "craftsmanship", "leak-proof", "leak proof", "trust", "secure", "colour", "color", "shiny", "elegant", "soft", "packing", "fade", "feel", "branded", "damaged", "different product", "exactly like", "as shown", "good product", "awesome product", "tag"]
+FIT_COMFORT_MARKERS = ["comfort", "fit", "fitting", "size", "styling", "versatil", "occasion", "wardrobe", "repeatab", "wear anywhere"]
+SERVICE_SUPPORT_MARKERS = ["service", "support", "customer care", "exchange", "refund", "complain", "compensation", "call", "dm asking", "cancel", "response", "ticket", "grievance", "pick up", "pickup", "return", "cash payment", "prepaid", "payment"]
+DELIVERY_LOGISTICS_MARKERS = ["deliv", "shipping", "wait", "stock", "sold out", "packed", "dispatch", "blockade", "highway", "track order", "supply issue"]
+SELECTION_VARIETY_MARKERS = ["variet", "collection", "range", "brand availability", "few brands", "brands supply", "assortment", "good options", "availability", "brand"]
+APP_SHOPPING_MARKERS = ["convenien", "customer friendly", "easy to use", "smooth interface", "3rd class", "easy shopping", "app is", "navigat", "user-friendly", "organis", "organiz", "ordering experience", "shopping experience", "way to order", "product information", "info about product", "rating"]
+COMPARISON_WISHLIST_MARKERS = ["wishlist", "compar", "platform", "side-by-side", "side by side", "similar option", "alternative", "capacity limit", "overconsumption", "review"]
+
+DECISION_FACTOR_TAXONOMY = [
+    ("Price & Value", PRICE_VALUE_MARKERS),
+    ("Quality & Authenticity", QUALITY_AUTHENTICITY_MARKERS),
+    ("Fit & Comfort", FIT_COMFORT_MARKERS),
+    ("Service & Support", SERVICE_SUPPORT_MARKERS),
+    ("Delivery & Logistics", DELIVERY_LOGISTICS_MARKERS),
+    ("Selection & Variety", SELECTION_VARIETY_MARKERS),
+    ("App & Shopping Experience", APP_SHOPPING_MARKERS),
+    ("Comparison & Wishlist Behavior", COMPARISON_WISHLIST_MARKERS),
+]
+
+
+def classify_decision_factor(phrase: str) -> str:
+    text = phrase.lower()
+    for category, markers in DECISION_FACTOR_TAXONOMY:
+        if any(m in text for m in markers):
+            return category
+    return "Other"
 
 
 def load_all():
@@ -374,72 +422,6 @@ def build_question_coverage(records: list[dict], themes: list[dict], phrases_by_
     ]
 
 
-def build_cross_tabs(rows: list[dict], themes: list[dict], phrases_by_id: dict, records_by_url: dict) -> list[dict]:
-    """Joint intent_signal x product_category matrix per theme.
-
-    Rewritten 2026-08-20. This previously emitted TWO separate stacked bars
-    per theme — one "by intent_signal", one "by product_category" — which
-    read as two charts of the same thing with no stated relationship. They
-    were in fact the two MARGINALS of a single underlying two-way table, and
-    showing marginals side by side throws away the only thing a cross-tab
-    exists to show: the interaction. "40% buy-intent" and "38% apparel"
-    can't tell you whether the apparel records ARE the buy-intent ones.
-
-    Emitting the joint table instead answers that directly, and makes the
-    two-charts confusion structurally impossible — there is now one table
-    with its marginals shown on its own edges, which is what a cross-tab is.
-    """
-    matrices = []
-    top_themes = sorted(themes, key=lambda t: -len(parse_phrase_ids(t.get("phrase_ids"))))[:4]
-
-    for theme in top_themes:
-        urls = theme_tagged_urls(theme, phrases_by_id)
-        tagged = [records_by_url[u] for u in urls if u in records_by_url]
-        if not tagged:
-            continue
-
-        n = len(tagged)
-        joint = Counter(
-            (
-                r.get("extraction", {}).get("product_category", "unclear"),
-                r.get("extraction", {}).get("intent_signal", "not-determinable"),
-            )
-            for r in tagged
-        )
-
-        # Order rows/columns by their own marginal size so the densest cells
-        # sit top-left — a heatmap is far easier to read when it isn't
-        # alphabetically scattered.
-        row_totals = Counter(r.get("extraction", {}).get("product_category", "unclear") for r in tagged)
-        col_totals = Counter(r.get("extraction", {}).get("intent_signal", "not-determinable") for r in tagged)
-        row_labels = [label for label, _ in row_totals.most_common()]
-        col_labels = [label for label, _ in col_totals.most_common()]
-
-        matrices.append({
-            "theme": theme["name"],
-            "totalN": n,
-            "rowDimension": "product_category",
-            "colDimension": "intent_signal",
-            "rowLabels": row_labels,
-            "colLabels": col_labels,
-            "rowTotals": [{"label": label, "n": row_totals[label]} for label in row_labels],
-            "colTotals": [{"label": label, "n": col_totals[label]} for label in col_labels],
-            "cells": [
-                {
-                    "row": row,
-                    "col": col,
-                    "n": joint.get((row, col), 0),
-                    "pctOfTotal": round(joint.get((row, col), 0) / n * 100),
-                    "smallCell": 0 < joint.get((row, col), 0) < 5,
-                }
-                for row in row_labels
-                for col in col_labels
-            ],
-        })
-
-    return matrices
-
-
 def build_pipeline_funnel(records: list[dict], phrases_by_id: dict, themes: list[dict]) -> list[dict]:
     """Volume at each gate the corpus passed through, collection -> ranking.
 
@@ -498,6 +480,59 @@ def build_pipeline_funnel(records: list[dict], phrases_by_id: dict, themes: list
     ]
 
 
+def build_decision_factor_breakdown(records: list[dict]) -> list[dict]:
+    """Corpus-wide rollup of decision_factors, bucketed into the taxonomy
+    above. Global (not per-theme) and both lenses pooled — decision_factors
+    is a CoreExtraction field present on every record type, and this widget's
+    honest framing is "what shoppers say they weigh," not a wishlist-specific
+    blocker count (see §20). Each bucket carries its top real example phrases
+    so the classification stays auditable rather than a black-box label."""
+    phrases_by_category = defaultdict(list)
+    for r in records:
+        for phrase in r.get("extraction", {}).get("decision_factors") or []:
+            phrase = (phrase or "").strip()
+            if not phrase:
+                continue
+            phrases_by_category[classify_decision_factor(phrase)].append(phrase)
+
+    total_mentions = sum(len(v) for v in phrases_by_category.values())
+
+    result = []
+    for category, phrases in phrases_by_category.items():
+        counts = Counter(p.lower() for p in phrases)
+        first_seen = {}
+        for p in phrases:
+            first_seen.setdefault(p.lower(), p)
+        example_phrases = [first_seen[key] for key, _ in counts.most_common(3)]
+        result.append({
+            "category": category,
+            "count": len(phrases),
+            "pctOfMentions": round(len(phrases) / total_mentions * 100, 1) if total_mentions else 0.0,
+            "examplePhrases": example_phrases,
+        })
+
+    result.sort(key=lambda b: -b["count"])
+    return result
+
+
+def build_outcome_summary(records: list[dict]) -> dict:
+    """Corpus-wide post_purchase_outcome rollup — the same {counts, coveredN,
+    ofN} shape build_opportunity_rows already produces per theme, just summed
+    across the whole retrospective lens rather than one theme's tagged
+    subset. post_purchase_outcome only exists on App/Play records (§6)."""
+    retro = [r for r in records if r.get("source") in RETROSPECTIVE_SOURCES]
+    counter = Counter(
+        r["extraction"]["post_purchase_outcome"]
+        for r in retro
+        if r.get("extraction", {}).get("post_purchase_outcome")
+    )
+    return {
+        "counts": dict(counter),
+        "coveredN": sum(counter.values()),
+        "ofN": len(retro),
+    }
+
+
 def run_score() -> dict:
     records, records_by_url, phrases_by_id, themes = load_all()
 
@@ -506,8 +541,9 @@ def run_score() -> dict:
 
     opportunity_rows = build_opportunity_rows(themes, phrases_by_id, records_by_url, total_app_play, total_reddit)
     question_coverage_rows = build_question_coverage(records, themes, phrases_by_id)
-    cross_tab_matrices = build_cross_tabs(opportunity_rows, themes, phrases_by_id, records_by_url)
     pipeline_funnel = build_pipeline_funnel(records, phrases_by_id, themes)
+    decision_factor_breakdown = build_decision_factor_breakdown(records)
+    outcome_summary = build_outcome_summary(records)
 
     findings = {
         "generatedAt": None,  # filled by caller
@@ -516,16 +552,19 @@ def run_score() -> dict:
         "totalReddit": total_reddit,
         "opportunityRows": opportunity_rows,
         "questionCoverageRows": question_coverage_rows,
-        "crossTabMatrices": cross_tab_matrices,
         "pipelineFunnel": pipeline_funnel,
+        "decisionFactorBreakdown": decision_factor_breakdown,
+        "postPurchaseOutcomeSummary": outcome_summary,
     }
 
     out_path = config.EXTRACTED_DIR / "findings.json"
     out_path.write_text(json.dumps(findings, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Findings written to {out_path}")
     print(f"  {len(opportunity_rows)} opportunity areas, {total_app_play} app/play records, {total_reddit} reddit records")
-    print(f"  {len(cross_tab_matrices)} cross-tab matrices, {len(pipeline_funnel)} funnel stages")
+    print(f"  {len(pipeline_funnel)} funnel stages")
     print(f"  evidence records attached: {sum(len(r['evidence']) for r in opportunity_rows)}")
+    print(f"  {len(decision_factor_breakdown)} decision-factor categories ({sum(b['count'] for b in decision_factor_breakdown)} phrase mentions)")
+    print(f"  post-purchase outcome stated in {outcome_summary['coveredN']}/{outcome_summary['ofN']} App/Play records")
 
     return findings
 

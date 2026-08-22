@@ -25,8 +25,9 @@ const outDir = join(webRoot, "src", "data");
 
 // Only the files the dashboard actually reads. phrases.json and themes.json
 // are intermediate pipeline artifacts the web app never touches — shipping
-// them would add ~100KB to the bundle for nothing.
-const FILES = ["findings.json", "keywords.json", "narrative.json"];
+// them would add ~100KB to the bundle for nothing. keywords.json was dropped
+// 2026-08-23 along with the Keyword Buzz widget — see problem_statement.md §19.
+const FILES = ["findings.json", "narrative.json"];
 
 if (!existsSync(pipelineDir)) {
   console.log(`[sync-findings] No pipeline directory at ${pipelineDir} — using the committed copies in src/data/.`);
@@ -58,7 +59,7 @@ for (const name of FILES) {
 console.log(`[sync-findings] Copied ${copied}/${FILES.length} file(s) into src/data/.`);
 
 if (missing.length) {
-  // Not fatal: narrative.json and keywords.json are optional pipeline steps,
-  // and the dashboard degrades gracefully when either is absent.
+  // Not fatal: narrative.json is an optional pipeline step, and the
+  // dashboard degrades gracefully when it's absent.
   console.log(`[sync-findings] Not produced yet (optional): ${missing.join(", ")}`);
 }

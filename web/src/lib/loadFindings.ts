@@ -14,10 +14,9 @@
 // scripts/sync-findings.mjs copies pipeline/data/extracted/*.json into
 // src/data/ and runs automatically before every build.
 import findingsData from "@/data/findings.json";
-import keywordsData from "@/data/keywords.json";
 import narrativeData from "@/data/narrative.json";
-import { crossTabMatrices as mockCrossTabMatrices, opportunityRows as mockOpportunityRows, questionCoverageRows as mockQuestionCoverageRows, pipelineFunnel as mockPipelineFunnel } from "./mockFindings";
-import { CrossTabMatrix, FunnelStage, KeywordCloudData, OpportunityRow, QuestionCoverageRow } from "./types";
+import { opportunityRows as mockOpportunityRows, questionCoverageRows as mockQuestionCoverageRows, pipelineFunnel as mockPipelineFunnel, decisionFactorBreakdown as mockDecisionFactorBreakdown, postPurchaseOutcomeSummary as mockOutcomeSummary } from "./mockFindings";
+import { DecisionFactorBucket, FunnelStage, OpportunityRow, OutcomeSummary, QuestionCoverageRow } from "./types";
 
 interface FindingsFile {
   totalRecords: number;
@@ -25,8 +24,9 @@ interface FindingsFile {
   totalReddit: number;
   opportunityRows: OpportunityRow[];
   questionCoverageRows: QuestionCoverageRow[];
-  crossTabMatrices: CrossTabMatrix[];
   pipelineFunnel: FunnelStage[];
+  decisionFactorBreakdown: DecisionFactorBucket[];
+  postPurchaseOutcomeSummary: OutcomeSummary;
 }
 
 export interface LoadedFindings {
@@ -36,16 +36,15 @@ export interface LoadedFindings {
   totalReddit?: number;
   opportunityRows: OpportunityRow[];
   questionCoverageRows: QuestionCoverageRow[];
-  crossTabMatrices: CrossTabMatrix[];
   pipelineFunnel: FunnelStage[];
-  keywords: KeywordCloudData | null;
+  decisionFactorBreakdown: DecisionFactorBucket[];
+  postPurchaseOutcomeSummary: OutcomeSummary;
   narrative: string | null;
 }
 
 export function loadFindings(): LoadedFindings {
   const findings = findingsData as unknown as FindingsFile;
 
-  const keywords = keywordsData as unknown as KeywordCloudData;
   const narrative = (narrativeData as { narrative?: string })?.narrative ?? null;
 
   const hasRun = Array.isArray(findings?.opportunityRows) && findings.opportunityRows.length > 0;
@@ -57,9 +56,9 @@ export function loadFindings(): LoadedFindings {
     totalReddit: hasRun ? findings.totalReddit : undefined,
     opportunityRows: hasRun ? findings.opportunityRows : mockOpportunityRows,
     questionCoverageRows: hasRun ? findings.questionCoverageRows : mockQuestionCoverageRows,
-    crossTabMatrices: hasRun ? (findings.crossTabMatrices ?? []) : mockCrossTabMatrices,
     pipelineFunnel: hasRun ? (findings.pipelineFunnel ?? []) : mockPipelineFunnel,
-    keywords: keywords && (keywords.negative?.length || keywords.positive?.length) ? keywords : null,
+    decisionFactorBreakdown: hasRun ? (findings.decisionFactorBreakdown ?? []) : mockDecisionFactorBreakdown,
+    postPurchaseOutcomeSummary: hasRun ? findings.postPurchaseOutcomeSummary : mockOutcomeSummary,
     narrative,
   };
 }

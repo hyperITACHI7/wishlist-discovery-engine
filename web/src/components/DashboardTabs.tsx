@@ -8,7 +8,7 @@ import InterviewsPanel from "./InterviewsPanel";
 import ResearchPanel from "./ResearchPanel";
 import HowItWorksPanel from "./HowItWorksPanel";
 import Modal from "./Modal";
-import { CrossTabMatrix, FunnelStage, KeywordCloudData, OpportunityRow, QuestionCoverageRow } from "@/lib/types";
+import { DecisionFactorBucket, FunnelStage, OpportunityRow, OutcomeSummary, QuestionCoverageRow } from "@/lib/types";
 
 // Restructured 2026-08-19: Limitations and the live extractor were full
 // tabs competing for space with the views worth navigating to. Limitations
@@ -42,17 +42,17 @@ export default function DashboardTabs({
   pipelineHasRun,
   opportunityRows,
   questionCoverageRows,
-  crossTabMatrices,
   pipelineFunnel,
-  keywords,
+  decisionFactorBreakdown,
+  postPurchaseOutcomeSummary,
   narrative,
 }: {
   pipelineHasRun: boolean;
   opportunityRows: OpportunityRow[];
   questionCoverageRows: QuestionCoverageRow[];
-  crossTabMatrices: CrossTabMatrix[];
   pipelineFunnel: FunnelStage[];
-  keywords: KeywordCloudData | null;
+  decisionFactorBreakdown: DecisionFactorBucket[];
+  postPurchaseOutcomeSummary: OutcomeSummary;
   narrative: string | null;
 }) {
   const [panel, setPanel] = useState<PanelId>("findings");
@@ -101,9 +101,9 @@ export default function DashboardTabs({
           pipelineHasRun={pipelineHasRun}
           opportunityRows={opportunityRows}
           questionCoverageRows={questionCoverageRows}
-          crossTabMatrices={crossTabMatrices}
           pipelineFunnel={pipelineFunnel}
-          keywords={keywords}
+          decisionFactorBreakdown={decisionFactorBreakdown}
+          postPurchaseOutcomeSummary={postPurchaseOutcomeSummary}
           narrative={narrative}
         />
       )}

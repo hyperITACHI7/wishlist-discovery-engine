@@ -13,7 +13,7 @@ import { loadFindings } from "@/lib/loadFindings";
 // unaffected.
 
 export default function Home() {
-  const { pipelineHasRun, opportunityRows, questionCoverageRows, crossTabMatrices, pipelineFunnel, totalRecords, totalAppPlay, totalReddit, keywords, narrative } = loadFindings();
+  const { pipelineHasRun, opportunityRows, questionCoverageRows, pipelineFunnel, decisionFactorBreakdown, postPurchaseOutcomeSummary, totalRecords, totalAppPlay, totalReddit, narrative } = loadFindings();
 
   return (
     <div className="flex flex-1 flex-col">
@@ -50,9 +50,9 @@ export default function Home() {
           pipelineHasRun={pipelineHasRun}
           opportunityRows={opportunityRows}
           questionCoverageRows={questionCoverageRows}
-          crossTabMatrices={crossTabMatrices}
           pipelineFunnel={pipelineFunnel}
-          keywords={keywords}
+          decisionFactorBreakdown={decisionFactorBreakdown}
+          postPurchaseOutcomeSummary={postPurchaseOutcomeSummary}
           narrative={narrative}
         />
       </main>
