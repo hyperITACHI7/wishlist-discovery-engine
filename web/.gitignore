@@ -32,6 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# ...but the template must be committed, or someone cloning this has no way to
+# know GROQ_API_KEY is required. It holds no value, only the key's name.
+!.env.local.example
 
 # vercel
 .vercel
