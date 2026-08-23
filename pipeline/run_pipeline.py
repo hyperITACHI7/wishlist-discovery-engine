@@ -23,6 +23,7 @@ Usage:
     python run_pipeline.py collect-all
     python run_pipeline.py collect-reddit
     python run_pipeline.py collect-playstore
+    python run_pipeline.py collect-playstore-critical   # 1/2/3-star only, see §22
     python run_pipeline.py collect-appstore
     python run_pipeline.py pilot --n 50
     python run_pipeline.py batch-extract
@@ -44,6 +45,10 @@ COMMANDS = {
     "collect-all": collect_all,
     "collect-reddit": reddit_collect.collect,
     "collect-playstore": playstore_collect.collect,
+    # Deliberately-skewed intake: 1/2/3-star only, to correct a corpus that
+    # measured 82.6% five-star and only 4.3% friction-bearing. See
+    # playstore_collect's docstring and problem_statement.md §22.
+    "collect-playstore-critical": playstore_collect.collect_critical,
     "collect-appstore": appstore_collect.collect,
     "batch-extract": batch_extract.run_batch,
 }

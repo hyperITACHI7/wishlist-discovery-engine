@@ -44,6 +44,99 @@ PROSPECTIVE_SOURCES = {"reddit_post", "reddit_comment"}
 # dressing-up that problem_statement.md §7c warns about for Addressability.
 CONFIDENCE_WEIGHTS = {"high": 100, "medium": 60, "low": 30}
 
+# Friction vs praise classification, added 2026-08-23 (problem_statement.md
+# §22). This exists because of a real, serious bug found by reading the
+# actual evidence text rather than trusting the pipeline's own output: 57 of
+# 64 evidence records behind the ranked "opportunity areas" carried NO
+# blocker at all — they were 5-star praise ("Very good product. Value for
+# money"). The top-ranked opportunity, "Price & Value", had 1 friction
+# record out of 12, and served the praise phrase "Great Discount" as its
+# resolution reason. Theme ranking was being driven by how OFTEN something
+# was mentioned, with no notion of whether the mention was a complaint.
+#
+# The classification is deliberately mechanical and field-based, not a
+# sentiment model: a record is FRICTION if the extractor found any field
+# that only exists when something went wrong or was left unresolved, or if
+# the stated outcome was regret/returned. PRAISE means an explicitly
+# satisfied outcome with no friction field. Everything else is NEUTRAL —
+# usually short product commentary that states no decision narrative
+# either way. Same "auditable, not a black-box call" principle as the rest
+# of score.py: every classification traces to named fields a reader can
+# check, and the ambiguous middle is labelled ambiguous rather than forced
+# into one side.
+# Only fields that CANNOT be present in a frictionless experience. A first
+# pass also counted comparison_behavior and offsite_research here, and
+# reading the resulting records caught the error: a 5-star review saying
+# Myntra's quality beats other apps ("baki app k mukable") fills
+# comparison_behavior and was labelled FRICTION, then served as the top
+# theme's headline quote. Comparing options or checking a review site is
+# decision EFFORT, not dissatisfaction — people do both and end up delighted.
+# Those two fields still answer Q5/Q6 and are still extracted; they just
+# don't decide sentiment.
+FRICTION_FIELDS = (
+    "hesitation_signal",
+    "current_blocker_freeform",
+    "workaround",
+    "delay_signal",
+    "deferral_trigger",
+)
+NEGATIVE_OUTCOMES = ("regret", "returned")
+
+
+def is_friction(record: dict) -> bool:
+    """Does this record evidence a PURCHASE BLOCKER — something that stalled,
+    deferred, or had to be routed around? This is the axis that drives the
+    Opportunity Score, and it is deliberately NOT the same as "is this review
+    negative." A 1-star rant about a late delivery is negative but evidences
+    no wishlist blocker; a 5-star review describing a size-bracketing
+    workaround evidences a real one."""
+    ex = record.get("extraction", {})
+    if ex.get("post_purchase_outcome") in NEGATIVE_OUTCOMES:
+        return True
+    return any(ex.get(f) for f in FRICTION_FIELDS)
+
+
+def sentiment_of(record: dict) -> str:
+    """"praise" | "negative" | "neutral" — the review's own TONE.
+
+    Separate axis from is_friction() above, and the two were conflated in
+    this function's first version, which produced labels that read as wrong
+    to anyone looking at the actual text: a 5-star "best quality cloth
+    really found here only" and a 1-star "service is very bad" both came out
+    "neutral", because neither happened to fill an outcome field.
+
+    Star rating is the most direct tone signal available on App/Play records
+    and is used as such. Reddit records have no rating, so they fall back to
+    the stated outcome and otherwise read neutral — correct, since the
+    prospective lens is mid-decision rather than post-purchase."""
+    ex = record.get("extraction", {})
+    outcome = ex.get("post_purchase_outcome")
+    rating = record.get("rating")
+
+    if outcome in NEGATIVE_OUTCOMES:
+        return "negative"
+    if outcome == "satisfied":
+        return "praise"
+    if isinstance(rating, int):
+        if rating >= 4:
+            return "praise"
+        if rating <= 2:
+            return "negative"
+    return "neutral"
+
+
+def sentiment_mix(records: list[dict]) -> dict:
+    """Both axes at once: tone breakdown plus how many evidence a blocker.
+    frictionN deliberately does NOT sum with the tone counts — it cuts
+    across them, since a praise-toned record can still state a workaround."""
+    counts = Counter(sentiment_of(r) for r in records)
+    return {
+        "praise": counts.get("praise", 0),
+        "negative": counts.get("negative", 0),
+        "neutral": counts.get("neutral", 0),
+        "friction": sum(1 for r in records if is_friction(r)),
+    }
+
 # decision_factors bucketing, added 2026-08-23 (problem_statement.md §20).
 # Grounded in the real phrase content (sampled directly from extracted.jsonl
 # before writing these lists, not guessed) — decision_factors captures
@@ -150,12 +243,20 @@ def blocker_text(record: dict) -> str | None:
 
 def build_evidence(tagged: list[dict]) -> list[dict]:
     """Every record behind a theme, trimmed to the fields the drill-down
-    actually renders. Sorted high-confidence-first so the strongest evidence
-    is what a reader sees before scrolling. Not capped — the tagged counts
-    per theme are double digits, so the whole set is small enough to ship."""
+    actually renders. Not capped — the tagged counts per theme are double
+    digits, so the whole set is small enough to ship.
+
+    Sort order changed 2026-08-23 (§22): FRICTION FIRST, then confidence.
+    It was confidence-only, which meant a reader opening "Evidence behind
+    this opportunity" on the top-ranked theme saw a wall of high-confidence
+    5-star praise before reaching a single actual blocker — the exact
+    failure that made the ranking bug hard to spot from the UI."""
     ordered = sorted(
         tagged,
-        key=lambda r: {"high": 2, "medium": 1, "low": 0}.get(r.get("extraction", {}).get("confidence"), 0),
+        key=lambda r: (
+            1 if is_friction(r) else 0,
+            {"high": 2, "medium": 1, "low": 0}.get(r.get("extraction", {}).get("confidence"), 0),
+        ),
         reverse=True,
     )
     evidence = []
@@ -174,6 +275,11 @@ def build_evidence(tagged: list[dict]) -> list[dict]:
             "blocker": blocker_text(r),
             "workaround": ex.get("workaround"),
             "resolutionReason": ex.get("resolution_reason"),
+            # §22: so a reader can never mistake a 5-star "value for money"
+            # for a complaint just because it sits under an opportunity area.
+            "sentiment": sentiment_of(r),
+            "isFriction": is_friction(r),
+            "rating": r.get("rating"),
         })
     return evidence
 
@@ -204,7 +310,18 @@ def build_opportunity_rows(themes: list[dict], phrases_by_id: dict, records_by_u
 
         has_workaround = any(r.get("extraction", {}).get("workaround") for r in tagged)
 
-        quoted = [r for r in tagged if r.get("extraction", {}).get("verbatim_quote")]
+        # Friction-bearing subset — the records that actually evidence a
+        # problem rather than merely mentioning the topic (§22).
+        friction_tagged = [r for r in tagged if is_friction(r)]
+        friction_n = len(friction_tagged)
+
+        # Sample quote is drawn from the FRICTION records where any exist.
+        # It used to sort on confidence alone across all tagged records,
+        # which is how the top-ranked opportunity area ended up headlined by
+        # "It's quite good according to price" — a five-star compliment
+        # presented as the evidence for a purchase blocker.
+        quote_pool = friction_tagged or tagged
+        quoted = [r for r in quote_pool if r.get("extraction", {}).get("verbatim_quote")]
         quoted.sort(key=lambda r: {"high": 2, "medium": 1, "low": 0}.get(r["extraction"].get("confidence"), 0), reverse=True)
         sample_quote = f"“{quoted[0]['extraction']['verbatim_quote']}”" if quoted else "no quote captured yet"
 
@@ -216,7 +333,13 @@ def build_opportunity_rows(themes: list[dict], phrases_by_id: dict, records_by_u
         buy_intent_count = sum(1 for r in tagged if r.get("extraction", {}).get("intent_signal") == "buy-intent")
         intent_share = (buy_intent_count / len(tagged)) if tagged else 0.0
 
-        combined_rate = ((app_play_n + reddit_n) / (total_app_play + total_reddit)) if (total_app_play + total_reddit) else 0.0
+        # FREQUENCY NOW COUNTS FRICTION RECORDS ONLY (§22). This was
+        # (app_play_n + reddit_n) — every record mentioning the theme,
+        # regardless of whether it was a complaint or a compliment — which
+        # is the single line that let praise volume drive the ranking. A
+        # theme that 150 people PRAISE is not a bigger opportunity than one
+        # 3 people are actually blocked by; under the old formula it was.
+        combined_rate = (friction_n / (total_app_play + total_reddit)) if (total_app_play + total_reddit) else 0.0
 
         # Every distinct workaround people described for this theme. A stated
         # workaround is the strongest unmet-need evidence in the whole schema
@@ -250,6 +373,8 @@ def build_opportunity_rows(themes: list[dict], phrases_by_id: dict, records_by_u
             "hasWorkaround": has_workaround,
             "sampleQuote": sample_quote,
             "totalVolume": len(tagged),
+            "frictionN": friction_n,
+            "sentimentMix": sentiment_mix(tagged),
             "confidence": confidence_profile(tagged),
             "workarounds": workarounds,
             "outcomeMix": {
@@ -314,6 +439,8 @@ def build_opportunity_rows(themes: list[dict], phrases_by_id: dict, records_by_u
             "opportunityScore": round(geometric_mean, 2),
             "quadrant": quadrant,
             "totalVolume": r["totalVolume"],
+            "frictionN": r["frictionN"],
+            "sentimentMix": r["sentimentMix"],
             "confidence": r["confidence"],
             "workarounds": r["workarounds"],
             "outcomeMix": r["outcomeMix"],
@@ -362,15 +489,20 @@ QUESTION_FIELDS = {
 
 # Weak questions split into two genuinely different reasons, added 2026-08-23
 # (problem_statement.md §21). Checked per-lens (App/Play vs Reddit) fill
-# rates before writing this, not guessed: REDDIT_VOLUME_LIMITED questions'
-# fields fire at 17-72% per-record on the 18-record Reddit lens but only
-# 0-1.5% on the 560-record App/Play lens — the signal is real, just capped by
-# Reddit's tiny n, not missing text. RARE_EVERYWHERE questions are thin on
-# BOTH lenses regardless of volume — no amount of more Reddit fixes those;
-# they were handed to interviews by design from the original brief mapping
-# (vault/09-Assignment/03-AI-Discovery-Engine-Design.md's coverage audit).
-REDDIT_VOLUME_LIMITED_QUESTIONS = {1, 2, 3, 6, 9, 10}
-RARE_EVERYWHERE_QUESTIONS = {4, 5}
+# rates before writing this, not guessed.
+#
+# CORRECTED 2026-08-23, same day, after the Reddit corpus grew 18 -> 37
+# records: Q4 and Q5 were originally classified RARE_EVERYWHERE on the
+# strength of a single Reddit hit each (5.6% of 18 — too noisy to call a
+# real rate). At n=37 they show 24% and 30% respectively, the same shape as
+# every other REDDIT_VOLUME_LIMITED question, not a flat-everywhere field.
+# That was a small-sample-noise artifact, not a genuine finding — moved.
+# RARE_EVERYWHERE is left as an empty set, not deleted, because the
+# distinction itself is still real and worth keeping structurally available:
+# a question whose rate stays near-zero on Reddit even as Reddit volume
+# grows would belong there, and none currently do.
+REDDIT_VOLUME_LIMITED_QUESTIONS = {1, 2, 3, 4, 5, 6, 9, 10}
+RARE_EVERYWHERE_QUESTIONS: set[int] = set()
 
 
 def lens_fill(records: list[dict], fields: list[str]) -> dict:
@@ -448,11 +580,11 @@ def build_question_coverage(records: list[dict], themes: list[dict], phrases_by_
         (2, "2. What prevents wishlisted products from being purchased?", f"blocker/hesitation signal present in {q2_present}/{total} extractions", q2_present, total, confidence_for(q2_present, total), "Engine"),
         (3, "3. What uncertainties remain after finding a product they like?", f"blocker/hesitation signal present in {q3_present}/{q3_n} extractions", q3_present, q3_n, confidence_for(q3_present, q3_n), "Engine"),
         (4, "4. What causes users to postpone a purchase?", f"delay/deferral signal present in {q4_present}/{total} extractions", q4_present, total, confidence_for(q4_present, total), "Engine + Interviews"),
-        (5, "5. How do users compare multiple shortlisted products?", f"comparison_behavior captured in only {q5_present}/{q5_n} extractions — rarely narrated in public text as expected", q5_present, q5_n, confidence_for(q5_present, q5_n), "Interviews"),
+        (5, "5. How do users compare multiple shortlisted products?", f"comparison_behavior captured in {q5_present}/{q5_n} extractions", q5_present, q5_n, confidence_for(q5_present, q5_n), "Interviews"),
         (6, "6. What information do users seek outside Myntra?", f"offsite_research captured in {q6_present}/{q6_n} extractions", q6_present, q6_n, confidence_for(q6_present, q6_n), "Engine"),
         (7, "7. Role of fit, size, styling, price, reviews, occasion, social validation", f"{len(themes)} themes identified, {q7_themed} phrases mapped to the 7 factors + emergent bucket", q7_themed, q7_themed, "Strong" if themes else "Weak", "Engine"),
         (8, "8. Genuine purchase intent vs. bookmarking?", f"intent_signal resolved (buy-intent or save-for-later, not not-determinable) in {q8_present}/{total} extractions", q8_present, total, confidence_for(q8_present, total), "Engine + Interviews"),
-        (9, "9. How do behaviours differ across segments?", f"segment_signal captured in only {q9_present}/{q9_n} extractions — attributes rarely stated in public text as expected", q9_present, q9_n, confidence_for(q9_present, q9_n), "Interviews"),
+        (9, "9. How do behaviours differ across segments?", f"segment_signal captured in {q9_present}/{q9_n} extractions", q9_present, q9_n, confidence_for(q9_present, q9_n), "Interviews"),
         (10, "10. What unmet needs emerge consistently?", f"workaround captured in {q10_present}/{q10_n} extractions", q10_present, q10_n, confidence_for(q10_present, q10_n), "Engine"),
     ]
 

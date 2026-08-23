@@ -90,7 +90,16 @@ def run_synthesis() -> dict | None:
 
     print(f"{len(result['themes'])} themes identified, written to {out_path}:")
     for t in result["themes"]:
-        print(f"  {t['name']} ({t['factor']}) — {len(parse_phrase_ids(t.get('phrase_ids')))} phrases")
+        # The model names themes in real prose, which can include characters
+        # the Windows console's cp1252 codec cannot encode (a non-breaking
+        # hyphen in "Occasion-driven styling intent" crashed this loop on
+        # 2026-08-23 AFTER themes.json had already been written correctly —
+        # a purely cosmetic failure that looked like a pipeline crash).
+        # themes.json itself is always written UTF-8 above; only this console
+        # echo needs to tolerate a lossy terminal.
+        line = f"  {t['name']} ({t['factor']}) - {len(parse_phrase_ids(t.get('phrase_ids')))} phrases"
+        enc = sys.stdout.encoding or "utf-8"
+        print(line.encode(enc, errors="replace").decode(enc, errors="replace"))
 
     return result
 

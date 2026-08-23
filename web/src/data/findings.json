@@ -1,187 +1,74 @@
 {
   "generatedAt": null,
-  "totalRecords": 597,
-  "totalAppPlay": 560,
+  "totalRecords": 1234,
+  "totalAppPlay": 1197,
   "totalReddit": 37,
   "opportunityRows": [
     {
-      "area": "Price & Value",
-      "appPlayRatePct": 2.0,
-      "appPlayN": 11,
-      "resolutionReason": "Great Discount",
-      "redditRatePct": 2.7,
-      "redditN": 1,
+      "area": "Perceived quality and value concerns",
+      "appPlayRatePct": 2.7,
+      "appPlayN": 32,
+      "resolutionReason": "not enough data yet",
+      "redditRatePct": 8.1,
+      "redditN": 3,
       "hasWorkaround": true,
-      "sampleQuote": "“Very good product . Value for money”",
-      "opportunityScore": 3.24,
+      "sampleQuote": "“my cart goes from 12 items to 3 items”",
+      "opportunityScore": 3.73,
       "quadrant": {
-        "label": "CRITICAL",
-        "tier": "serious"
+        "label": "HIGH VOLUME",
+        "tier": "warning"
       },
-      "totalVolume": 12,
+      "totalVolume": 35,
+      "frictionN": 9,
+      "sentimentMix": {
+        "praise": 20,
+        "negative": 7,
+        "neutral": 8,
+        "friction": 9
+      },
       "confidence": {
-        "score": 94,
-        "label": "Strong",
+        "score": 70,
+        "label": "Medium",
         "mix": {
-          "high": 11,
-          "medium": 0,
-          "low": 1
+          "high": 17,
+          "medium": 7,
+          "low": 11
         }
       },
       "workarounds": [
-        "sorts reviews by newest and only trusts ones with customer photos rather than the aggregate star rating (reasoning: fabric quality drifts between production batches); sleeps on borderline items overnight as a final filter"
+        "sorts reviews by newest and only trusts ones with customer photos rather than the aggregate star rating (reasoning: fabric quality drifts between production batches); sleeps on borderline items overnight as a final filter",
+        "treats the checkout screen itself as a forced deliberation step, deliberately trimming the cart down before paying rather than deciding at add-to-cart time"
       ],
       "outcomeMix": {
         "counts": {
-          "satisfied": 9
+          "satisfied": 15,
+          "regret": 4,
+          "unclear": 1
         },
-        "coveredN": 9,
-        "ofN": 11
+        "coveredN": 20,
+        "ofN": 32
       },
       "intentMix": {
-        "not-determinable": 4,
-        "buy-intent": 8
+        "not-determinable": 21,
+        "buy-intent": 14
       },
       "evidence": [
         {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14438242182",
-          "date": "2026-08-17T03:27:17-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Very good product . Value for money",
-          "confidence": "high",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14430057357",
-          "date": "2026-08-15T02:10:30-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "It’s quite good according to price",
+          "source": "reddit_post",
+          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1v1wlcg/do_you_also_remove_half_your_cart_right_before/",
+          "date": "2026-07-21",
+          "subreddit": "IndianFashionAddicts",
+          "lens": "prospective",
+          "quote": "my cart goes from 12 items to 3 items",
           "confidence": "high",
           "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434641715",
-          "date": "2026-08-16T05:46:03-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "worth the money.i really like the quality and the brush is soo soft not harsh thank you myntra soo happy with this purchase",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "beauty",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14430723202",
-          "date": "2026-08-15T06:07:01-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Very good totally worth it in this price",
-          "confidence": "high",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14432093912",
-          "date": "2026-08-15T12:59:12-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Value for money  good product and quality",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434413634",
-          "date": "2026-08-16T04:29:12-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Very nice Products Range, price, comfort, delivery.",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433805857",
-          "date": "2026-08-16T00:26:36-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Good fabric, great fitting worth the money",
-          "confidence": "high",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14431803171",
-          "date": "2026-08-15T11:20:55-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Best price and best service fast delivery",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14437629159",
-          "date": "2026-08-16T23:13:46-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "I always comeback to the app whenever i need to buy something.",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "playstore_review",
-          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=3cc80c44-8d85-4661-b2ef-4924a2aec160",
-          "date": "2026-08-17T22:27:57",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Great Discount",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": "Great Discount"
+          "productCategory": "apparel",
+          "blocker": "adds items to cart with real intent, then at checkout re-evaluates each one against actual planned occasions and removes most of them",
+          "workaround": "treats the checkout screen itself as a forced deliberation step, deliberately trimming the cart down before paying rather than deciding at add-to-cart time",
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
         },
         {
           "source": "reddit_comment",
@@ -195,71 +82,130 @@
           "productCategory": "apparel",
           "blocker": null,
           "workaround": "sorts reviews by newest and only trusts ones with customer photos rather than the aggregate star rating (reasoning: fabric quality drifts between production batches); sleeps on borderline items overnight as a final filter",
-          "resolutionReason": "an item that's still remembered/wanted the next day is judged worth buying; the overnight gap functions as the actual decision mechanism"
+          "resolutionReason": "an item that's still remembered/wanted the next day is judged worth buying; the overnight gap functions as the actual decision mechanism",
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
         },
         {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14439006336",
-          "date": "2026-08-17T07:29:20-07:00",
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=7811d7e0-2c86-490a-9bf5-7ede2f1b0108",
+          "date": "2026-08-20T18:56:26",
           "subreddit": null,
           "lens": "retrospective",
-          "quote": "Value for money .. good product quality",
-          "confidence": "low",
+          "quote": "I ordered a Polo Assn. T-shirt from Myntra, but what I received was nothing but a dirty, used-looking piece of cloth.",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "apparel",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 1
+        },
+        {
+          "source": "reddit_comment",
+          "sourceUrl": "https://old.reddit.com/r/IndianBeautyDeals/comments/13vx5d4/myntra_is_insane_90_on_clinique/#by-madelyn_as_hatter",
+          "date": "2023",
+          "subreddit": "IndianBeautyDeals",
+          "lens": "prospective",
+          "quote": "didn't find its longevity worth the original price",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "beauty",
+          "blocker": "still uncertain whether the item will arrive genuine and in good condition even after ordering",
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=4b4b8631-781c-44fd-bed2-073870ea72c4",
+          "date": "2026-08-19T05:56:50",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "I received an incorrect, damaged product without a tag, and my return is on hold.",
+          "confidence": "high",
           "intentSignal": "not-determinable",
           "productCategory": "unclear",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
-        }
-      ],
-      "_scoreDimensions": {
-        "frequency": 3.22,
-        "severity": 3.0,
-        "intentQuality": 3.67,
-        "resolutionLeverage": 5.0,
-        "addressability": 2.0
-      },
-      "addressabilityNote": "Addressability capped — no monetary levers allowed for this project"
-    },
-    {
-      "area": "Quality & Material Concerns",
-      "appPlayRatePct": 3.4,
-      "appPlayN": 19,
-      "resolutionReason": "not enough data yet",
-      "redditRatePct": 2.7,
-      "redditN": 1,
-      "hasWorkaround": true,
-      "sampleQuote": "“worth the money.i really like the quality and the brush is soo soft not harsh thank you myntra soo happy with this purchase”",
-      "opportunityScore": 2.7,
-      "quadrant": {
-        "label": "HIGH VOLUME",
-        "tier": "warning"
-      },
-      "totalVolume": 20,
-      "confidence": {
-        "score": 75,
-        "label": "Strong",
-        "mix": {
-          "high": 12,
-          "medium": 2,
-          "low": 6
-        }
-      },
-      "workarounds": [
-        "treats the checkout screen itself as a forced deliberation step, deliberately trimming the cart down before paying rather than deciding at add-to-cart time"
-      ],
-      "outcomeMix": {
-        "counts": {
-          "satisfied": 14
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 2
         },
-        "coveredN": 14,
-        "ofN": 19
-      },
-      "intentMix": {
-        "buy-intent": 7,
-        "not-determinable": 13
-      },
-      "evidence": [
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14438675343",
+          "date": "2026-08-17T05:53:15-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Think twice before ordering here… There are many more renowed websites with linient and effective return and customer support facilities",
+          "confidence": "medium",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": "Think twice before ordering here…",
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 3
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=44fc2703-dee2-48f9-b6b8-c141f04a6228",
+          "date": "2026-08-19T18:32:21",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "mai ne paint mangai h ek dam bekar quality ki di h",
+          "confidence": "medium",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 1
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=38ba1ada-cfec-4ccd-8b72-77ca2394a80e",
+          "date": "2026-07-22T22:06:39",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "product are fine but u increased tha price of same product after viewing 3 4 times",
+          "confidence": "low",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": "after viewing 3 4 times",
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 2
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=0d6a7c39-a0b5-4713-b0d1-6cb81c7b49eb",
+          "date": "2026-07-24T10:58:06",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "need to check quality",
+          "confidence": "low",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": "need to check quality",
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": 3
+        },
         {
           "source": "appstore_review",
           "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434641715",
@@ -272,119 +218,10 @@
           "productCategory": "beauty",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433605440",
-          "date": "2026-08-15T23:00:03-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Nice quality and service",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14432093912",
-          "date": "2026-08-15T12:59:12-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Value for money  good product and quality",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "playstore_review",
-          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=0a4bdb9b-ed2f-486b-8034-012ef682e179",
-          "date": "2026-08-17T21:22:13",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Really happy with the purchase! The quality is good, fitting is perfect, and the product looks exactly like the pictures.",
-          "confidence": "high",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433805857",
-          "date": "2026-08-16T00:26:36-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Good fabric, great fitting worth the money",
-          "confidence": "high",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14437203831",
-          "date": "2026-08-16T20:10:04-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Myntra se kapde Lena kafi acha hai baki app k mukable because Myntra Mai Jo quality dikhai jaati hai wahi hoti hai",
-          "confidence": "high",
-          "intentSignal": "not-determinable",
-          "productCategory": "apparel",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "reddit_post",
-          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1v1wlcg/do_you_also_remove_half_your_cart_right_before/",
-          "date": "2026-07-21",
-          "subreddit": "IndianFashionAddicts",
-          "lens": "prospective",
-          "quote": "my cart goes from 12 items to 3 items",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "apparel",
-          "blocker": "adds items to cart with real intent, then at checkout re-evaluates each one against actual planned occasions and removes most of them",
-          "workaround": "treats the checkout screen itself as a forced deliberation step, deliberately trimming the cart down before paying rather than deciding at add-to-cart time",
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434359005",
-          "date": "2026-08-16T04:09:16-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "it’s very comfortable and it’s fabric are so good when i wear this t-shirt feel cool",
-          "confidence": "high",
-          "intentSignal": "not-determinable",
-          "productCategory": "apparel",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "playstore_review",
-          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=608e5695-2d2b-48cc-8411-d80d0b392cdc",
-          "date": "2026-08-17T22:37:15",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "it's t shirt quality is mind blowing. I loved all the products 😇",
-          "confidence": "high",
-          "intentSignal": "not-determinable",
-          "productCategory": "apparel",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
         },
         {
           "source": "appstore_review",
@@ -398,21 +235,61 @@
           "productCategory": "unclear",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
         },
         {
           "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434388519",
-          "date": "2026-08-16T04:20:06-07:00",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433605440",
+          "date": "2026-08-15T23:00:03-07:00",
           "subreddit": null,
           "lens": "retrospective",
-          "quote": "Cloth fitting and quality is very good",
+          "quote": "Nice quality and service",
           "confidence": "high",
-          "intentSignal": "not-determinable",
-          "productCategory": "apparel",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=f0c7006b-845f-492f-a3c0-b0146089efbd",
+          "date": "2026-08-15T17:24:19",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "I have ordered a few times and the products are good but they don't actually look the same as in the app shows.",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": false,
+          "rating": 3
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14438242182",
+          "date": "2026-08-17T03:27:17-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Very good product . Value for money",
+          "confidence": "high",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
         },
         {
           "source": "playstore_review",
@@ -426,193 +303,10 @@
           "productCategory": "unclear",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433796941",
-          "date": "2026-08-16T00:22:51-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Very good good fitting good fabric",
-          "confidence": "medium",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "playstore_review",
-          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=db0a9e40-fe67-4642-bdd8-ed60ca88e45c",
-          "date": "2026-08-17T22:15:08",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "best aap hai. best quality ke product milta hai",
-          "confidence": "medium",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434020031",
-          "date": "2026-08-16T01:54:46-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Good quality stylish sandals can wear on ethnic and casual both",
-          "confidence": "low",
-          "intentSignal": "not-determinable",
-          "productCategory": "footwear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14436029149",
-          "date": "2026-08-16T12:41:24-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Very best quality tops",
-          "confidence": "low",
-          "intentSignal": "buy-intent",
-          "productCategory": "apparel",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "playstore_review",
-          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=9c87a3e5-b67f-4dd9-8c8d-2314c3cb71d4",
-          "date": "2026-08-17T22:39:18",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "the best quality cloth really found here only",
-          "confidence": "low",
-          "intentSignal": "not-determinable",
-          "productCategory": "apparel",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14437673498",
-          "date": "2026-08-16T23:33:17-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "It has a good quality",
-          "confidence": "low",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14438191049",
-          "date": "2026-08-17T03:07:37-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Under budget best quality",
-          "confidence": "low",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434981034",
-          "date": "2026-08-16T07:25:52-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Good quality greatest good material",
-          "confidence": "low",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        }
-      ],
-      "_scoreDimensions": {
-        "frequency": 5.0,
-        "severity": 3.0,
-        "intentQuality": 2.4,
-        "resolutionLeverage": 1.0,
-        "addressability": 4.0
-      }
-    },
-    {
-      "area": "Fit & Comfort",
-      "appPlayRatePct": 2.3,
-      "appPlayN": 13,
-      "resolutionReason": "not enough data yet",
-      "redditRatePct": 0.0,
-      "redditN": 0,
-      "hasWorkaround": false,
-      "sampleQuote": "“Very good fitting and classy look”",
-      "opportunityScore": 2.59,
-      "quadrant": {
-        "label": "HIGH VOLUME",
-        "tier": "warning"
-      },
-      "totalVolume": 13,
-      "confidence": {
-        "score": 97,
-        "label": "Strong",
-        "mix": {
-          "high": 12,
-          "medium": 1,
-          "low": 0
-        }
-      },
-      "workarounds": [],
-      "outcomeMix": {
-        "counts": {
-          "satisfied": 13
-        },
-        "coveredN": 13,
-        "ofN": 13
-      },
-      "intentMix": {
-        "not-determinable": 7,
-        "buy-intent": 6
-      },
-      "evidence": [
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433932418",
-          "date": "2026-08-16T01:19:17-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Very good fitting and classy look",
-          "confidence": "high",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "playstore_review",
-          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=0a4bdb9b-ed2f-486b-8034-012ef682e179",
-          "date": "2026-08-17T21:22:13",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Really happy with the purchase! The quality is good, fitting is perfect, and the product looks exactly like the pictures.",
-          "confidence": "high",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
         },
         {
           "source": "appstore_review",
@@ -626,91 +320,10 @@
           "productCategory": "apparel",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434302923",
-          "date": "2026-08-16T03:47:57-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Looking good, fabric good, very comfortable nd classy",
-          "confidence": "high",
-          "intentSignal": "not-determinable",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433845068",
-          "date": "2026-08-16T00:42:58-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Must buy this suit Luxury Embellished Comfortable 10/10",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "apparel",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434413634",
-          "date": "2026-08-16T04:29:12-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Very nice Products Range, price, comfort, delivery.",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14430265714",
-          "date": "2026-08-15T03:33:13-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Very comfort and beautiful",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434339393",
-          "date": "2026-08-16T04:01:52-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Easy breezy and comfortable and soft fabric",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433615920",
-          "date": "2026-08-15T23:04:39-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Very light weight and comfortable",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 4
         },
         {
           "source": "appstore_review",
@@ -724,35 +337,146 @@
           "productCategory": "unclear",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
         },
         {
           "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14430313496",
-          "date": "2026-08-15T03:51:12-07:00",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434388519",
+          "date": "2026-08-16T04:20:06-07:00",
           "subreddit": null,
           "lens": "retrospective",
-          "quote": "Very nice and original product with light wait as well as great fitting thanks Myntra",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14431442257",
-          "date": "2026-08-15T09:30:02-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Lovely design and very comfortable, fabric and color is also good",
+          "quote": "Cloth fitting and quality is very good",
           "confidence": "high",
           "intentSignal": "not-determinable",
           "productCategory": "apparel",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=e92db1c4-24c0-4014-9988-d5d250d55210",
+          "date": "2026-08-21T14:48:32",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "I ordered one eight shoes and received damaged product and they are saying that the only way around is return and there is no exchange or compensation",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "footwear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": false,
+          "rating": 1
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14432093912",
+          "date": "2026-08-15T12:59:12-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Value for money  good product and quality",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14437203831",
+          "date": "2026-08-16T20:10:04-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Myntra se kapde Lena kafi acha hai baki app k mukable because Myntra Mai Jo quality dikhai jaati hai wahi hoti hai",
+          "confidence": "high",
+          "intentSignal": "not-determinable",
+          "productCategory": "apparel",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=2ba33c93-5bd5-4e84-9cb3-8eaf4d9e83bf",
+          "date": "2026-08-20T14:39:22",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Quality is really very good service is very bad compare to other online shopping site I chat or discuss with myntra can not give delivery as per promise date",
+          "confidence": "medium",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": false,
+          "rating": 1
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=db0a9e40-fe67-4642-bdd8-ed60ca88e45c",
+          "date": "2026-08-17T22:15:08",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "best aap hai. best quality ke product milta hai",
+          "confidence": "medium",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=3f82816b-2f06-415a-9d4d-23b326e164a5",
+          "date": "2026-08-08T20:30:51",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "aap cloth qaliety is low in few year",
+          "confidence": "medium",
+          "intentSignal": "not-determinable",
+          "productCategory": "apparel",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": false,
+          "rating": 3
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=8a6b2296-d63c-4089-8a4f-4c13d2a6966f",
+          "date": "2026-07-31T10:47:18",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "prize jade h ye 300 se jade ka lg nhi rha h kabda quality bahot achhi nhi h",
+          "confidence": "medium",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": false,
+          "rating": 3
         },
         {
           "source": "appstore_review",
@@ -766,151 +490,407 @@
           "productCategory": "unclear",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
-        }
-      ],
-      "_scoreDimensions": {
-        "frequency": 3.44,
-        "severity": 3.0,
-        "intentQuality": 2.85,
-        "resolutionLeverage": 1.0,
-        "addressability": 4.0
-      }
-    },
-    {
-      "area": "Delivery & Service Experience",
-      "appPlayRatePct": 2.0,
-      "appPlayN": 11,
-      "resolutionReason": "not enough data yet",
-      "redditRatePct": 0.0,
-      "redditN": 0,
-      "hasWorkaround": false,
-      "sampleQuote": "“fast delivery, easy returns, nice quality.”",
-      "opportunityScore": 2.58,
-      "quadrant": {
-        "label": "CRITICAL",
-        "tier": "serious"
-      },
-      "totalVolume": 11,
-      "confidence": {
-        "score": 84,
-        "label": "Strong",
-        "mix": {
-          "high": 8,
-          "medium": 1,
-          "low": 2
-        }
-      },
-      "workarounds": [],
-      "outcomeMix": {
-        "counts": {
-          "satisfied": 7
-        },
-        "coveredN": 7,
-        "ofN": 11
-      },
-      "intentMix": {
-        "buy-intent": 6,
-        "not-determinable": 5
-      },
-      "evidence": [
-        {
-          "source": "playstore_review",
-          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=fc2a8a01-c07b-4491-8015-29e3de7d0857",
-          "date": "2026-08-17T17:33:38",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "fast delivery, easy returns, nice quality.",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
         },
         {
           "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14437444442",
-          "date": "2026-08-16T21:52:09-07:00",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14436029149",
+          "date": "2026-08-16T12:41:24-07:00",
           "subreddit": null,
           "lens": "retrospective",
-          "quote": "Worth buying!",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "unclear",
-          "blocker": null,
-          "workaround": null,
-          "resolutionReason": null
-        },
-        {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14437905658",
-          "date": "2026-08-17T01:12:35-07:00",
-          "subreddit": null,
-          "lens": "retrospective",
-          "quote": "Ordered kids dresses and got it delivered superfast. Excellent service",
-          "confidence": "high",
+          "quote": "Very best quality tops",
+          "confidence": "low",
           "intentSignal": "buy-intent",
           "productCategory": "apparel",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
         },
         {
           "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14435672606",
-          "date": "2026-08-16T10:46:22-07:00",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14437673498",
+          "date": "2026-08-16T23:33:17-07:00",
           "subreddit": null,
           "lens": "retrospective",
-          "quote": "Smooth interface , great range of products and Fast delivery ❤️",
+          "quote": "It has a good quality",
+          "confidence": "low",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14439006336",
+          "date": "2026-08-17T07:29:20-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Value for money .. good product quality",
+          "confidence": "low",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 4
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434981034",
+          "date": "2026-08-16T07:25:52-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Good quality greatest good material",
+          "confidence": "low",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14439058711",
+          "date": "2026-08-17T07:44:09-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Every brand is available and authentic. Lot of variety to select.",
+          "confidence": "low",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14435306753",
+          "date": "2026-08-16T08:57:28-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Good and authenticity is really good here",
+          "confidence": "low",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=fe8f8e95-83a7-47da-9be0-6908e65ca628",
+          "date": "2026-08-13T17:14:41",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "products are good, but Myntracash is a type of fraud",
+          "confidence": "low",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": false,
+          "rating": 3
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14438191049",
+          "date": "2026-08-17T03:07:37-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Under budget best quality",
+          "confidence": "low",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434020031",
+          "date": "2026-08-16T01:54:46-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Good quality stylish sandals can wear on ethnic and casual both",
+          "confidence": "low",
+          "intentSignal": "not-determinable",
+          "productCategory": "footwear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        }
+      ],
+      "_scoreDimensions": {
+        "frequency": 4.6,
+        "severity": 5.0,
+        "intentQuality": 2.6,
+        "resolutionLeverage": 3.0,
+        "addressability": 4.0
+      }
+    },
+    {
+      "area": "Delivery reliability and service experience",
+      "appPlayRatePct": 2.8,
+      "appPlayN": 33,
+      "resolutionReason": "not enough data yet",
+      "redditRatePct": 0.0,
+      "redditN": 0,
+      "hasWorkaround": true,
+      "sampleQuote": "“still ordered trusting myntra and its return policy”",
+      "opportunityScore": 3.7,
+      "quadrant": {
+        "label": "HIGH VOLUME",
+        "tier": "warning"
+      },
+      "totalVolume": 33,
+      "frictionN": 10,
+      "sentimentMix": {
+        "praise": 12,
+        "negative": 18,
+        "neutral": 3,
+        "friction": 10
+      },
+      "confidence": {
+        "score": 83,
+        "label": "Strong",
+        "mix": {
+          "high": 21,
+          "medium": 9,
+          "low": 3
+        }
+      },
+      "workarounds": [
+        "used Google to check price"
+      ],
+      "outcomeMix": {
+        "counts": {
+          "satisfied": 10,
+          "regret": 3,
+          "unclear": 2
+        },
+        "coveredN": 15,
+        "ofN": 33
+      },
+      "intentMix": {
+        "not-determinable": 17,
+        "buy-intent": 16
+      },
+      "evidence": [
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=0232c779-bf13-456a-bd4c-2d6b0dfa142d",
+          "date": "2026-08-21T12:48:06",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "still ordered trusting myntra and its return policy",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": "guess what i was wrong",
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 1
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=edb4e285-2234-412c-9e51-9feb71667d3c",
+          "date": "2026-08-19T21:55:57",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "worst delivery service and worst customer care service , I never recommend anyone to purchase from myntra.",
+          "confidence": "high",
+          "intentSignal": "not-determinable",
+          "productCategory": "apparel",
+          "blocker": "worst delivery service",
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 1
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=a97c3109-ee74-4181-8517-bc2e3ef6d913",
+          "date": "2026-08-21T05:53:25",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "worst Customer care service 😔 and no accountability for sending wrong products wish I could rate them 0 stars",
           "confidence": "high",
           "intentSignal": "not-determinable",
           "productCategory": "unclear",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 1
         },
         {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14437919296",
-          "date": "2026-08-17T01:18:15-07:00",
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=f12489a7-6a4d-46f0-acd5-2c987e12a4aa",
+          "date": "2026-07-17T16:38:15",
           "subreddit": null,
           "lens": "retrospective",
-          "quote": "Awesome product & on time delivery",
+          "quote": "I came to the app to get the Batman backpack I've seen on Instagram",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "accessories",
+          "blocker": "frustrating",
+          "workaround": "used Google to check price",
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 2
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=fdde80c5-aae2-473c-8cbe-4fd30b2cf6f2",
+          "date": "2026-07-29T09:14:54",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "I order and then cancelled immediately the same day, because I got the wrong size.",
           "confidence": "high",
           "intentSignal": "not-determinable",
           "productCategory": "unclear",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": 3
         },
         {
-          "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14430510881",
-          "date": "2026-08-15T05:00:41-07:00",
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=c41b89f7-a935-489b-b884-21cab4956185",
+          "date": "2026-08-21T00:51:14",
           "subreddit": null,
           "lens": "retrospective",
-          "quote": "Awsome collection and on time delivery",
+          "quote": "I booked a product on Myntra around 20 days ago They still do not give delivery",
           "confidence": "high",
           "intentSignal": "buy-intent",
           "productCategory": "unclear",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 1
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=f550ea2a-ef78-4330-95f4-ed0900093de8",
+          "date": "2026-08-19T12:50:13",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "myntra sarvice sabse bekar hai mara order 14 August ko delivered hona tha or aaj 19 august ho gyi hai aaj tak Oder nhi aaya",
+          "confidence": "high",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 1
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=b2cd0a25-01ad-4c7b-a350-ce27470b1efb",
+          "date": "2026-07-17T08:08:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Myntra can be useful if you wanted to buy high end products and high quality brands but if you want to buy from low quality and cheap products",
+          "confidence": "medium",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 2
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=799b1add-5910-4c11-98f9-5e74f497b455",
+          "date": "2026-08-17T18:44:51",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Worst... can't even contact a customer care agent.. and my order was supposed to be delivered on 14th of Aug but till date i.e, 17th Aug I have no update",
+          "confidence": "medium",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 1
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=f5efbe79-dbd4-4099-acdb-79b628d05734",
+          "date": "2026-08-15T18:09:05",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Delivery and costumer support is very baddd worst app I have ever seen for the same I really disappoint 😞 this app",
+          "confidence": "low",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": true,
+          "rating": 2
         },
         {
           "source": "appstore_review",
-          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434243808",
-          "date": "2026-08-16T03:24:58-07:00",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434413634",
+          "date": "2026-08-16T04:29:12-07:00",
           "subreddit": null,
           "lens": "retrospective",
-          "quote": "Fast delivery and good customer support",
+          "quote": "Very nice Products Range, price, comfort, delivery.",
           "confidence": "high",
           "intentSignal": "buy-intent",
           "productCategory": "unclear",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
         },
         {
           "source": "appstore_review",
@@ -924,35 +904,333 @@
           "productCategory": "unclear",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433605440",
+          "date": "2026-08-15T23:00:03-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Nice quality and service",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14437444442",
+          "date": "2026-08-16T21:52:09-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Worth buying!",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
         },
         {
           "source": "playstore_review",
-          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=545bcddf-4648-4619-93ab-dc05d8b3b20e",
-          "date": "2026-08-17T22:10:29",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=fc2a8a01-c07b-4491-8015-29e3de7d0857",
+          "date": "2026-08-17T17:33:38",
           "subreddit": null,
           "lens": "retrospective",
-          "quote": "I have been refused an exchange delivery because the delivery partner said that the dress does not have a brand tag intact with it.",
-          "confidence": "medium",
+          "quote": "fast delivery, easy returns, nice quality.",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434243808",
+          "date": "2026-08-16T03:24:58-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Fast delivery and good customer support",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14430510881",
+          "date": "2026-08-15T05:00:41-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Awsome collection and on time delivery",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=c3735bc2-e469-4a08-ac44-38d71a438c97",
+          "date": "2026-08-17T03:33:28",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "good app but sometimes delivery let and delivery person behavior is not good",
+          "confidence": "high",
           "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": false,
+          "rating": 2
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14435672606",
+          "date": "2026-08-16T10:46:22-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Smooth interface , great range of products and Fast delivery ❤️",
+          "confidence": "high",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14437919296",
+          "date": "2026-08-17T01:18:15-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Awesome product & on time delivery",
+          "confidence": "high",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=0ae693b2-efb9-417c-bd82-6f99366ec56e",
+          "date": "2026-07-28T14:54:24",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "6 out of 10 returns have ordered sketchers sandals on 14th June 2026, till date (28 July) not received.",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "footwear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": false,
+          "rating": 3
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=e92db1c4-24c0-4014-9988-d5d250d55210",
+          "date": "2026-08-21T14:48:32",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "I ordered one eight shoes and received damaged product and they are saying that the only way around is return and there is no exchange or compensation",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "footwear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": false,
+          "rating": 1
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14428798550",
+          "date": "2026-08-14T17:44:57-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Myntra is my place to shop.",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14437905658",
+          "date": "2026-08-17T01:12:35-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Ordered kids dresses and got it delivered superfast. Excellent service",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
           "productCategory": "apparel",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
         },
         {
           "source": "playstore_review",
-          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=029d8c8e-abce-4320-b1c8-7d8eec81ef1f",
-          "date": "2026-08-17T21:41:25",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=ec3a3834-4d5c-4e09-a77a-f796b4de5bc5",
+          "date": "2026-08-21T10:58:11",
           "subreddit": null,
           "lens": "retrospective",
-          "quote": "always delay all orders for more then 15 days to 1 month.",
-          "confidence": "low",
+          "quote": "worst app ever. always cancelled my order after wasting my important time , the customer service is totally worse.",
+          "confidence": "medium",
           "intentSignal": "not-determinable",
           "productCategory": "unclear",
-          "blocker": "always delay all orders for more then 15 days to 1 month.",
+          "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": false,
+          "rating": 1
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=72579184-9ba4-44a8-9a71-6deb08d00a85",
+          "date": "2026-08-19T12:21:53",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "worst app ever whenever I order something it gets delay every time for 3-4 days more",
+          "confidence": "medium",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": false,
+          "rating": 1
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=4732baad-2859-47ad-bae4-4196a9aa2c0a",
+          "date": "2026-07-27T21:41:51",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "the quality of products is so good but recently ... they are cancelling the orders ... that's the reason I am giving only 3 stars",
+          "confidence": "medium",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": false,
+          "rating": 3
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=2ba33c93-5bd5-4e84-9cb3-8eaf4d9e83bf",
+          "date": "2026-08-20T14:39:22",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Quality is really very good service is very bad compare to other online shopping site I chat or discuss with myntra can not give delivery as per promise date",
+          "confidence": "medium",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": false,
+          "rating": 1
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=01827e68-7e62-4421-b1a8-cb39bdf4dd89",
+          "date": "2026-08-17T18:38:48",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "The service is very slow. I have placed three orders recently, but Myntra cancelled them and cannot deliver on time.",
+          "confidence": "medium",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": false,
+          "rating": 1
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=b9c691d8-15c5-46dd-b46c-8671e3ca03da",
+          "date": "2026-08-06T18:59:20",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "i have been using Myntra years and suddenly I don't know what's the issue they are not delivering orders on time and then they are cancelling the same order",
+          "confidence": "medium",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": false,
+          "rating": 2
+        },
+        {
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=7d411be1-2f53-47b7-8157-ef2bc626f9cb",
+          "date": "2026-08-21T16:54:28",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "I haven't got refund when I checked my yono bank statement. you have refunded only for one product and you haven't for another item.",
+          "confidence": "medium",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": false,
+          "rating": 1
         },
         {
           "source": "appstore_review",
@@ -966,121 +1244,59 @@
           "productCategory": "apparel",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
-        }
-      ],
-      "_scoreDimensions": {
-        "frequency": 3.0,
-        "severity": 3.0,
-        "intentQuality": 3.18,
-        "resolutionLeverage": 1.0,
-        "addressability": 4.0
-      }
-    },
-    {
-      "area": "Styling & Versatility",
-      "appPlayRatePct": 0.0,
-      "appPlayN": 0,
-      "resolutionReason": "not enough data yet",
-      "redditRatePct": 8.1,
-      "redditN": 3,
-      "hasWorkaround": true,
-      "sampleQuote": "“my cart goes from 12 items to 3 items”",
-      "opportunityScore": 2.36,
-      "quadrant": {
-        "label": "HIGH INTENT",
-        "tier": "warning"
-      },
-      "totalVolume": 3,
-      "confidence": {
-        "score": 87,
-        "label": "Strong",
-        "mix": {
-          "high": 2,
-          "medium": 1,
-          "low": 0
-        }
-      },
-      "workarounds": [
-        "applies a concrete rule before buying: if the item can't be combined into at least 4 different outfits using clothes already owned, it gets removed from the cart/wishlist",
-        "now checks whether a saved item can be styled at least two ordinary, non-special-occasion ways before buying it",
-        "treats the checkout screen itself as a forced deliberation step, deliberately trimming the cart down before paying rather than deciding at add-to-cart time"
-      ],
-      "outcomeMix": {
-        "counts": {},
-        "coveredN": 0,
-        "ofN": 0
-      },
-      "intentMix": {
-        "buy-intent": 3
-      },
-      "evidence": [
-        {
-          "source": "reddit_post",
-          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1v1wlcg/do_you_also_remove_half_your_cart_right_before/",
-          "date": "2026-07-21",
-          "subreddit": "IndianFashionAddicts",
-          "lens": "prospective",
-          "quote": "my cart goes from 12 items to 3 items",
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "apparel",
-          "blocker": "adds items to cart with real intent, then at checkout re-evaluates each one against actual planned occasions and removes most of them",
-          "workaround": "treats the checkout screen itself as a forced deliberation step, deliberately trimming the cart down before paying rather than deciding at add-to-cart time",
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
         },
         {
-          "source": "reddit_comment",
-          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1umsu9n/do_people_actually_buy_clothes_for_their_real/#by-mihikittyHoarder",
-          "date": "2026-07-18",
-          "subreddit": "IndianFashionAddicts",
-          "lens": "prospective",
-          "quote": null,
-          "confidence": "high",
-          "intentSignal": "buy-intent",
-          "productCategory": "apparel",
+          "source": "playstore_review",
+          "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewId=7c84660d-f780-4ec0-9d14-4b87c640467e",
+          "date": "2026-08-19T14:17:54",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "delivery is always delivered delayed and cancel themselves and say that the order is cancelled for unwanted reasons",
+          "confidence": "low",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
           "blocker": null,
-          "workaround": "applies a concrete rule before buying: if the item can't be combined into at least 4 different outfits using clothes already owned, it gets removed from the cart/wishlist",
-          "resolutionReason": "the outfit-count threshold is the deciding test, not a subjective feeling"
-        },
-        {
-          "source": "reddit_comment",
-          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1umsu9n/do_people_actually_buy_clothes_for_their_real/#by-Interesting_Talk7144",
-          "date": "2026-07-18",
-          "subreddit": "IndianFashionAddicts",
-          "lens": "prospective",
-          "quote": "style the same thing in at least two normal ways",
-          "confidence": "medium",
-          "intentSignal": "buy-intent",
-          "productCategory": "apparel",
-          "blocker": "used to save items for a specific imagined occasion (vacation, nice dinner) that often wasn't actually planned",
-          "workaround": "now checks whether a saved item can be styled at least two ordinary, non-special-occasion ways before buying it",
-          "resolutionReason": null
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "negative",
+          "isFriction": false,
+          "rating": 1
         }
       ],
       "_scoreDimensions": {
-        "frequency": 1.22,
-        "severity": 3.0,
-        "intentQuality": 5.0,
-        "resolutionLeverage": 1.0,
+        "frequency": 5.0,
+        "severity": 3.91,
+        "intentQuality": 2.94,
+        "resolutionLeverage": 3.0,
         "addressability": 4.0
       }
     },
     {
-      "area": "Reviews & Trust Signals",
+      "area": "Reviews and product information trust",
       "appPlayRatePct": 0.0,
       "appPlayN": 0,
       "resolutionReason": "not enough data yet",
       "redditRatePct": 5.4,
       "redditN": 2,
       "hasWorkaround": true,
-      "sampleQuote": "“my cart goes from 12 items to 3 items”",
-      "opportunityScore": 2.27,
+      "sampleQuote": "“cost per wear beats cuteness”",
+      "opportunityScore": 2.55,
       "quadrant": {
         "label": "HIGH INTENT",
         "tier": "warning"
       },
       "totalVolume": 2,
+      "frictionN": 2,
+      "sentimentMix": {
+        "praise": 0,
+        "negative": 0,
+        "neutral": 2,
+        "friction": 2
+      },
       "confidence": {
         "score": 100,
         "label": "Strong",
@@ -1104,6 +1320,23 @@
       },
       "evidence": [
         {
+          "source": "reddit_comment",
+          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1v1wlcg/do_you_also_remove_half_your_cart_right_before/#by-AssignmentEnough639",
+          "date": "2026-07-21",
+          "subreddit": "IndianFashionAddicts",
+          "lens": "prospective",
+          "quote": "cost per wear beats cuteness",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "apparel",
+          "blocker": null,
+          "workaround": "sorts reviews by newest and only trusts ones with customer photos rather than the aggregate star rating (reasoning: fabric quality drifts between production batches); sleeps on borderline items overnight as a final filter",
+          "resolutionReason": "an item that's still remembered/wanted the next day is judged worth buying; the overnight gap functions as the actual decision mechanism",
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
+        },
+        {
           "source": "reddit_post",
           "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1v1wlcg/do_you_also_remove_half_your_cart_right_before/",
           "date": "2026-07-21",
@@ -1115,8 +1348,65 @@
           "productCategory": "apparel",
           "blocker": "adds items to cart with real intent, then at checkout re-evaluates each one against actual planned occasions and removes most of them",
           "workaround": "treats the checkout screen itself as a forced deliberation step, deliberately trimming the cart down before paying rather than deciding at add-to-cart time",
-          "resolutionReason": null
-        },
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
+        }
+      ],
+      "_scoreDimensions": {
+        "frequency": 1.8,
+        "severity": 1.0,
+        "intentQuality": 5.0,
+        "resolutionLeverage": 3.0,
+        "addressability": 4.0
+      }
+    },
+    {
+      "area": "Deliberation and cart management tactics",
+      "appPlayRatePct": 0.0,
+      "appPlayN": 0,
+      "resolutionReason": "not enough data yet",
+      "redditRatePct": 10.8,
+      "redditN": 4,
+      "hasWorkaround": true,
+      "sampleQuote": "“cost per wear beats cuteness”",
+      "opportunityScore": 2.54,
+      "quadrant": {
+        "label": "HIGH INTENT",
+        "tier": "warning"
+      },
+      "totalVolume": 4,
+      "frictionN": 3,
+      "sentimentMix": {
+        "praise": 0,
+        "negative": 0,
+        "neutral": 4,
+        "friction": 3
+      },
+      "confidence": {
+        "score": 80,
+        "label": "Strong",
+        "mix": {
+          "high": 2,
+          "medium": 2,
+          "low": 0
+        }
+      },
+      "workarounds": [
+        "sorts reviews by newest and only trusts ones with customer photos rather than the aggregate star rating (reasoning: fabric quality drifts between production batches); sleeps on borderline items overnight as a final filter",
+        "treats the checkout screen itself as a forced deliberation step, deliberately trimming the cart down before paying rather than deciding at add-to-cart time"
+      ],
+      "outcomeMix": {
+        "counts": {},
+        "coveredN": 0,
+        "ofN": 0
+      },
+      "intentMix": {
+        "save-for-later": 1,
+        "buy-intent": 3
+      },
+      "evidence": [
         {
           "source": "reddit_comment",
           "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1v1wlcg/do_you_also_remove_half_your_cart_right_before/#by-AssignmentEnough639",
@@ -1129,19 +1419,452 @@
           "productCategory": "apparel",
           "blocker": null,
           "workaround": "sorts reviews by newest and only trusts ones with customer photos rather than the aggregate star rating (reasoning: fabric quality drifts between production batches); sleeps on borderline items overnight as a final filter",
-          "resolutionReason": "an item that's still remembered/wanted the next day is judged worth buying; the overnight gap functions as the actual decision mechanism"
+          "resolutionReason": "an item that's still remembered/wanted the next day is judged worth buying; the overnight gap functions as the actual decision mechanism",
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
+        },
+        {
+          "source": "reddit_post",
+          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1v1wlcg/do_you_also_remove_half_your_cart_right_before/",
+          "date": "2026-07-21",
+          "subreddit": "IndianFashionAddicts",
+          "lens": "prospective",
+          "quote": "my cart goes from 12 items to 3 items",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "apparel",
+          "blocker": "adds items to cart with real intent, then at checkout re-evaluates each one against actual planned occasions and removes most of them",
+          "workaround": "treats the checkout screen itself as a forced deliberation step, deliberately trimming the cart down before paying rather than deciding at add-to-cart time",
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
+        },
+        {
+          "source": "reddit_comment",
+          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1v1wlcg/do_you_also_remove_half_your_cart_right_before/#by-Objective-Isopod5443",
+          "date": "2026-07-21",
+          "subreddit": "IndianFashionAddicts",
+          "lens": "prospective",
+          "quote": "let it marinate while I overthink",
+          "confidence": "medium",
+          "intentSignal": "save-for-later",
+          "productCategory": "apparel",
+          "blocker": "leaves items in cart to think it over, and a meaningful share of the time the decision never actually gets made",
+          "workaround": null,
+          "resolutionReason": "passive resolution — the item goes out of stock, or the user simply backs out, rather than an active decision either way",
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
+        },
+        {
+          "source": "reddit_comment",
+          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1v1wlcg/do_you_also_remove_half_your_cart_right_before/#by-DeliberatelyInsane",
+          "date": "2026-07-21",
+          "subreddit": "IndianFashionAddicts",
+          "lens": "prospective",
+          "quote": null,
+          "confidence": "medium",
+          "intentSignal": "buy-intent",
+          "productCategory": "apparel",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": false,
+          "rating": null
         }
       ],
       "_scoreDimensions": {
-        "frequency": 1.0,
-        "severity": 3.0,
-        "intentQuality": 5.0,
-        "resolutionLeverage": 1.0,
+        "frequency": 2.2,
+        "severity": 1.0,
+        "intentQuality": 4.0,
+        "resolutionLeverage": 3.0,
         "addressability": 4.0
       }
     },
     {
-      "area": "Wishlist Capacity Limits",
+      "area": "Occasion‑driven styling intent",
+      "appPlayRatePct": 0.0,
+      "appPlayN": 0,
+      "resolutionReason": "not enough data yet",
+      "redditRatePct": 10.8,
+      "redditN": 4,
+      "hasWorkaround": true,
+      "sampleQuote": "“my cart goes from 12 items to 3 items”",
+      "opportunityScore": 2.48,
+      "quadrant": {
+        "label": "MONITOR",
+        "tier": "neutral"
+      },
+      "totalVolume": 4,
+      "frictionN": 4,
+      "sentimentMix": {
+        "praise": 0,
+        "negative": 0,
+        "neutral": 4,
+        "friction": 4
+      },
+      "confidence": {
+        "score": 90,
+        "label": "Strong",
+        "mix": {
+          "high": 3,
+          "medium": 1,
+          "low": 0
+        }
+      },
+      "workarounds": [
+        "applies a concrete rule before buying: if the item can't be combined into at least 4 different outfits using clothes already owned, it gets removed from the cart/wishlist",
+        "treats the checkout screen itself as a forced deliberation step, deliberately trimming the cart down before paying rather than deciding at add-to-cart time"
+      ],
+      "outcomeMix": {
+        "counts": {},
+        "coveredN": 0,
+        "ofN": 0
+      },
+      "intentMix": {
+        "buy-intent": 2,
+        "save-for-later": 2
+      },
+      "evidence": [
+        {
+          "source": "reddit_comment",
+          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1umsu9n/do_people_actually_buy_clothes_for_their_real/#by-mihikittyHoarder",
+          "date": "2026-07-18",
+          "subreddit": "IndianFashionAddicts",
+          "lens": "prospective",
+          "quote": null,
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "apparel",
+          "blocker": null,
+          "workaround": "applies a concrete rule before buying: if the item can't be combined into at least 4 different outfits using clothes already owned, it gets removed from the cart/wishlist",
+          "resolutionReason": "the outfit-count threshold is the deciding test, not a subjective feeling",
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
+        },
+        {
+          "source": "reddit_post",
+          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1v1wlcg/do_you_also_remove_half_your_cart_right_before/",
+          "date": "2026-07-21",
+          "subreddit": "IndianFashionAddicts",
+          "lens": "prospective",
+          "quote": "my cart goes from 12 items to 3 items",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "apparel",
+          "blocker": "adds items to cart with real intent, then at checkout re-evaluates each one against actual planned occasions and removes most of them",
+          "workaround": "treats the checkout screen itself as a forced deliberation step, deliberately trimming the cart down before paying rather than deciding at add-to-cart time",
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
+        },
+        {
+          "source": "reddit_post",
+          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1umsu9n/do_people_actually_buy_clothes_for_their_real/",
+          "date": "2026-07-18",
+          "subreddit": "IndianFashionAddicts",
+          "lens": "prospective",
+          "quote": "half the clothes I save are not for anything I actually have planned",
+          "confidence": "high",
+          "intentSignal": "save-for-later",
+          "productCategory": "apparel",
+          "blocker": "on reviewing the wishlist later, realizes most saved items don't map to anything actually scheduled",
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
+        },
+        {
+          "source": "reddit_comment",
+          "sourceUrl": "https://old.reddit.com/r/IndianFashionAddicts/comments/1v1wlcg/do_you_also_remove_half_your_cart_right_before/#by-Objective-Isopod5443",
+          "date": "2026-07-21",
+          "subreddit": "IndianFashionAddicts",
+          "lens": "prospective",
+          "quote": "let it marinate while I overthink",
+          "confidence": "medium",
+          "intentSignal": "save-for-later",
+          "productCategory": "apparel",
+          "blocker": "leaves items in cart to think it over, and a meaningful share of the time the decision never actually gets made",
+          "workaround": null,
+          "resolutionReason": "passive resolution — the item goes out of stock, or the user simply backs out, rather than an active decision either way",
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
+        }
+      ],
+      "_scoreDimensions": {
+        "frequency": 2.6,
+        "severity": 1.0,
+        "intentQuality": 3.0,
+        "resolutionLeverage": 3.0,
+        "addressability": 4.0
+      }
+    },
+    {
+      "area": "Fit and comfort considerations",
+      "appPlayRatePct": 1.0,
+      "appPlayN": 12,
+      "resolutionReason": "not enough data yet",
+      "redditRatePct": 0.0,
+      "redditN": 0,
+      "hasWorkaround": false,
+      "sampleQuote": "“Good fabric, great fitting worth the money”",
+      "opportunityScore": 2.05,
+      "quadrant": {
+        "label": "MONITOR",
+        "tier": "neutral"
+      },
+      "totalVolume": 12,
+      "frictionN": 0,
+      "sentimentMix": {
+        "praise": 12,
+        "negative": 0,
+        "neutral": 0,
+        "friction": 0
+      },
+      "confidence": {
+        "score": 97,
+        "label": "Strong",
+        "mix": {
+          "high": 11,
+          "medium": 1,
+          "low": 0
+        }
+      },
+      "workarounds": [],
+      "outcomeMix": {
+        "counts": {
+          "satisfied": 12
+        },
+        "coveredN": 12,
+        "ofN": 12
+      },
+      "intentMix": {
+        "not-determinable": 6,
+        "buy-intent": 6
+      },
+      "evidence": [
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433805857",
+          "date": "2026-08-16T00:26:36-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Good fabric, great fitting worth the money",
+          "confidence": "high",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14430265714",
+          "date": "2026-08-15T03:33:13-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Very comfort and beautiful",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433615920",
+          "date": "2026-08-15T23:04:39-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Very light weight and comfortable",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 4
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14430313496",
+          "date": "2026-08-15T03:51:12-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Very nice and original product with light wait as well as great fitting thanks Myntra",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434339393",
+          "date": "2026-08-16T04:01:52-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Easy breezy and comfortable and soft fabric",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433845068",
+          "date": "2026-08-16T00:42:58-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Must buy this suit Luxury Embellished Comfortable 10/10",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "apparel",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434302923",
+          "date": "2026-08-16T03:47:57-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Looking good, fabric good, very comfortable nd classy",
+          "confidence": "high",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433932418",
+          "date": "2026-08-16T01:19:17-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Very good fitting and classy look",
+          "confidence": "high",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14431442257",
+          "date": "2026-08-15T09:30:02-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Lovely design and very comfortable, fabric and color is also good",
+          "confidence": "high",
+          "intentSignal": "not-determinable",
+          "productCategory": "apparel",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434413634",
+          "date": "2026-08-16T04:29:12-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Very nice Products Range, price, comfort, delivery.",
+          "confidence": "high",
+          "intentSignal": "buy-intent",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14434359005",
+          "date": "2026-08-16T04:09:16-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "it’s very comfortable and it’s fabric are so good when i wear this t-shirt feel cool",
+          "confidence": "high",
+          "intentSignal": "not-determinable",
+          "productCategory": "apparel",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 4
+        },
+        {
+          "source": "appstore_review",
+          "sourceUrl": "https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059?see-all=reviews#review-14433796941",
+          "date": "2026-08-16T00:22:51-07:00",
+          "subreddit": null,
+          "lens": "retrospective",
+          "quote": "Very good good fitting good fabric",
+          "confidence": "medium",
+          "intentSignal": "not-determinable",
+          "productCategory": "unclear",
+          "blocker": null,
+          "workaround": null,
+          "resolutionReason": null,
+          "sentiment": "praise",
+          "isFriction": false,
+          "rating": 5
+        }
+      ],
+      "_scoreDimensions": {
+        "frequency": 1.0,
+        "severity": 1.0,
+        "intentQuality": 3.0,
+        "resolutionLeverage": 3.0,
+        "addressability": 4.0
+      }
+    },
+    {
+      "area": "Wishlist capacity limits",
       "appPlayRatePct": 0.0,
       "appPlayN": 0,
       "resolutionReason": "not enough data yet",
@@ -1149,12 +1872,19 @@
       "redditN": 3,
       "hasWorkaround": true,
       "sampleQuote": "“have to go there and remove some products to keep wishlisting”",
-      "opportunityScore": 1.71,
+      "opportunityScore": 1.85,
       "quadrant": {
         "label": "MONITOR",
         "tier": "neutral"
       },
       "totalVolume": 3,
+      "frictionN": 2,
+      "sentimentMix": {
+        "praise": 0,
+        "negative": 0,
+        "neutral": 3,
+        "friction": 2
+      },
       "confidence": {
         "score": 73,
         "label": "Medium",
@@ -1173,8 +1903,8 @@
         "ofN": 0
       },
       "intentMix": {
-        "save-for-later": 2,
-        "not-determinable": 1
+        "not-determinable": 1,
+        "save-for-later": 2
       },
       "evidence": [
         {
@@ -1189,7 +1919,10 @@
           "productCategory": "apparel",
           "blocker": "the 1000-product wishlist limit",
           "workaround": "manually deletes older wishlist items specifically to free up room to save new ones",
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
         },
         {
           "source": "reddit_post",
@@ -1203,7 +1936,10 @@
           "productCategory": "apparel",
           "blocker": "hit an undisclosed wishlist item cap and can no longer add new items without first removing old ones",
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": true,
+          "rating": null
         },
         {
           "source": "reddit_comment",
@@ -1217,14 +1953,17 @@
           "productCategory": "apparel",
           "blocker": null,
           "workaround": null,
-          "resolutionReason": null
+          "resolutionReason": null,
+          "sentiment": "neutral",
+          "isFriction": false,
+          "rating": null
         }
       ],
       "_scoreDimensions": {
-        "frequency": 1.22,
-        "severity": 3.0,
+        "frequency": 1.8,
+        "severity": 1.0,
         "intentQuality": 1.0,
-        "resolutionLeverage": 1.0,
+        "resolutionLeverage": 3.0,
         "addressability": 4.0
       }
     }
@@ -1232,10 +1971,10 @@
   "questionCoverageRows": [
     {
       "question": "1. Why do users add products to their wishlist?",
-      "finding": "save_motivation captured in 7/597 extractions",
-      "n": "597",
-      "present": 7,
-      "coveragePct": 1.2,
+      "finding": "save_motivation captured in 8/1234 extractions",
+      "n": "1234",
+      "present": 8,
+      "coveragePct": 0.6,
       "confidence": "Weak",
       "answeredBy": "Engine + Interviews",
       "fields": [
@@ -1268,15 +2007,15 @@
           "field": "save_motivation"
         }
       ],
-      "blocker": "Fires on 7/37 Reddit records (19%) vs 0/560 App/Play (0%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
+      "blocker": "Fires on 7/37 Reddit records (19%) vs 1/1197 App/Play (0%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
     },
     {
       "question": "2. What prevents wishlisted products from being purchased?",
-      "finding": "blocker/hesitation signal present in 32/597 extractions",
-      "n": "597",
-      "present": 32,
-      "coveragePct": 5.4,
-      "confidence": "Medium",
+      "finding": "blocker/hesitation signal present in 52/1234 extractions",
+      "n": "1234",
+      "present": 52,
+      "coveragePct": 4.2,
+      "confidence": "Weak",
       "answeredBy": "Engine",
       "fields": [
         "current_blocker_freeform",
@@ -1309,15 +2048,15 @@
           "field": "current_blocker_freeform"
         }
       ],
-      "blocker": "Fires on 26/37 Reddit records (70%) vs 6/560 App/Play (1%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
+      "blocker": "Fires on 26/37 Reddit records (70%) vs 26/1197 App/Play (2%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
     },
     {
       "question": "3. What uncertainties remain after finding a product they like?",
-      "finding": "blocker/hesitation signal present in 32/597 extractions",
-      "n": "597",
-      "present": 32,
-      "coveragePct": 5.4,
-      "confidence": "Medium",
+      "finding": "blocker/hesitation signal present in 52/1234 extractions",
+      "n": "1234",
+      "present": 52,
+      "coveragePct": 4.2,
+      "confidence": "Weak",
       "answeredBy": "Engine",
       "fields": [
         "current_blocker_freeform",
@@ -1350,14 +2089,14 @@
           "field": "current_blocker_freeform"
         }
       ],
-      "blocker": "Fires on 26/37 Reddit records (70%) vs 6/560 App/Play (1%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
+      "blocker": "Fires on 26/37 Reddit records (70%) vs 26/1197 App/Play (2%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
     },
     {
       "question": "4. What causes users to postpone a purchase?",
-      "finding": "delay/deferral signal present in 17/597 extractions",
-      "n": "597",
-      "present": 17,
-      "coveragePct": 2.8,
+      "finding": "delay/deferral signal present in 60/1234 extractions",
+      "n": "1234",
+      "present": 60,
+      "coveragePct": 4.9,
       "confidence": "Weak",
       "answeredBy": "Engine + Interviews",
       "fields": [
@@ -1391,14 +2130,14 @@
           "field": "deferral_trigger"
         }
       ],
-      "blocker": "Only 8/560 App/Play (1%) and 9/37 Reddit (24%) mention it — rare in public text at any volume, by design handed to interviews rather than the engine."
+      "blocker": "Fires on 9/37 Reddit records (24%) vs 51/1197 App/Play (4%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
     },
     {
       "question": "5. How do users compare multiple shortlisted products?",
-      "finding": "comparison_behavior captured in only 15/597 extractions — rarely narrated in public text as expected",
-      "n": "597",
-      "present": 15,
-      "coveragePct": 2.5,
+      "finding": "comparison_behavior captured in 23/1234 extractions",
+      "n": "1234",
+      "present": 23,
+      "coveragePct": 1.9,
       "confidence": "Weak",
       "answeredBy": "Interviews",
       "fields": [
@@ -1431,14 +2170,14 @@
           "field": "comparison_behavior"
         }
       ],
-      "blocker": "Only 4/560 App/Play (1%) and 11/37 Reddit (30%) mention it — rare in public text at any volume, by design handed to interviews rather than the engine."
+      "blocker": "Fires on 11/37 Reddit records (30%) vs 12/1197 App/Play (1%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
     },
     {
       "question": "6. What information do users seek outside Myntra?",
-      "finding": "offsite_research captured in 10/597 extractions",
-      "n": "597",
-      "present": 10,
-      "coveragePct": 1.7,
+      "finding": "offsite_research captured in 13/1234 extractions",
+      "n": "1234",
+      "present": 13,
+      "coveragePct": 1.1,
       "confidence": "Weak",
       "answeredBy": "Engine",
       "fields": [
@@ -1471,13 +2210,13 @@
           "field": "offsite_research"
         }
       ],
-      "blocker": "Fires on 10/37 Reddit records (27%) vs 0/560 App/Play (0%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
+      "blocker": "Fires on 10/37 Reddit records (27%) vs 3/1197 App/Play (0%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
     },
     {
       "question": "7. Role of fit, size, styling, price, reviews, occasion, social validation",
-      "finding": "7 themes identified, 45 phrases mapped to the 7 factors + emergent bucket",
-      "n": "45",
-      "present": 45,
+      "finding": "7 themes identified, 56 phrases mapped to the 7 factors + emergent bucket",
+      "n": "56",
+      "present": 56,
       "coveragePct": 100.0,
       "confidence": "Strong",
       "answeredBy": "Engine",
@@ -1487,7 +2226,17 @@
       "insights": [
         {
           "phrase": "quality",
-          "count": 6,
+          "count": 12,
+          "field": "decision_factors"
+        },
+        {
+          "phrase": "price",
+          "count": 9,
+          "field": "decision_factors"
+        },
+        {
+          "phrase": "delivery delay",
+          "count": 7,
           "field": "decision_factors"
         },
         {
@@ -1496,17 +2245,7 @@
           "field": "decision_factors"
         },
         {
-          "phrase": "authenticity",
-          "count": 3,
-          "field": "decision_factors"
-        },
-        {
-          "phrase": "value for money",
-          "count": 3,
-          "field": "decision_factors"
-        },
-        {
-          "phrase": "on time delivery",
+          "phrase": "orders cancelled",
           "count": 3,
           "field": "decision_factors"
         }
@@ -1515,10 +2254,10 @@
     },
     {
       "question": "8. Genuine purchase intent vs. bookmarking?",
-      "finding": "intent_signal resolved (buy-intent or save-for-later, not not-determinable) in 140/597 extractions",
-      "n": "597",
-      "present": 140,
-      "coveragePct": 23.5,
+      "finding": "intent_signal resolved (buy-intent or save-for-later, not not-determinable) in 234/1234 extractions",
+      "n": "1234",
+      "present": 234,
+      "coveragePct": 19.0,
       "confidence": "Strong",
       "answeredBy": "Engine + Interviews",
       "fields": [
@@ -1529,24 +2268,24 @@
     },
     {
       "question": "9. How do behaviours differ across segments?",
-      "finding": "segment_signal captured in only 10/597 extractions — attributes rarely stated in public text as expected",
-      "n": "597",
-      "present": 10,
-      "coveragePct": 1.7,
+      "finding": "segment_signal captured in 18/1234 extractions",
+      "n": "1234",
+      "present": 18,
+      "coveragePct": 1.5,
       "confidence": "Weak",
       "answeredBy": "Interviews",
       "fields": [
         "segment_signal"
       ],
       "insights": [],
-      "blocker": "Fires on 7/37 Reddit records (19%) vs 3/560 App/Play (1%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
+      "blocker": "Fires on 7/37 Reddit records (19%) vs 11/1197 App/Play (1%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
     },
     {
       "question": "10. What unmet needs emerge consistently?",
-      "finding": "workaround captured in 14/597 extractions",
-      "n": "597",
-      "present": 14,
-      "coveragePct": 2.3,
+      "finding": "workaround captured in 19/1234 extractions",
+      "n": "1234",
+      "present": 19,
+      "coveragePct": 1.5,
       "confidence": "Weak",
       "answeredBy": "Engine",
       "fields": [
@@ -1579,23 +2318,23 @@
           "field": "workaround"
         }
       ],
-      "blocker": "Fires on 13/37 Reddit records (35%) vs 1/560 App/Play (0%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
+      "blocker": "Fires on 13/37 Reddit records (35%) vs 6/1197 App/Play (1%) — the signal is real, it's just capped by Reddit corpus size (37 records total), not missing text."
     }
   ],
   "pipelineFunnel": [
     {
       "stage": "Collected",
-      "n": 737,
-      "note": "200 Play Store + 500 App Store (Apple caps its feed at 500) + 37 Reddit, hand-extracted since both automated paths are blocked"
+      "n": 1332,
+      "note": "795 Play Store + 500 App Store (Apple caps its feed at 500) + 37 Reddit, hand-extracted since both automated paths are blocked"
     },
     {
       "stage": "Extracted",
-      "n": 597,
+      "n": 1234,
       "note": "LLM freeform extraction, one call per item — the gap to Collected is Groq's 200k-tokens-per-day cap, not failed items; batch-extract is resumable"
     },
     {
       "stage": "Unique phrases",
-      "n": 409,
+      "n": 865,
       "note": "deduped and frequency-counted in plain code, no LLM — most fields are empty on most records by design (§6)"
     },
     {
@@ -1605,7 +2344,7 @@
     },
     {
       "stage": "Mapped to themes",
-      "n": 45,
+      "n": 56,
       "note": "phrases the synthesis call assigned to a named theme; too-generic ones are deliberately left unassigned rather than force-fitted"
     },
     {
@@ -1616,49 +2355,59 @@
   ],
   "decisionFactorBreakdown": [
     {
-      "category": "Quality & Authenticity",
-      "count": 85,
-      "pctOfMentions": 24.6,
-      "examplePhrases": [
-        "quality",
-        "authenticity",
-        "good quality"
-      ]
-    },
-    {
-      "category": "Price & Value",
-      "count": 55,
-      "pctOfMentions": 15.9,
-      "examplePhrases": [
-        "value for money",
-        "price",
-        "best price"
-      ]
-    },
-    {
       "category": "Other",
-      "count": 49,
-      "pctOfMentions": 14.2,
+      "count": 215,
+      "pctOfMentions": 26.9,
       "examplePhrases": [
-        "a delay before purchase",
-        "Myntra is snatching their customer's money",
-        "keeps on repeating same thing without understanding customer problem"
+        "frustration",
+        "products are good",
+        "a delay before purchase"
       ]
     },
     {
       "category": "Service & Support",
-      "count": 44,
+      "count": 144,
+      "pctOfMentions": 18.0,
+      "examplePhrases": [
+        "orders cancelled",
+        "poor customer service",
+        "excellent service"
+      ]
+    },
+    {
+      "category": "Quality & Authenticity",
+      "count": 133,
+      "pctOfMentions": 16.7,
+      "examplePhrases": [
+        "quality",
+        "product quality",
+        "authenticity"
+      ]
+    },
+    {
+      "category": "Price & Value",
+      "count": 101,
       "pctOfMentions": 12.7,
       "examplePhrases": [
-        "excellent service",
-        "unknown customer service DM asking for compensation form",
-        "call not transferred"
+        "price",
+        "value for money",
+        "best price"
+      ]
+    },
+    {
+      "category": "Delivery & Logistics",
+      "count": 83,
+      "pctOfMentions": 10.4,
+      "examplePhrases": [
+        "delivery delay",
+        "fast delivery",
+        "on time delivery"
       ]
     },
     {
       "category": "Fit & Comfort",
-      "count": 33,
-      "pctOfMentions": 9.5,
+      "count": 48,
+      "pctOfMentions": 6.0,
       "examplePhrases": [
         "comfort",
         "comfortable",
@@ -1666,19 +2415,19 @@
       ]
     },
     {
-      "category": "Delivery & Logistics",
-      "count": 29,
-      "pctOfMentions": 8.4,
+      "category": "Comparison & Wishlist Behavior",
+      "count": 27,
+      "pctOfMentions": 3.4,
       "examplePhrases": [
-        "fast delivery",
-        "on time delivery",
-        "8 days waiting"
+        "Platform fee",
+        "wishlist capacity limit",
+        "cross-platform comparison of wishlist limits"
       ]
     },
     {
       "category": "Selection & Variety",
-      "count": 21,
-      "pctOfMentions": 6.1,
+      "count": 24,
+      "pctOfMentions": 3.0,
       "examplePhrases": [
         "huge collection of clothes, shoes, accessories, and fashion brands",
         "brand availability",
@@ -1687,33 +2436,23 @@
     },
     {
       "category": "App & Shopping Experience",
-      "count": 20,
-      "pctOfMentions": 5.8,
+      "count": 23,
+      "pctOfMentions": 2.9,
       "examplePhrases": [
         "review recency + customer photos over star rating",
         "not convenient",
         "app is 3rd class"
       ]
-    },
-    {
-      "category": "Comparison & Wishlist Behavior",
-      "count": 10,
-      "pctOfMentions": 2.9,
-      "examplePhrases": [
-        "wishlist capacity limit",
-        "cross-platform comparison of wishlist limits",
-        "reviews"
-      ]
     }
   ],
   "postPurchaseOutcomeSummary": {
     "counts": {
-      "satisfied": 160,
-      "returned": 1,
-      "regret": 12,
-      "unclear": 1
+      "satisfied": 198,
+      "returned": 10,
+      "regret": 67,
+      "unclear": 4
     },
-    "coveredN": 174,
-    "ofN": 560
+    "coveredN": 279,
+    "ofN": 1197
   }
 }

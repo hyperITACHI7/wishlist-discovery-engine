@@ -28,6 +28,47 @@ for d in (RAW_DIR, PILOT_DIR, EXTRACTED_DIR):
 REDDIT_USER_AGENT = os.getenv("REDDIT_USER_AGENT", "discovery-engine-myntra-research/0.1 (student grad project)")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
+
+def _load_groq_keys() -> list[str]:
+    """All available Groq keys, in rotation order (problem_statement.md §23).
+
+    The binding constraint on this project is Groq's 200,000-tokens-per-DAY
+    quota, not a per-minute limit — a full corpus run exhausts one key's
+    daily budget after roughly 200-350 extractions and then sits in an
+    escalating penalty state (retry-after values climbing past 2000s) making
+    effectively zero progress. Rotating to a fresh key at that point is the
+    difference between finishing a run today and waiting for a daily reset.
+
+    IMPORTANT: keys from the SAME Groq account/org share one TPD pool, so a
+    second key generated inside the same account buys nothing. Additional
+    keys must come from separate accounts to actually add budget.
+
+    Accepts either a comma-separated GROQ_API_KEYS, or numbered
+    GROQ_API_KEY_2 / _3 / ... alongside the original GROQ_API_KEY. Duplicates
+    and blanks are dropped, order preserved.
+    """
+    keys: list[str] = []
+    if GROQ_API_KEY:
+        keys.append(GROQ_API_KEY.strip())
+    for raw in (os.getenv("GROQ_API_KEYS") or "").split(","):
+        if raw.strip():
+            keys.append(raw.strip())
+    for n in range(2, 11):
+        val = os.getenv(f"GROQ_API_KEY_{n}")
+        if val and val.strip():
+            keys.append(val.strip())
+    seen: set[str] = set()
+    return [k for k in keys if not (k in seen or seen.add(k))]
+
+
+GROQ_API_KEYS = _load_groq_keys()
+
+# A 429 whose retry-after exceeds this is treated as "this key's daily
+# budget is gone", not "slow down" — the trigger to rotate keys. Per-minute
+# throttling returns single/double-digit seconds; TPD exhaustion returned
+# 1439s, 2054s and 2073s in the 2026-08-23 run.
+GROQ_TPD_RETRY_AFTER_THRESHOLD_SECONDS = 120.0
+
 # --- Model tiering (problem_statement.md Â§10) ---
 # Groq's catalog turns over â€” the original llama-3.1-8b-instant /
 # llama-3.3-70b-versatile picks were both fully retired (404, not just
@@ -90,6 +131,15 @@ PLAYSTORE_APP_ID = "com.myntra.android"  # verify at play.google.com listing URL
 PLAYSTORE_MAX_REVIEWS = 2000
 PLAYSTORE_COUNTRY = "in"
 PLAYSTORE_LANG = "en"
+
+# Critical-review top-up (collectors.playstore_collect.collect_critical,
+# problem_statement.md §22). 3-star is included deliberately: spot-checking
+# the live feed showed 3-star reviews carry some of the most specific
+# friction narratives ("for two consecutive orders they delivered wrong
+# size"), because a mixed experience gets explained where a 1-star rant
+# often just vents. Per-score cap keeps one rating band from dominating.
+PLAYSTORE_CRITICAL_SCORES = (1, 2, 3)
+PLAYSTORE_CRITICAL_PER_SCORE = 200
 
 # Confirmed 2026-08-19 from https://apps.apple.com/in/app/myntra-fashion-shopping-app/id907394059
 APPSTORE_APP_ID: int | None = 907394059

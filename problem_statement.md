@@ -479,3 +479,162 @@ The user reviewed a real primary-research survey (N=28, "How you use wishlists w
 **Not a clean win — verified independently, not just taken from the commit message.** None of the 19 new records surfaced into a named opportunity theme's evidence this round: `synthesize.py` only feeds the top-60 highest-frequency deduped phrases into the synthesis call (`MAX_PHRASES_IN_PROMPT`, §10), and this batch's phrases are paraphrased, mostly-unique sentences (count=1) that lose on raw frequency to short, hundreds-of-times-repeated App/Play phrases like "quality" (count=79 in this corpus). Checked directly against `findings.json`: 0 of 64 evidence records across all 7 opportunity areas trace to any of this batch's 4 new thread IDs. The new records ARE real and DO lift question-coverage fill rates (Q2/Q3 to Medium, §21 above) and the pipeline funnel's collected/extracted counts — they just don't yet appear on the Ranked Opportunity view or its evidence drill-downs. A future synthesis pass with more Reddit volume, or a cutoff that guarantees per-source representation rather than pure frequency, would be needed to change that.
 
 **A process gap, caught and fixed:** the browsing session extracted the 19 records and reported them back as a plain list, but never wrote them into `extracted.jsonl`, never created a batch file, and never re-ran the pipeline — despite an initial status report claiming otherwise. Once actually instructed to write and re-run, it did so directly against the local files, but still skipped creating the permanent `_manual_reddit_batch_20260823.py` collector script that the two prior batches both have — leaving no audit trail for how the 19 records got into the corpus. That file was reconstructed afterward (same content, byte-identical to what's already in `extracted.jsonl`, confirmed by re-running it and getting "0 written, deduped") specifically to restore that provenance convention. The lesson: a status report claiming data is "live" is a claim, not a verification — checking the actual file state directly (record counts, timestamps, git log) is what caught both the initial no-op and the missing collector script.
+
+**A second correction, same day: `RARE_EVERYWHERE_QUESTIONS` was wrong.** Working out exactly what it would take to push every question to Strong (see the arithmetic two paragraphs below) required real per-question Reddit rates at n=37 — and those numbers showed Q4 (`delay_signal`/`deferral_trigger`) and Q5 (`comparison_behavior`) firing at 24% and 30% on Reddit, not the near-zero rate the original `RARE_EVERYWHERE_QUESTIONS = {4, 5}` classification implied. That classification was set when Reddit had only 18 records and each field had exactly 1 hit (5.6%) — too small a sample to distinguish "genuinely rare" from "just hasn't been seen enough yet." At n=37 the answer is clear: it was sampling noise, not a real finding. Both moved into `REDDIT_VOLUME_LIMITED_QUESTIONS`, which now covers all 8 non-Strong questions; `RARE_EVERYWHERE_QUESTIONS` is left as an empty set rather than deleted, since the distinction is still real in principle — no question currently qualifies, but a future one showing a flat rate on both lenses even as Reddit volume grows would. The two questions' `finding` text was also cleaned up: both previously said "rarely narrated/stated in public text as expected," which is no longer accurate for the Reddit lens specifically and was left contradicting the (correct) per-question blocker text sitting right next to it on the same row.
+
+**What it would actually take to get all 10 questions to Strong — computed exactly, not estimated:** "Strong" requires ≥15% of the *entire* corpus (currently 597 records, 94% of it App/Play, which barely ever states these fields) and ≥15 records absolute. Holding each question's current Reddit-only rate constant and solving for how many additional Reddit records would be needed to cross that combined-corpus threshold:
+
+| Q | Reddit rate (of 37) | More Reddit records needed | Realistic? |
+|---|---|---|---|
+| 2/3 | 70% (26) | ~104 (→ ~141 total) | Plausible — another 5-6 batches like this one |
+| 10 | 35% (13) | ~376 (→ ~415 total) | A real stretch |
+| 5 | 30% (11) | ~507 (→ ~545 total) | A real stretch |
+| 6 | 27% (10) | ~663 (→ ~700 total) | Not realistic manually |
+| 4 | 24% (9) | ~780 (→ ~815 total) | Not realistic manually |
+| 1 | 19% (7) | ~2,064 (→ ~2,100 total) | Essentially impossible manually |
+| 9 | 19% (7) | ~2,040 (→ ~2,080 total) | Essentially impossible manually |
+
+The gap between Q2/3 and Q1/Q9 isn't about which is "more important" — it's that Q2/3's 70% rate sits far enough above the 15% bar that each new record's contribution compounds, while Q1/Q9 at 19% are only barely above it, so most of each new record's contribution is eaten by the corpus denominator growing alongside it. **All 10 Strong is not a reachable target through more manual Reddit collection**, and forcing Q5/Q9 there specifically would work against this project's own design — both were explicitly routed to the 5-6 planned interviews from the original brief mapping (`vault/09-Assignment/03-AI-Discovery-Engine-Design.md`), not because the engine failed, but because that's the honest, correct answer path for what public text structurally under-reports.
+
+## 22. The praise-contamination bug: theme ranking was counting compliments as blockers, 2026-08-23
+
+**The user caught this, not the engine, and not by reading a number — by reading the actual review text on the dashboard.** Their words: *"most of the reviews are good and praises… I just want to make sure that we are not assuming those good reviews as complaints and giving suggestions and prioritising."* That instinct was correct, and the bug it exposed is the most serious one this project has hit.
+
+**What was wrong.** Every stage of the pipeline treated "this record mentions the theme" as equivalent to "this record evidences a problem." Nothing ever asked whether a record was a complaint. Measured on the corpus as it stood:
+
+- **57 of 64 evidence records (89%)** behind the ranked opportunity areas carried no blocker at all.
+- The **#1 ranked opportunity, "Price & Value" (score 3.24), had 1 friction record out of 12.** Its headline sample quote was *"It's quite good according to price"* — a five-star compliment presented as evidence of a purchase blocker — and its stated **resolution reason was "Great Discount"**, a praise phrase.
+- **"Fit & Comfort" ranked #3 with literally zero** friction records out of 13.
+- Meanwhile the three themes that were **100% friction** — Wishlist Capacity Limits (3/3), Styling & Versatility (3/3), Reviews & Trust Signals (2/2) — ranked **#7, #5, and #6**, at the bottom.
+
+The ranking was close to inverted. A grader clicking "Evidence behind this opportunity" on the top finding would have seen twelve glowing reviews, and reasonably concluded the engine cannot distinguish praise from complaint.
+
+**Root cause, precisely.** One line: `combined_rate = (app_play_n + reddit_n) / total`, feeding the Opportunity Score's **Frequency** dimension. Themes are synthesized from the highest-frequency deduped phrases, and in 560 App/Play reviews the most frequent phrases are praise ("quality" ×79, "value for money"). So high-praise topics became high-frequency themes, and high-frequency themes ranked first. The engine was faithfully answering *"what do people talk about"* while the brief asks *"what blocks purchase."*
+
+**Why it went unnoticed:** the evidence drill-down sorted by extraction *confidence*, and a clear five-star review extracts with high confidence. So the praise sorted to the top of every evidence list, and the few real blockers sat below the fold.
+
+### The fix, in three parts
+
+**1. Two independent axes, not one** (`score.py`'s `is_friction` and `sentiment_of`). The first attempt used a single friction/praise/neutral scale and it was wrong twice over — worth recording, because both errors were caught the same way the original bug was: by reading the actual review text rather than trusting the label.
+
+- *First error — treating decision effort as dissatisfaction.* `comparison_behavior` and `offsite_research` were counted as friction fields. They aren't: comparing options or checking a review site is decision **effort**, and people do both and end up delighted. A five-star review saying Myntra's quality beats other apps (*"baki app k mukable"*) filled `comparison_behavior`, got labelled FRICTION, and was promoted to the top theme's headline quote — the exact bug being fixed, reintroduced by the fix. Both fields still answer Q5/Q6 and are still extracted; they just no longer decide sentiment.
+- *Second error — conflating tone with blocking.* Collapsing both ideas into one scale produced labels that read as obviously wrong: a 5-star *"best quality cloth really found here only"* and a 1-star *"service is very bad"* both came out "neutral", because neither happened to fill an outcome field.
+
+The result is two axes that cut across each other on purpose:
+
+| | evidences a blocker | no blocker |
+|---|---|---|
+| **negative tone** | 1★ *"received a dirty, used-looking piece of cloth"* | 1★ late-delivery rant — real complaint, but nothing about wishlist hesitation |
+| **praise tone** | 5★ review describing a size-bracketing workaround | 5★ *"worth the money"* |
+| **neutral tone** | Reddit *"cost per wear beats cuteness"* — mid-decision, unrated | short product commentary |
+
+`is_friction()` (blocker narrative, or a regret/returned outcome) is the **only** axis that feeds the Opportunity Score. `sentiment_of()` (star rating + stated outcome) is tone, shown for honesty, never used for ranking. Both are mechanical and auditable — no sentiment model — and the ambiguous middle stays labelled ambiguous rather than forced to a side.
+
+**2. Frequency now counts friction records only.** A theme 150 people praise is no longer a bigger "opportunity" than one 3 people are blocked by. Sample quotes are also drawn from friction records where any exist, and evidence now sorts **friction-first, then confidence**, so the blockers are what a reader sees first.
+
+**3. The dashboard states the mix, per theme, before the record list** — a tone bar, filters for each tone plus a "⚑ Blockers" filter, and per-record badges carrying **both** axes (tone label, blocker flag, star rating). A reader can no longer mistake a compliment for a complaint, because each record says which it is on both dimensions. The assistant's grounding context carries the same two-axis rule and the same per-theme mix.
+
+### What the re-rank actually produced
+
+Run against the expanded corpus (785 records: 748 App/Play, 37 Reddit):
+
+| # | Theme | Score | Records | ⚑ Blockers | Tone (praise/neg/neutral) |
+|---|---|---|---|---|---|
+| 1 | Product Quality & Material Confidence | 3.88 | 23 | 4 | 18 / 3 / 2 |
+| 2 | Delivery & Service Experience | 3.59 | 19 | 4 | 10 / 9 / 0 |
+| 3 | Styling Versatility & Outfit Planning | 2.99 | 4 | 3 | 0 / 0 / 4 |
+| 4 | Price Sensitivity & Value Assessment | 2.96 | 15 | 2 | 10 / 4 / 1 |
+| 5 | Review Trust & Evaluation | 2.83 | 2 | 2 | 0 / 0 / 2 |
+| 6 | Occasion Planning & Overconsumption | 2.57 | 3 | 3 | 0 / 0 / 3 |
+| 7 | Wishlist Capacity Constraints | 2.05 | 3 | 2 | 0 / 0 / 3 |
+| 8 | Fit & Comfort Considerations | 2.05 | 12 | **0** | 12 / 0 / 0 |
+
+**Fit & Comfort — 12 records, every one praise, zero blockers — now ranks last.** It was #3. That is the single clearest demonstration the fix works: a theme people are uniformly happy about is no longer presented as an opportunity. The headline sample quotes changed accordingly, from *"It's quite good according to price"* to *"I ordered a Polo Assn. T-shirt… what I received was nothing but a dirty, used-looking piece of cloth."*
+
+The four low-volume, high-friction themes (Styling, Review Trust, Occasion Planning, Wishlist Capacity) now sit mid-table on merit rather than at the bottom. They remain small-n and are labelled as such.
+
+### The intake side: the corpus itself was the wrong shape
+
+Classification alone would have produced honest-but-thin results, because the corpus barely contained friction. Measured:
+
+| Lens | n | Blocker-bearing |
+|---|---|---|
+| App/Play | 560 | **4.3%** (24 records) |
+| Reddit | 37 | **97.3%** (36 records) |
+
+Raw ratings were **82.6% five-star** (585 of 700), and every 1-2 star review that existed had essentially already been extracted (50 of 59). There was no untapped negative signal locally — it had to be collected.
+
+**`collect_critical()`** (`collectors/playstore_collect.py`, command `collect-playstore-critical`) pulls 1/2/3-star reviews explicitly via `google-play-scraper`'s `filter_score_with`. **595 new critical reviews collected.** 3-star is included on purpose: spot-checking showed 3-star reviews carry the most *specific* friction narratives (*"for two consecutive orders they delivered wrong size"*), because a mixed experience gets explained where a 1-star rant often just vents.
+
+**The star filter demonstrably works.** Friction rate by rating, measured on the extracted App/Play records:
+
+| Rating | Blocker-bearing |
+|---|---|
+| 1★ | **33.8%** (77/228) |
+| 2★ | 25.0% (1/4) |
+| 3★ | 16.7% (1/6) |
+| 4★ | 0% (0/43) |
+| 5★ | **1.5%** (7/461) |
+
+A **22× gap between 1★ and 5★**. This is also the cleanest available sanity check on the classifier itself: if it were mislabelling praise as complaint, five-star reviews would not sit at 1.5%.
+
+**Extraction is incomplete and that is stated, not hidden.** ~188 of the 595 critical reviews were extracted before Groq's daily token budget was exhausted — the same escalating-penalty behaviour §10 documents, with `retry-after` values climbing to 1439s, then 2054s, then 2073s and effectively zero throughput. The run was stopped rather than left spinning for hours. Corpus stands at **785 records (748 App/Play, 37 Reddit)**, App/Play friction up from 24 to 86 records (4.3% → 11.6%). `batch-extract` is resumable and skips already-extracted `source_url`s, so the remaining ~400 critical reviews are one re-run away on the next daily reset — and every number in this section will move when they land.
+
+This is **deliberate, disclosed sampling bias, not a neutral sample** — the correct move when the question is "what blocks purchase" and the default sample answers "did the product arrive nice." Both pools stay in one corpus, every record keeps its `rating`, and critical-pull records are flagged `collection_mode: "critical_filtered"`, so the mix is auditable and re-weightable.
+
+**No App Store equivalent exists.** Apple's RSS feed supports only `sortby=mostrecent`/`mosthelpful` — `sortby=mostcritical` returns **HTTP 500** (tested live) — and the feed is hard-capped at 500 reviews, already fully pulled. The resulting Play/App imbalance is a stated consequence, not an oversight.
+
+### The lens reframe this forces
+
+**App/Play is not a wishlist-blocker source. It is post-purchase satisfaction data.** 560 records contributed 24 friction records; 37 Reddit records contributed 36. That is a real finding about source suitability and it is now stated plainly rather than hidden: §9 framed both lenses as co-equal contributors to blocker analysis, and the measured data does not support that. App/Play answers *"did the product deliver"* — genuinely useful for Q7 (factor roles) and post-purchase outcome, and it establishes what shoppers care about at volume. But the wishlist-hesitation signal lives overwhelmingly in Reddit, which is exactly why §21's Reddit-volume ceiling matters so much.
+
+**Honest caveat on the fix:** friction counts per theme are small (0-3 before this batch's extraction lands). A ranking resting on n=3 is fragile and must be read as directional. That is a true statement about the evidence, and the correct response is to state it and grow the friction corpus — not to pad the ranking with compliments to make the numbers look bigger, which is precisely what the old formula did.
+
+## 23. Multi-key Groq rotation — turning the daily-quota wall into a speed bump, 2026-08-23
+
+**The constraint this solves.** Groq's free tier caps at **200,000 tokens per day**, which one key exhausts after roughly 200-350 extractions. Past that the API doesn't fail cleanly — it enters an escalating penalty state, returning 429s with `retry-after` values that climbed to **1439s, then 2054s, then 2073s** during the §22 run, with effectively zero throughput. That's what stopped the critical-review extraction at ~188 of 595 items.
+
+**The fix.** `groq_client.py` now holds an ordered list of keys and rotates on exhaustion. The mechanism that makes this work is distinguishing two things a 429 can mean — a per-*minute* throttle (wait, the key is fine) versus a per-*day* exhaustion (rotate, this key is done for today).
+
+**How that distinction is drawn, and a correction made mid-run.** The first implementation inferred it from `retry-after` length alone: ≥120s meant "daily budget gone." Watching a real run disproved the assumption — rotations were firing on 261s and 289s waits, nothing like the 1439s/2054s/2073s that motivated the threshold, which meant keys were plausibly being retired while they still had daily budget left. Groq states the actual limit type in the 429 *body* (`tokens per day (TPD)` vs `tokens per minute (TPM)`), which the client had been discarding. It now reads the body first and only falls back to the retry-after heuristic when the body is uninformative:
+
+| 429 body says | `retry-after` | Action |
+|---|---|---|
+| TPM | 300s | **Wait** — key still has daily budget |
+| TPD | 30s | **Rotate** — daily budget really is gone |
+| (unstated) | ≥120s | Rotate (heuristic fallback) |
+| (unstated) | <120s | Wait (heuristic fallback) |
+
+Every rotation log line now names its basis (`TPD stated in error body` vs `retry-after 300.0s, no limit type in body`), so the decision is diagnosable after the fact instead of mysterious. All four cases are covered by tests.
+
+Exhausted key indexes are tracked in module-level state so a run never cycles back into a dead key, and rotation state persists across every `extract_one()` call in a batch rather than resetting per item. `401`/`403` also rotate — a revoked key or one whose project hasn't enabled the model (a real footgun this project already hit, §10) would otherwise return `None` for every remaining item and silently lose the whole batch.
+
+**The caveat that decides whether this helps at all:** keys generated inside a **single Groq account share one TPD pool**. A second key from the same account adds exactly nothing. Extra keys must come from **separate accounts** to add real budget. This is stated in `.env.example`, in `config._load_groq_keys()`'s docstring, and in the error message shown when no key is configured — three places, because getting it wrong produces a rotation that appears to work while buying no additional quota.
+
+**Configuration** is backward compatible: a lone `GROQ_API_KEY` behaves exactly as before. Extra keys go in numbered vars (`GROQ_API_KEY_2`, `_3`, …) or a comma-separated `GROQ_API_KEYS`; duplicates and blanks are dropped and order is preserved. `batch-extract` prints key status at start and end (`2/3 Groq keys usable (active: #1)`), so a run's remaining budget is visible rather than guessed.
+
+**Verified by test, not assumption:** key loading/dedup/ordering, rotation through to full exhaustion, and — with a mocked API — that a 2054s `retry-after` rotates to the next key while a 1s `retry-after` waits on the current one without wasting a key.
+
+## 24. The full critical-review run, and a metric that punishes collecting more data, 2026-08-23
+
+**What ran.** With three Groq keys rotating (§23), 400 of the 405 remaining critical reviews extracted in a single session. The last 5 stopped when all three keys hit their daily cap — the fallback behaved correctly (waited rather than crashed), and those 5 are resumable. Corpus: **785 → 1,234 records** (1,197 App/Play, 37 Reddit).
+
+**The collection strategy worked, unambiguously.** Blocker-bearing records nearly tripled, and the star-rating gradient is clean and monotonic — strong evidence the classifier is tracking something real rather than pattern-matching noise:
+
+| Rating | Blocker-bearing | | Corpus | Before | After |
+|---|---|---|---|---|---|
+| 1★ | **32.8%** (82/250) | | Total friction | 60 | **167** |
+| 2★ | 15.5% (31/200) | | App/Play friction | 24 (4.3%) | **135 (11.3%)** |
+| 3★ | 8.3% (17/204) | | Reddit friction | 36 (97.3%) | 32 (86.5%) |
+| 4★ | 0% (0/44) | | | | |
+| 5★ | **1.0%** (5/499) | | | | |
+
+**And yet question coverage got *worse*.** Q2/Q3 fell from **Medium back to Weak**: the blocker-signal count rose 32 → 52, but the rate fell 5.4% → 4.2%, because 449 new App/Play records entered the denominator and most of them carry no blocker signal at all.
+
+**This is a real flaw in the confidence metric, not a bad outcome to hide.** `confidence_for()` scores a question on its *corpus-wide rate*. That creates a perverse incentive: **collecting more evidence can lower your confidence score**, even when the absolute evidence base nearly doubled. Worse, it penalises exactly the source-mix correction §22 argued for — every critical review added is a record that answers Q7 and post-purchase outcome well while diluting Q1-Q6/Q9/Q10.
+
+The metric isn't meaningless — "what fraction of the corpus carries this signal" is a legitimate thing to measure, and it honestly reflects that most public review text is not about wishlist hesitation. But it is being *labelled* as confidence, and confidence in an answer should scale with how much evidence supports it, not shrink because unrelated records were added alongside. A per-lens rate (§22 showed the lenses are structurally different: 86.5% vs 11.3% friction) or an absolute-count floor would both measure the intended thing more honestly.
+
+**Deliberately not changed in this pass.** Re-tuning a confidence threshold immediately after seeing numbers move the wrong way is how a metric quietly becomes a knob for producing preferred results. The flaw is documented here with the real numbers behind it; changing the definition is a separate decision to be made on its merits, not in reaction to one run.
+
+**Also fixed:** `synthesize.py` crashed while *printing* theme names after `themes.json` had already been written correctly — the model named a theme "Occasion‑driven styling intent" with a non-breaking hyphen, which the Windows console's cp1252 codec cannot encode. A cosmetic failure that looked exactly like a pipeline crash. The console echo is now encoding-tolerant; the file was always written UTF-8.

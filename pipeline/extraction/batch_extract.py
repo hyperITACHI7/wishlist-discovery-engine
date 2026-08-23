@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import config
 from common.io import append_jsonl, read_jsonl
-from extraction.groq_client import GroqNotConfigured, extract_one
+from extraction.groq_client import GroqNotConfigured, extract_one, keys_status
 from extraction.prompts import build_prompt, lens_for_source
 
 RAW_FILES = ["reddit.jsonl", "playstore.jsonl", "appstore.jsonl"]
@@ -22,6 +22,8 @@ RAW_FILES = ["reddit.jsonl", "playstore.jsonl", "appstore.jsonl"]
 def run_batch() -> None:
     out_path = config.EXTRACTED_DIR / "extracted.jsonl"
     already_done = {r["source_url"] for r in read_jsonl(out_path) if r.get("source_url")}
+
+    print(keys_status())
 
     total_new = 0
     for filename in RAW_FILES:
@@ -66,6 +68,7 @@ def run_batch() -> None:
                 print(f"  {i}/{len(items)} processed")
 
     print(f"\nBatch extraction done. {total_new} new records written to {out_path}")
+    print(keys_status())
     print("Next: dedupe + frequency-count in plain code, then one synthesis call (see problem_statement.md §10 steps 5-6).")
 
 

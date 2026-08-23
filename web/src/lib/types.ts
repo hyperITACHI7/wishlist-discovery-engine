@@ -64,8 +64,22 @@ export interface ConfidenceProfile {
   mix: { high: number; medium: number; low: number };
 }
 
+/** The review's own TONE. Added 2026-08-23 (§22) after finding that 57 of 64
+ * evidence records behind the ranked opportunity areas were 5-star praise,
+ * not complaints. Derived from star rating + stated outcome in score.py's
+ * sentiment_of() — not a sentiment model. Deliberately SEPARATE from
+ * isFriction below: a 1-star late-delivery rant is negative but evidences no
+ * wishlist blocker, and a 5-star review can still describe a workaround. */
+export type RecordSentiment = "praise" | "negative" | "neutral";
+
 /** One source record behind a theme, as rendered in the evidence drill-down. */
 export interface EvidenceRecord {
+  sentiment?: RecordSentiment;
+  /** Does this record evidence a purchase blocker? This is the axis that
+   * drives the Opportunity Score — see score.py's is_friction(). */
+  isFriction?: boolean;
+  /** Star rating, App/Play records only — null on Reddit. */
+  rating?: number | null;
   source: string;
   sourceUrl: string;
   date?: string | null;
@@ -94,6 +108,12 @@ export interface OpportunityRow {
   quadrant?: QuadrantBadge;
   addressabilityNote?: string;
   totalVolume?: number;
+  /** Records that actually evidence a problem. This — not totalVolume — is
+   * what drives the Opportunity Score's Frequency dimension as of §22. */
+  frictionN?: number;
+  /** Tone breakdown plus the friction count. `friction` cuts ACROSS the
+   * three tone buckets rather than summing with them. */
+  sentimentMix?: { praise: number; negative: number; neutral: number; friction: number };
   confidence?: ConfidenceProfile;
   workarounds?: string[];
   /** post_purchase_outcome distribution. Retrospective lens only, and its own
