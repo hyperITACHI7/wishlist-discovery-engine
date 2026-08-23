@@ -10,6 +10,7 @@
 
 import { loadFindings } from "./loadFindings";
 import { RESEARCH_IMPLICATIONS, RESEARCH_QUESTIONS } from "./psychologyResearch";
+import { BRIEF_ANSWERS, CROSS_CUTTING_FINDINGS, LENS_FINDING } from "./briefAnswers";
 
 const WIDGET_GLOSSARY = `
 WIDGET GLOSSARY (what each part of the dashboard shows):
@@ -19,7 +20,7 @@ WIDGET GLOSSARY (what each part of the dashboard shows):
 - Ranked by Opportunity Score: the headline ranking. Opportunity Score is the geometric mean of 5 dimensions (Frequency, Severity, Intent quality, Resolution leverage, Non-monetary addressability). Clicking a theme opens every source record behind it plus the engine's read of them. IMPORTANT (changed 2026-08-23): the Frequency dimension counts only FRICTION-BEARING records — ones with a stated blocker, workaround, deferral trigger, or a regret/returned outcome — not every record that mentions the theme. Praise volume does not raise a theme's rank.
 - Evidence labels — TWO SEPARATE AXES on every source record, do not conflate them: (a) TONE = praise / negative / neutral, from the star rating and stated outcome; (b) the "⚑ blocker" flag = does this record evidence an actual purchase blocker (a stated hesitation, workaround, deferral trigger, or regret/returned outcome). They cut across each other on purpose: a 1-star rant about late delivery is NEGATIVE but NOT a blocker, and a 5-star review describing a size-bracketing workaround IS a blocker. Only the blocker count drives the Opportunity Score. Both are derived mechanically from rating + which extraction fields are present, NOT a sentiment model.
 - Quadrant badge (CRITICAL / HIGH INTENT / HIGH VOLUME / MONITOR): Frequency x Intent Quality. Deliberately NOT Frequency x Severity — at this corpus size post_purchase_outcome almost never resolves to regret/returned, so severity scales flat across every theme and would label them all the same.
-- The Brief's 10 Questions (always-visible section, not a modal as of 2026-08-23): per-question fill rate, the actual top phrases found, confidence, whether the engine or the interviews answer it, and for Weak questions a "why it's weak" line splitting the reason into two kinds: "Reddit-volume-limited" (the field fires well on the 18-record Reddit lens, there just aren't enough Reddit records yet — more collection would likely fix it) vs "rare everywhere" (thin on both lenses regardless of volume, by design handed to interviews).
+- The Brief's 10 Questions section now leads with an actual ANSWER per question (analyst-written, see the answers block below) followed by the fill-rate metadata. If someone asks what the engine found on any of the 10, lead with the answer and its caveat — not the fill rate. Coverage details: per-question fill rate, the actual top phrases found, confidence, whether the engine or the interviews answer it, and for Weak questions a "why it's weak" line splitting the reason into two kinds: "Reddit-volume-limited" (the field fires well on the 18-record Reddit lens, there just aren't enough Reddit records yet — more collection would likely fix it) vs "rare everywhere" (thin on both lenses regardless of volume, by design handed to interviews).
 - Decision Factors: corpus-wide breakdown of decision_factors (141 of 578 records, 310 phrase mentions), bucketed into 8 categories by a keyword-marker classifier. General purchase-decision language (quality, price, delivery) — NOT exclusively about wishlist hesitation, that narrower signal is too sparse in public text to chart.
 - What Happens After Purchase: corpus-wide post_purchase_outcome rollup (satisfied/regret/returned/unclear), App/Play reviews only, 174 of 560 stated an outcome.
 - AI Synthesis: a narrative summary generated once at pipeline time from the ranked findings. Not a new analysis.
@@ -117,6 +118,24 @@ export function buildGroundingContext(): string {
 
   const funnel = f.pipelineFunnel.map((s) => `- ${s.stage}: ${s.n} (${s.note})`).join("\n");
 
+  // The analyst's written answers. These are the substance when someone asks
+  // "what did you find" — the fill rates above say how MUCH was found, these
+  // say WHAT. Analyst-written, not model-generated; the assistant should
+  // reproduce them faithfully rather than improvising its own reading.
+  const answers = BRIEF_ANSWERS.map((a) => {
+    const mech = (a.mechanisms ?? []).map((m) => `      * ${m.label}: ${m.note}`).join("\n");
+    return [
+      `Q${a.id}. ${a.question}`,
+      `  ANSWER: ${a.answer ?? "The corpus cannot answer this."}`,
+      `  REASONING: ${a.detail}`,
+      mech ? `  MECHANISMS:\n${mech}` : "",
+      `  EVIDENCE: ${a.evidenceNote} (source: ${a.source})`,
+      a.caveat ? `  CAVEAT: ${a.caveat}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+  }).join("\n\n");
+
   const decisionFactors = f.decisionFactorBreakdown
     .map((b) => `- ${b.category}: ${b.count} mentions (${b.pctOfMentions}%) — e.g. ${b.examplePhrases.join(", ")}`)
     .join("\n");
@@ -131,7 +150,15 @@ CORPUS: ${f.totalRecords} extracted records — ${f.totalAppPlay} App/Play Store
 RANKED OPPORTUNITY AREAS:
 ${themes}
 
-COVERAGE OF THE BRIEF'S 10 QUESTIONS:
+THE ANALYST'S ANSWERS TO THE BRIEF'S 10 QUESTIONS (written by hand from reading the records, NOT model-generated — reproduce these faithfully rather than improvising a different reading; they identify and quantify, they deliberately do NOT propose solutions):
+${LENS_FINDING.headline} ${LENS_FINDING.detail}
+
+${answers}
+
+READING THE TEN TOGETHER:
+${CROSS_CUTTING_FINDINGS.map((c) => `- ${c}`).join("\n")}
+
+COVERAGE OF THE BRIEF'S 10 QUESTIONS (fill rates — how MUCH was found, not what):
 ${coverage}
 
 PIPELINE FUNNEL (volume at each gate):
