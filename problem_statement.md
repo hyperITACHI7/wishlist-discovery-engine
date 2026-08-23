@@ -99,18 +99,20 @@ Both are pulled directly from Panel A's output, so Panel A's table/view design *
 
 Stating this honestly is itself a requirement — an engine that claims to answer all 10 questions equally well from public text alone reads as less rigorous than one that knows its own blind spots.
 
-| Q | Primary source | Engine strength | Who actually answers it |
+**Updated 2026-08-23 to match measured reality, not the design-time estimate.** The table below originally predicted several of these Strong from the engine alone (Q2, Q3, Q6, Q10); the real computed confidence against the actual 578-record corpus only bears that out for Q7 and Q8 — see §21 for the full measurement and, for each Weak question, an honest answer to *why*.
+
+| Q | Primary source | Engine strength (measured) | Who actually answers it |
 |---|---|---|---|
-| 1 Why save | Reddit, forums | Medium | Engine directionally → interviews confirm |
-| 2 What blocks purchase | All sources | **Strong** | Engine |
-| 3 Residual uncertainty | Reddit | **Strong** | Engine |
-| 4 Postponement cause | Reddit | Medium | Engine + interviews |
-| 5 Comparison behaviour | Reddit, forums | Weak — rarely narrated publicly | Interviews lead |
-| 6 Off-platform research | Reddit | **Strong** — volunteered readily | Engine |
+| 1 Why save | Reddit, forums | Weak — 1/578 (0.2%) | Engine directionally → interviews confirm |
+| 2 What blocks purchase | All sources | Weak — 19/578 (3.3%) | Engine directionally → interviews confirm |
+| 3 Residual uncertainty | Reddit | Weak — same field as Q2 | Engine directionally → interviews confirm |
+| 4 Postponement cause | Reddit | Weak — 9/578 (1.6%) | Engine + interviews |
+| 5 Comparison behaviour | Reddit, forums | Weak — rarely narrated publicly, on any lens | Interviews lead |
+| 6 Off-platform research | Reddit | Weak — 3/578 (0.5%), lower than expected | Engine directionally → interviews confirm |
 | 7 Factor roles | All (via synthesis) | **Strong** — the quantifiable one | Engine |
-| 8 Intent vs. bookmark | Reddit, forums | Medium | Engine screens, interviews confirm |
+| 8 Intent vs. bookmark | Reddit, forums | **Strong** — 124/578 (21.4%) resolved | Engine screens, interviews confirm |
 | 9 Segment differences | All | Weak — attributes rarely stated publicly | Interviews lead (a survey briefly supplemented this; removed 2026-08-20, see §18) |
-| 10 Recurring unmet needs | All | **Strong** | Engine |
+| 10 Recurring unmet needs | All | Weak — 8/578 (1.4%), lower than expected | Engine directionally → interviews confirm |
 
 ## 5. Core architecture decision: freeform extract → synthesize
 
@@ -456,3 +458,16 @@ The user reviewed a real primary-research survey (N=28, "How you use wishlists w
 **A third idea was evaluated and rejected: segmenting records into the survey's own Browser/Considerer/Ready-Buyer personas.** The closest field, `intent_signal`, is the only *required* field in the schema (100% fill), so a literal relabel (`buy-intent`→Ready Buyer, `save-for-later`→Considerer, `not-determinable`→Browser) looked tempting. The real distribution kills it: `not-determinable` is 78.5% of the corpus (454/578) and `save-for-later` is only 1.7% (10/578, entirely from the 18-record Reddit lens, none from App/Play). "Not-determinable" means *no textual evidence either way* — a data-absence category — not "casually browsing," a behavioral one; labeling 78.5% of the corpus "Browsers" would misrepresent missing signal as a confirmed stance, the same false-precision problem `problem_statement.md` already guards against for Addressability and for "not enough data yet" resolution reasons. A *derived* heuristic segment (e.g. Considerer = `not-determinable`/`save-for-later` **with** `decision_factors` present) remains a legitimate follow-up if pursued later, but it is a labeled judgment call requiring its own design pass, not a field relabel, and is out of scope for this pass.
 
 **Also unlike the survey (§18, §19):** these two widgets add real new insight rather than restoring something removed. They are additive to View 1 (the opportunity table) — this is not a resurrection of the removed View 3 cross-tab matrix (§8, §19), which was a different computation (`product_category × intent_signal` joint counts) that stays cut.
+
+## 21. The brief's 10 questions promoted to an always-visible section, and a real attempt to fix Q1/2/3/6/9/10 at the source, 2026-08-23
+
+**What changed on the dashboard.** "Coverage of the brief's 10 questions" (`QuestionCoverageDetail.tsx`) previously lived only behind a modal opened from the "Brief questions covered" stat tile. It's now also an always-visible section on the Findings tab — the same component, reused as-is, just no longer gated behind a click. The stat tile itself is now informational only (no `onClick`), since the full detail sits directly below it; keeping both would have meant one click revealing content already on the page.
+
+**What's new in the data: an honest per-question "why it's weak" line.** §4's routing table (just corrected above) predicted several questions would be Strong from the engine alone — measured against the real 578-record corpus, only Q7 and Q8 actually are. `score.py`'s new `build_blocker()` explains the other eight by checking per-lens (App/Play vs Reddit) fill rates and splitting them into two genuinely different causes, not one generic "Weak":
+
+- **Reddit-volume-limited** (Q1, Q2, Q3, Q6, Q9, Q10): the field fires at 6%–72% per-record on the 18-record Reddit lens, essentially never on the 560-record App/Play lens. The signal is real; there just aren't enough Reddit records to clear the coverage function's confidence bar (`present ≥ 15` for Strong). More Reddit collection is the direct, evidenced fix.
+- **Rare everywhere** (Q4, Q5): thin on both lenses regardless of volume — comparison behaviour and clean postponement narratives just aren't things people volunteer in public text at any real rate. This matches the *original* design prediction for Q5 exactly (`vault/09-Assignment/03-AI-Discovery-Engine-Design.md`'s coverage audit: "rarely narrated publicly, interviews lead") — not a regression, the engine handing off a question it was never expected to answer alone.
+
+**A real attempt was made to fix the Reddit-volume-limited half at the source, and it failed the same way it did before.** Rather than only documenting the blocker, a background agent was dispatched to actually grow the 18-record Reddit corpus via the same manual-browser-extraction method that produced the two existing batches (`_manual_reddit_batch_20260818.py`, `_manual_reddit_batch_20260819.py`). It tried four independent retrieval paths before concluding: direct `WebFetch` (tool-level refusal), `WebSearch` for `site:reddit.com myntra wishlist` (the search provider returns no reddit.com results at all for this query), Jina Reader via the `claude-crawl` skill on both `old.reddit.com` and `www.reddit.com` (Reddit's own network-policy block on both, not a generic timeout), and a Wayback Machine snapshot as a fallback (blocked separately, at Jina's level, unrelated to Reddit). **Zero new records were added, and nothing was fabricated** — the agent was explicitly instructed to report a real failure honestly rather than invent plausible-sounding Reddit content, and did so. This reproduces §9's finding that Reddit blocks this tool environment even through a reader-proxy, not just a direct fetch, and confirms nothing has changed since that was last tested.
+
+**What this means going forward:** growing the Reddit corpus past 18 records still requires an actual human-driven browser session outside this tool environment — there is no automated or proxied path left untried inside it. That remains true, evidenced work for a future session, not something this pass could close out.

@@ -360,6 +360,56 @@ QUESTION_FIELDS = {
     10: ["workaround"],
 }
 
+# Weak questions split into two genuinely different reasons, added 2026-08-23
+# (problem_statement.md §21). Checked per-lens (App/Play vs Reddit) fill
+# rates before writing this, not guessed: REDDIT_VOLUME_LIMITED questions'
+# fields fire at 17-72% per-record on the 18-record Reddit lens but only
+# 0-1.5% on the 560-record App/Play lens — the signal is real, just capped by
+# Reddit's tiny n, not missing text. RARE_EVERYWHERE questions are thin on
+# BOTH lenses regardless of volume — no amount of more Reddit fixes those;
+# they were handed to interviews by design from the original brief mapping
+# (vault/09-Assignment/03-AI-Discovery-Engine-Design.md's coverage audit).
+REDDIT_VOLUME_LIMITED_QUESTIONS = {1, 2, 3, 6, 9, 10}
+RARE_EVERYWHERE_QUESTIONS = {4, 5}
+
+
+def lens_fill(records: list[dict], fields: list[str]) -> dict:
+    retro = [r for r in records if r.get("source") in RETROSPECTIVE_SOURCES]
+    prosp = [r for r in records if r.get("source") in PROSPECTIVE_SOURCES]
+
+    def present_count(pool: list[dict]) -> int:
+        return sum(1 for r in pool if any(r.get("extraction", {}).get(f) for f in fields))
+
+    return {
+        "retroPresent": present_count(retro), "retroN": len(retro),
+        "prospPresent": present_count(prosp), "prospN": len(prosp),
+    }
+
+
+def build_blocker(num: int, fields: list[str], records: list[dict]) -> str | None:
+    """One-line honest explanation of why a Weak question is weak, and
+    whether more Reddit collection would actually fix it. None for
+    questions that are already Strong via a different mechanism (Q7's
+    factor mapping, Q8's required intent_signal field)."""
+    if num not in REDDIT_VOLUME_LIMITED_QUESTIONS and num not in RARE_EVERYWHERE_QUESTIONS:
+        return None
+
+    lf = lens_fill(records, fields)
+    prosp_rate = (lf["prospPresent"] / lf["prospN"] * 100) if lf["prospN"] else 0.0
+    retro_rate = (lf["retroPresent"] / lf["retroN"] * 100) if lf["retroN"] else 0.0
+
+    if num in REDDIT_VOLUME_LIMITED_QUESTIONS:
+        return (
+            f"Fires on {lf['prospPresent']}/{lf['prospN']} Reddit records ({prosp_rate:.0f}%) vs "
+            f"{lf['retroPresent']}/{lf['retroN']} App/Play ({retro_rate:.0f}%) — the signal is real, it's "
+            f"just capped by Reddit corpus size ({lf['prospN']} records total), not missing text."
+        )
+    return (
+        f"Only {lf['retroPresent']}/{lf['retroN']} App/Play ({retro_rate:.0f}%) and "
+        f"{lf['prospPresent']}/{lf['prospN']} Reddit ({prosp_rate:.0f}%) mention it — rare in public text at "
+        f"any volume, by design handed to interviews rather than the engine."
+    )
+
 
 def build_question_coverage(records: list[dict], themes: list[dict], phrases_by_id: dict) -> list[dict]:
     total = len(records)
@@ -417,6 +467,7 @@ def build_question_coverage(records: list[dict], themes: list[dict], phrases_by_
             "answeredBy": answered_by,
             "fields": QUESTION_FIELDS[num],
             "insights": top_phrases_for_fields(phrases_by_id, QUESTION_FIELDS[num]),
+            "blocker": build_blocker(num, QUESTION_FIELDS[num], records),
         }
         for num, question, finding, present, n, conf, answered_by in specs
     ]

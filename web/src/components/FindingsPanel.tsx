@@ -15,13 +15,15 @@ import WorkaroundsDetail from "./details/WorkaroundsDetail";
 import ThemeEvidenceDetail from "./details/ThemeEvidenceDetail";
 import { DecisionFactorBucket, FunnelStage, OpportunityRow, OutcomeSummary, QuestionCoverageRow } from "@/lib/types";
 
-// Which stat card's detail view is open, if any.
-type CardId = "areas" | "top" | "coverage" | "workarounds";
+// Which stat card's detail view is open, if any. "coverage" was removed
+// 2026-08-23 — the brief's 10 questions moved from a modal-only view to an
+// always-visible section (below), so a modal showing the identical content
+// would just be a redundant click.
+type CardId = "areas" | "top" | "workarounds";
 
 const CARD_TITLES: Record<CardId, string> = {
   areas: "All opportunity areas",
   top: "Top opportunity — full breakdown",
-  coverage: "Coverage of the brief's 10 questions",
   workarounds: "Themes with a stated workaround",
 };
 
@@ -96,10 +98,8 @@ export default function FindingsPanel({
         <StatTile
           label="Brief questions covered"
           value={`${strongCount + mediumCount}/${questionCoverageRows.length}`}
-          sublabel="Strong or Medium confidence"
+          sublabel="Strong or Medium confidence — full detail below"
           accent="mint"
-          onClick={() => setOpenCard("coverage")}
-          actionLabel="See all 10"
         />
         <StatTile
           label="Themes with a workaround"
@@ -137,6 +137,15 @@ export default function FindingsPanel({
           selectedId={openTheme}
         />
       </div>
+
+      {/* The brief's 10 questions — promoted from a modal to an always-visible
+          section 2026-08-23, with an honest per-question blocker explanation */}
+      {questionCoverageRows.length > 0 && (
+        <div className="mb-6 rounded-2xl border border-line bg-white p-4">
+          <p className="text-sm font-semibold text-ink">The Brief&apos;s 10 Questions — Answered</p>
+          <QuestionCoverageDetail rows={questionCoverageRows} />
+        </div>
+      )}
 
       {/* Decision factors — what shoppers say they weigh, not exclusively wishlist-specific */}
       {decisionFactorBreakdown.length > 0 && (
@@ -187,7 +196,6 @@ export default function FindingsPanel({
         <Modal title={CARD_TITLES[openCard]} onClose={() => setOpenCard(null)}>
           {openCard === "areas" && <OpportunityAreasDetail rows={sorted} onOpenTheme={openThemeFrom} />}
           {openCard === "top" && sorted[0] && <TopOpportunityDetail row={sorted[0]} />}
-          {openCard === "coverage" && <QuestionCoverageDetail rows={questionCoverageRows} />}
           {openCard === "workarounds" && <WorkaroundsDetail rows={sorted} onOpenTheme={openThemeFrom} />}
         </Modal>
       )}

@@ -119,6 +119,12 @@ export interface QuestionCoverageRow {
   /** Actual top phrases behind the question, so coverage shows WHAT was
    * found and not only how many records it appeared in. */
   insights?: { phrase: string; count: number; field: string }[];
+  /** Added 2026-08-23 (§21): for Weak questions, WHY — split into "the field
+   * fires well on Reddit, there just aren't enough Reddit records yet" vs
+   * "rare in public text at any volume, by design handed to interviews."
+   * null for questions that are already Strong (Q7, Q8). See score.py's
+   * build_blocker for the per-lens rates this is computed from. */
+  blocker?: string | null;
 }
 
 // View 3 (the cross-tab matrix, product_category x intent_signal per theme)

@@ -18,7 +18,7 @@ WIDGET GLOSSARY (what each part of the dashboard shows):
 - Pipeline funnel ("How much data survived each gate"): sequential stages from collection to ranked themes. It is a funnel, not a pie, because each stage's input is the previous stage's output — the stages are not parts of one whole.
 - Ranked by Opportunity Score: the headline ranking. Opportunity Score is the geometric mean of 5 dimensions (Frequency, Severity, Intent quality, Resolution leverage, Non-monetary addressability). Clicking a theme opens every source record behind it plus the engine's read of them.
 - Quadrant badge (CRITICAL / HIGH INTENT / HIGH VOLUME / MONITOR): Frequency x Intent Quality. Deliberately NOT Frequency x Severity — at this corpus size post_purchase_outcome almost never resolves to regret/returned, so severity scales flat across every theme and would label them all the same.
-- Coverage of the brief's 10 questions: per-question fill rate, the actual top phrases found, confidence, and whether the engine or the interviews answer it.
+- The Brief's 10 Questions (always-visible section, not a modal as of 2026-08-23): per-question fill rate, the actual top phrases found, confidence, whether the engine or the interviews answer it, and for Weak questions a "why it's weak" line splitting the reason into two kinds: "Reddit-volume-limited" (the field fires well on the 18-record Reddit lens, there just aren't enough Reddit records yet — more collection would likely fix it) vs "rare everywhere" (thin on both lenses regardless of volume, by design handed to interviews).
 - Decision Factors: corpus-wide breakdown of decision_factors (141 of 578 records, 310 phrase mentions), bucketed into 8 categories by a keyword-marker classifier. General purchase-decision language (quality, price, delivery) — NOT exclusively about wishlist hesitation, that narrower signal is too sparse in public text to chart.
 - What Happens After Purchase: corpus-wide post_purchase_outcome rollup (satisfied/regret/returned/unclear), App/Play reviews only, 174 of 560 stated an outcome.
 - AI Synthesis: a narrative summary generated once at pipeline time from the ranked findings. Not a new analysis.
@@ -106,7 +106,7 @@ export function buildGroundingContext(): string {
       const insights = (q.insights ?? []).map((i) => `"${i.phrase}" (${i.count}x)`).join(", ");
       return `- ${q.question} => ${q.finding}; confidence ${q.confidence}; answered by ${q.answeredBy}${
         insights ? `; top phrases found: ${insights}` : "; no phrases extracted"
-      }`;
+      }${q.blocker ? `; WHY WEAK: ${q.blocker}` : ""}`;
     })
     .join("\n");
 

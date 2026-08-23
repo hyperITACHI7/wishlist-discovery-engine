@@ -46,6 +46,13 @@ export default function QuestionCoverageDetail({ rows }: { rows: QuestionCoverag
                 </div>
               </div>
 
+              {row.blocker && (
+                <p className="mt-2 rounded-xl bg-gold/10 px-3 py-2 text-xs text-ink-soft">
+                  <span className="font-semibold text-ink">Why it&apos;s weak: </span>
+                  {row.blocker}
+                </p>
+              )}
+
               {row.insights && row.insights.length > 0 ? (
                 <div className="mt-2 rounded-xl bg-surface p-3">
                   <p className="mb-1.5 text-[10px] font-semibold uppercase text-ink-faint nav-tab">
