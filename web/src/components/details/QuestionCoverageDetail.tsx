@@ -98,20 +98,7 @@ export default function QuestionCoverageDetail({ rows }: { rows: QuestionCoverag
                     <span>{analysis.evidenceNote}</span>
                   </div>
 
-                  {analysis.caveat && (
-                    <p className="mt-2 rounded-lg bg-[var(--color-status-serious-soft)] px-2.5 py-1.5 text-[11px] leading-relaxed text-ink-soft">
-                      <span className="font-semibold text-[#a1441a]">Caveat: </span>
-                      {analysis.caveat}
-                    </p>
-                  )}
                 </div>
-              )}
-
-              {row.blocker && (
-                <p className="mt-2 rounded-xl bg-gold/10 px-3 py-2 text-xs text-ink-soft">
-                  <span className="font-semibold text-ink">Why it&apos;s weak: </span>
-                  {row.blocker}
-                </p>
               )}
 
               {row.insights && row.insights.length > 0 ? (

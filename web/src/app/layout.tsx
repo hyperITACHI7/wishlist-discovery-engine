@@ -10,7 +10,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Wishlist Discovery Engine",
   description:
-    "An AI discovery engine that mines public feedback to quantify and rank the opportunity areas blocking wishlist-to-purchase conversion. Independent student research project — not affiliated with or endorsed by Myntra.",
+    "An AI discovery engine that mines public feedback to quantify and rank the opportunity areas blocking wishlist-to-purchase conversion.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

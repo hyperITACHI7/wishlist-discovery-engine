@@ -659,3 +659,22 @@ The metric isn't meaningless â€” "what fraction of the corpus carries this signa
 - **Price-watching is the through-line** â€” the main reason people save (Q1), the main reason they postpone (Q4), a major comparison mode (Q5), a driver of off-platform research (Q6), and the cause of a specific backfire where prices ROSE during the awaited sale (Q2). It is also the one lever this project is forbidden from pulling.
 - **The blockers are mostly not about the product.** Capacity limits, occasion mismatch, choice overload and price timing are decision and platform problems. Fit and comfort â€” the factor most associated with online fashion â€” appears in the corpus almost entirely as praise and its theme carries zero blocker-bearing records.
 - **The wishlist is being used as a price-tracking instrument more than a purchase queue**, which reframes the business metric: a saved item is often a bet on a future price, not deferred intent to buy at today's price.
+
+## 23. Interviews landed; three UI texts removed, 2026-08-23
+
+**The interview round is in.** Six participants, synthesised into persona profiles, now render on the Interviews tab — replacing the "reserved, not run yet" placeholder that had stood since the tab was created. Structured in `web/src/lib/interviews.ts` on the same one-module-read-by-both convention as `psychologyResearch.ts` (§16c) and `briefAnswers.ts`, so the tab and the assistant's grounding context cannot drift.
+
+**This closes the project's weakest question.** Q9 (segment differences) has been Weak on every corpus run — `segment_signal` fires on roughly 10 of 597 records, because public reviewers essentially never state who they are. §18 removed the survey, leaving interviews as Q9's only input; that input now exists. Every participant states age, city tier and spend band, and — more usefully — their own wishlist size, which no App Store review has ever volunteered.
+
+**The finding worth the round on its own: wishlist size behaves as a proxy for intent, inversely.** The two largest lists (50+, 30–40) belong to the two people who abandon rather than decide; the two smallest (1–10) to the two who convert reliably; the two mid-sized (11–25) to the two active comparers who stall in evaluation. A large wishlist reads as accumulated indecision, not as an engaged shopper. That is a hypothesis from six people, labelled as such in the UI — and one the corpus structurally cannot check, since wishlist size is never stated in public text.
+
+**Corroboration, never a joint count.** Where the interviews and the corpus independently show the same behaviour — price-drop deferral, cross-platform leakage, wishlist accumulation past usefulness, fit-photo distrust — each persona carries a `corroborates` note saying so in words. No interview figure is ever added to a corpus figure, and the two are never cross-tabbed. This is the §15/§18 population-separation rule applied to a third evidence base rather than abandoned because the new data is friendlier.
+
+**One field left deliberately blank.** User 6's synthesis records no Digital Wardrobe reaction. The card renders "Not covered in this interview — left blank rather than inferred" instead of filling the grid, because a complete-looking table built partly from inference is worse than a visibly incomplete one.
+
+**Three UI texts removed at the user's request:**
+- The hero disclaimer ("Independent student research project… not affiliated with Myntra"), and the same sentence in the page metadata description.
+- The per-question **Caveat:** line in the brief-questions view.
+- The per-question **Why it's weak:** line in the same view.
+
+**What that costs, stated rather than glossed:** those two lines were part of §7d's "stated limitations, always visible" principle. The underlying data is intentionally NOT deleted — `briefAnswers.ts` still carries every `caveat`, `score.py` still computes `build_blocker()`, and both still reach the assistant's grounding context, so it remains able to answer honestly when asked directly. Only the always-on display is gone. Restoring it is a two-block revert, not a re-derivation. The Limitations modal still carries the corpus-level honesty story unchanged.

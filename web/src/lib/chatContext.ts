@@ -11,6 +11,14 @@
 import { loadFindings } from "./loadFindings";
 import { RESEARCH_IMPLICATIONS, RESEARCH_QUESTIONS } from "./psychologyResearch";
 import { BRIEF_ANSWERS, CROSS_CUTTING_FINDINGS, LENS_FINDING } from "./briefAnswers";
+import {
+  EXECUTIVE_SUMMARY,
+  INTERVIEWS,
+  INTERVIEW_META,
+  RECOMMENDATIONS,
+  WHAT_INTERVIEWS_ADD,
+  WISHLIST_SIZE_FINDING,
+} from "./interviews";
 
 const WIDGET_GLOSSARY = `
 WIDGET GLOSSARY (what each part of the dashboard shows):
@@ -20,11 +28,11 @@ WIDGET GLOSSARY (what each part of the dashboard shows):
 - Ranked by Opportunity Score: the headline ranking. Opportunity Score is the geometric mean of 5 dimensions (Frequency, Severity, Intent quality, Resolution leverage, Non-monetary addressability). Clicking a theme opens every source record behind it plus the engine's read of them. IMPORTANT (changed 2026-08-23): the Frequency dimension counts only FRICTION-BEARING records — ones with a stated blocker, workaround, deferral trigger, or a regret/returned outcome — not every record that mentions the theme. Praise volume does not raise a theme's rank.
 - Evidence labels — TWO SEPARATE AXES on every source record, do not conflate them: (a) TONE = praise / negative / neutral, from the star rating and stated outcome; (b) the "⚑ blocker" flag = does this record evidence an actual purchase blocker (a stated hesitation, workaround, deferral trigger, or regret/returned outcome). They cut across each other on purpose: a 1-star rant about late delivery is NEGATIVE but NOT a blocker, and a 5-star review describing a size-bracketing workaround IS a blocker. Only the blocker count drives the Opportunity Score. Both are derived mechanically from rating + which extraction fields are present, NOT a sentiment model.
 - Quadrant badge (CRITICAL / HIGH INTENT / HIGH VOLUME / MONITOR): Frequency x Intent Quality. Deliberately NOT Frequency x Severity — at this corpus size post_purchase_outcome almost never resolves to regret/returned, so severity scales flat across every theme and would label them all the same.
-- The Brief's 10 Questions section now leads with an actual ANSWER per question (analyst-written, see the answers block below) followed by the fill-rate metadata. If someone asks what the engine found on any of the 10, lead with the answer and its caveat — not the fill rate. Coverage details: per-question fill rate, the actual top phrases found, confidence, whether the engine or the interviews answer it, and for Weak questions a "why it's weak" line splitting the reason into two kinds: "Reddit-volume-limited" (the field fires well on the 18-record Reddit lens, there just aren't enough Reddit records yet — more collection would likely fix it) vs "rare everywhere" (thin on both lenses regardless of volume, by design handed to interviews).
+- The Brief's 10 Questions section now leads with an actual ANSWER per question (analyst-written, see the answers block below) followed by the fill-rate metadata. If someone asks what the engine found on any of the 10, lead with the answer and its caveat — not the fill rate. Coverage details: per-question fill rate, the actual top phrases found, confidence, and whether the engine or the interviews answer it.
 - Decision Factors: corpus-wide breakdown of decision_factors (141 of 578 records, 310 phrase mentions), bucketed into 8 categories by a keyword-marker classifier. General purchase-decision language (quality, price, delivery) — NOT exclusively about wishlist hesitation, that narrower signal is too sparse in public text to chart.
 - What Happens After Purchase: corpus-wide post_purchase_outcome rollup (satisfied/regret/returned/unclear), App/Play reviews only, 174 of 560 stated an outcome.
 - AI Synthesis: a narrative summary generated once at pipeline time from the ranked findings. Not a new analysis.
-- Interviews tab: reserved for 5-6 primary-research interviews, not yet run.
+- Interviews tab: the completed primary-research round — 6 participants, analyst-synthesised persona profiles, plus an executive summary and 4 strategic product recommendations. See the interviews section below. This is the ONLY place the project has segment attributes and stated wishlist sizes.
 - Research findings tab: 14 desk-research questions on the psychology of wishlisting, each with the finding, the named mechanism behind it, what it implies for this project, how the engine's own corpus compares, and its sources. This is EXTERNAL published literature, not this engine's findings — see the research section below.
 - Limitations (the ⓘ button): stated biases, null rates, and what this engine can't answer.
 - Try it yourself: paste any text and watch the live extraction run.
@@ -33,8 +41,9 @@ WIDGET GLOSSARY (what each part of the dashboard shows):
 const HARD_RULES = `
 THINGS THAT ARE TRUE AND MUST NOT BE CONTRADICTED:
 - Hard project constraint: NO monetary incentives may be used in any eventual solution — no discounts, cashback, coupons, or price levers. "Price and value perception" has its Addressability dimension deliberately capped for this reason. Never recommend a discount/price lever as a fix. If a theme's resolution reason is a discount, describe it as evidence of the blocker, not an available fix.
-- There is no survey. A Google Forms survey was part of this project earlier and has been removed entirely; if asked, say so plainly rather than describing findings from it. Q9 (segment differences) is answered by interviews alone.
-- Interview participants and public reviewers are different, unlinked populations. NEVER cross-tabulate or compare them as if they were the same people.
+- There is no survey. A Google Forms survey was part of this project earlier and has been removed entirely; if asked, say so plainly rather than describing findings from it. Q9 (segment differences) is answered by the interviews alone.
+- Interview participants and public reviewers are different, unlinked populations. NEVER cross-tabulate or compare them as if they were the same people, and never add an interview count to a corpus count. Where both point the same way, say so as corroboration across two separate evidence bases — never as one combined figure.
+- THE INTERVIEW BOUNDARY: the interviews are n=6 qualitative depth. Nothing from them is a rate or a percentage, and none of it feeds the Opportunity Scores. They are analyst-synthesised persona profiles, not raw transcripts — the only verbatim material is the short ownership-language fragments. Do not report an interview pattern as if it were measured across the corpus.
 - This engine's scope ends at identify / quantify / compare. Proposing specific product features is out of scope — you may describe resolution paths and workarounds OBSERVED in the corpus, clearly labelled as observations.
 - "Not enough data yet" on a resolution reason means that lever is unproven, NOT that the theme is unimportant.
 - The corpus is self-selected public text. It is directional, not statistically representative.
@@ -42,6 +51,53 @@ THINGS THAT ARE TRUE AND MUST NOT BE CONTRADICTED:
 - Addressability is a labelled judgment call, not measured data.
 - THE RESEARCH BOUNDARY: the DESK RESEARCH section is published external literature (mostly Western-market academic work applied to an Indian fashion context). It is NOT this engine's findings and NOT about Myntra users specifically. Never merge the two into one body of evidence, never present a research statistic as something this corpus found, and never present an engine number as literature. When both bear on a question, say which is which — e.g. "the literature finds X; this corpus separately shows Y." Attribute research claims to their source when you cite a number from them.
 `.trim();
+
+/** The interview round, compacted for the model. Keeps each participant's
+ * segment attributes, wishlist size, bottleneck, ownership language and
+ * concept reactions — enough to answer a segment question, which is the one
+ * thing the public-text corpus genuinely cannot do. */
+function buildInterviewsContext(): string {
+  const people = INTERVIEWS.map((p) => {
+    const lines = [
+      `U${p.id} — ${p.age}, ${p.location}, spends ${p.spendBand}, wishlist ${p.wishlistSize} (${p.wishlistRole}); cluster: ${p.cluster}`,
+      `  USES IT FOR: ${p.wishlistDynamic}`,
+      `  BOTTLENECK: ${p.behavioralBottleneck}`,
+      `  PSYCHOLOGY: ${p.psychology} Language recorded: ${p.languageCues.map((c) => `"${c}"`).join(", ")}`,
+      `  DECISION ASSISTANT: ${p.concept.decisionAssistant}`,
+      p.concept.digitalWardrobe
+        ? `  DIGITAL WARDROBE: ${p.concept.digitalWardrobe}`
+        : `  DIGITAL WARDROBE: not covered in this interview — do not infer a reaction`,
+      p.corroborates ? `  CORROBORATED SEPARATELY BY THE CORPUS: ${p.corroborates}` : "",
+    ].filter(Boolean);
+    return lines.join("\n");
+  }).join("\n\n");
+
+  const recs = RECOMMENDATIONS.map(
+    (r) => `${r.id}. ${r.title}${r.personas ? ` (from U${r.personas.join(", U")})` : ""} — ${r.detail}`,
+  ).join("\n");
+
+  return `
+PRIMARY-RESEARCH INTERVIEWS — "${INTERVIEW_META.title}", n=${INTERVIEW_META.n}.
+${INTERVIEW_META.method}
+BOUNDARY: ${INTERVIEW_META.boundary}
+
+EXECUTIVE SUMMARY: ${EXECUTIVE_SUMMARY.headline} ${EXECUTIVE_SUMMARY.body}
+Friction centres on: ${EXECUTIVE_SUMMARY.frictionCenters.map((f) => `${f.label} (${f.note})`).join("; ")}.
+
+KEY SEGMENT FINDING — ${WISHLIST_SIZE_FINDING.headline}
+${WISHLIST_SIZE_FINDING.detail}
+CAUTION: ${WISHLIST_SIZE_FINDING.caution}
+
+PARTICIPANTS:
+${people}
+
+STRATEGIC PRODUCT RECOMMENDATIONS (from the interview round, NOT from the engine — the engine's own scope stops before solution design):
+${recs}
+
+WHAT THE INTERVIEWS ADD THAT PUBLIC TEXT CANNOT:
+${WHAT_INTERVIEWS_ADD.map((w) => `- ${w}`).join("\n")}
+`.trim();
+}
 
 /** The desk research, compacted for the model. Each entry keeps the question,
  * the answer, the named mechanisms, the numbered findings, the implication,
@@ -84,7 +140,7 @@ export function buildGroundingContext(): string {
   const f = loadFindings();
 
   if (!f.pipelineHasRun) {
-    return `${WIDGET_GLOSSARY}\n\n${HARD_RULES}\n\n${buildResearchContext()}\n\nDATA STATUS: The pipeline has not been run — the dashboard is showing illustrative placeholder data, not real findings. Say so if asked about any specific engine number. The desk research above is still valid, since it doesn't depend on the pipeline.`;
+    return `${WIDGET_GLOSSARY}\n\n${HARD_RULES}\n\n${buildInterviewsContext()}\n\n${buildResearchContext()}\n\nDATA STATUS: The pipeline has not been run — the dashboard is showing illustrative placeholder data, not real findings. Say so if asked about any specific engine number. The interviews and the desk research above are still valid, since neither depends on the pipeline.`;
   }
 
   const themes = f.opportunityRows
@@ -171,6 +227,8 @@ POST-PURCHASE OUTCOME (corpus-wide, App/Play only):
 ${outcome}
 
 ${f.narrative ? `EXISTING AI SYNTHESIS NARRATIVE:\n${f.narrative}\n` : ""}
+${buildInterviewsContext()}
+
 ${buildResearchContext()}
 
 ${WIDGET_GLOSSARY}

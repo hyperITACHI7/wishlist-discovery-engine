@@ -30,10 +30,6 @@ export default function Home() {
             people stall between saving an item and buying it, and ranks the opportunity areas so the fix can
             be argued, not assumed.
           </p>
-          <p className="mt-4 max-w-2xl rounded-xl border border-line bg-surface px-4 py-2.5 text-xs text-ink-faint">
-            Independent student research project for a product-management graduation assignment. Not
-            affiliated with, endorsed by, or built using non-public data from Myntra.
-          </p>
         </div>
       </section>
 
